@@ -1,0 +1,139 @@
+<style>
+    li span{
+        font-weight: bold;
+        font-size: 16px;
+    }
+    li a{
+        font-weight: bold;
+    }
+</style>
+
+<!-- left sideBar  -->
+    
+<div class="vertical-menu " style="background-color: white">
+
+    <div data-simplebar class="h-100">
+
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-styled" id="side-menu" style="margin-top: 8px">
+
+                <!-- الرئيسية   -->
+                <li>
+                    <a href="/"  class=" waves-effect">
+                        <i class="bx bx-home bx-sm"></i>
+                        <span key="t-layouts">الرئيسية</span>
+                    </a>
+                   
+                </li>
+
+               
+                     <!--                         
+                    <li><a href="/" key="t-products"><i class='bx bx-line-chart' ></i>
+                        احصائيات عامة  </a></li> -->
+
+                    <li>
+                        <a href="#" data-toggle="modal" class="waves-effects" data-target="#search_modal">
+                            <i class='bx bx-search-alt' ></i>
+                             <span> بحث ونتائج</span>
+                        </a>
+                    </li>       
+
+                <li class="menu-title " key="t-menu"><hr></li>
+
+                {% if modules.supplier_loads_active %}
+                    <li>
+                        <a href="javascript: void(0);"  class="has-arrow waves-effect">
+                            <i class='bx bxs-factory bx-sm'></i>
+                            <span key="t-ecommerce">الشركات</span>
+                        </a>
+
+                        <ul class="sub-menu bg-light" aria-expanded="false">
+
+                            <li><a href="{% url 'Engineering:CompanyList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
+                            قائمة الشركات </a></li>
+
+                            <li><a href="{% url 'Engineering:CompanyCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                            اضافة شركة جديدة</a></li>
+
+                            <li><a href="{% url 'Engineering:CompanyTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                سلة المهملات</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);"  class="has-arrow waves-effect">
+                            <i class='bx bxs-map bx-sm'></i>
+                            <span key="t-ecommerce">المواقع</span>
+                        </a>
+                        <ul class="sub-menu bg-light" aria-expanded="false">
+
+
+                            <li><a href="{% url 'Engineering:GeoPlaceList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
+                            قائمة المواقع </a></li>
+
+                            <li><a href="{% url 'Engineering:GeoPlaceCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                            اضافة موقع جديد</a></li>
+
+                            <li><a href="{% url 'Engineering:GeoPlaceTrachList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                سلة المهملات</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);"  class="has-arrow waves-effect">
+                            <i class='bx bx-receipt bx-sm' ></i>
+                            <span key="t-ecommerce">البونات</span>
+                        </a>
+
+                        <ul class="sub-menu bg-light" aria-expanded="false">
+
+                            <li><a href="{% url 'Products:SellerList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
+                            قائمة البونات </a></li>
+
+                            <li><a href="{% url 'Products:SellerCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                            اضافة بون جديد</a></li>
+
+                            <li><a href="{% url 'Products:SellerTrashList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
+                                سلة المهملات</a></li>
+
+                        </ul>
+
+                    </li>
+               {% endif %}
+                
+                {% if request.user.is_superuser %}
+                    <li class="menu-title" key="t-menu"><hr></li>
+                    <!-- الاعددات   -->
+                    <li>
+                        <a href="javascript: void(0);"  class="has-arrow waves-effect">
+                            <i class="bx bx-cog bx-sm" ></i>
+                            <span key="t-ecommerce"> اعدادات المستخدمين  </span>
+                        </a>
+                        <ul class="sub-menu bg-light" aria-expanded="false">
+                            
+                            <li><a href="{% url 'Auth:Users' %}"
+                                data-target="#sub_modal" data-toggle="modal"
+                                key="t-products"><i class='bx bx-list-ul' ></i>
+                                قائمة المستخدمين </a>
+                            </li>
+                                {% if request.user.is_superuser  %}
+                                <li>
+                                    <a href="{% url 'Auth:create_user' %}" data-target="#sub_modal" data-toggle="modal">
+                                    <i class='bx bxs-add-to-queue'></i>
+                                    اضافة مستخدم جديد</a>
+                                </li>        
+                                {% endif %}  
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+</div>
+

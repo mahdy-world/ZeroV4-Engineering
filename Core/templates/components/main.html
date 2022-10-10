@@ -1,0 +1,129 @@
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                        <i class="mdi mdi-check-all mr-2"></i>
+                        {{ message|safe }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">الرئيسية</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">لوحة التحكم</a></li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            
+            <div class="row">
+                {% if modules.supplier_loads_active %}
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <a data-toggle="modal" data-target="#company_modal">
+                        <div class="container_new">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img class="image" src="/static/assets/images/vector/supplier.png">
+                                </div>
+                                <div class="contentBx">
+                                    <h2>الشركات</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <a data-toggle="modal" data-target="#geo_modal">
+                        <div class="container_new">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img class="image" src="/static/assets/images/vector/factory2.png">
+                                </div>
+                                <div class="contentBx">
+                                    <h2>المواقع</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <a data-toggle="modal" data-target="#bon_modal">
+                        <div class="container_new">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img class="image" src="/static/assets/images/vector/printt.png">
+                                </div>
+                                <div class="contentBx">
+                                    <h2>البونات</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+
+
+                <div class="col-xl-6 col-lg-6 col-md-6">
+                    <a data-toggle="modal" data-target="#search_modal">
+                        <div class="container_new">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img class="image" src="/static/assets/images/vector/search2.png">
+                                </div>
+                                <div class="contentBx">
+                                    <h2>البحث</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                {% if request.user.is_superuser %}
+                <div class="col-xl-6 col-lg-6 col-md-6">
+                    <a data-toggle="modal" data-target="#user_invoice_modal">
+                        <div class="container_new">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img class="image" src="/static/assets/images/vector/users2.png">
+                                </div>
+                                <div class="contentBx">
+                                    <h2> المستخدمين</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                {% endif %}
+            </div>
+
+          
+            <!-- end row -->
+        </div>
+        <!-- container-fluid -->
+    </div>
+    
+</div>

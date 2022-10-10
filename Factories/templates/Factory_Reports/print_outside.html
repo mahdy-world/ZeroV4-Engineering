@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Invoice</title>
+    <meta name="description" content="Invoice demo sample">
+  </head>
+
+  <body>
+    <h1 style="margin-top: -100px">
+      {% if system_info.logo %}
+       <img src={{system_info.logo.url}} width="150px" height="150px">
+       {% else %}
+       <img src="/static/assets/images/new.png" width="150px" height="150px">
+      {% endif %}
+    </h1>
+
+    <dl id="informations" style="margin-top: -100px">
+        <h2 class="text-center">{{system_info.name}}</h2>
+        <h5><span>{{date|date:'Y-m-d'}}</span>تاريخ التقرير :</h5>
+      <h5><span>{{factory.name}}</span>خارج مصنع: </h5> 
+    </dl>
+
+    <table>
+      <thead>
+        <tr>
+          <th>الوزن بعد الهالك</th>
+          <th>نسبة الهالك</th>
+          <th>نوع الخامة</th>
+          <th>اللون</th>
+          <th>الوزن</th>
+          <th>التاريخ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in queryset %}
+          <tr>
+            <td>{{x.weight_after_loss}}</td>
+            <td>{{x.percent_loss}}</td>
+            <td>{{x.get_wool_type_display}}</td>
+            <td>{{x.color}}</td>
+            <td>{{x.weight}}</td>
+            <td>{{x.date|date:'Y-m-d'}}</td>
+          </tr>
+        {% endfor %}
+        
+        
+      </tbody>
+    </table>
+
+    <table id="total">
+      <thead>
+        <tr>
+          <th>اجمالي الوزن</th>
+          <th>الي تاريخ</th>
+          <th>من تاريخ</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>
+                {% if sum_weight %}
+                {{sum_weight|floatformat:3}}
+                {% else %}
+                0.0
+                {% endif %}
+                كيلو جرام</td>
+            <td>{{to_date}}</td>
+          <td>{{from_date}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

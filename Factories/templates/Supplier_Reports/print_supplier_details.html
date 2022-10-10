@@ -1,0 +1,76 @@
+{% load mathfilters %}
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>{{date|date:'Y-m-d'}} {{supplier.name}}</title>
+    <meta name="description" content="Invoice demo sample">
+  </head>
+
+  <body>
+    <h1 style="margin-top: -100px">
+      {% if system_info.logo %}
+       <img src={{system_info.logo.url}} width="150px" height="150px">
+       {% else %}
+       <img src="/static/assets/images/new.png" width="150px" height="150px">
+      {% endif %}
+    </h1>
+
+    <dl id="informations" style="margin-top: -100px">
+        <h2 class="text-center">{{system_info.name}}</h2>
+        <h5><span> {{date|date:'Y-m-d'}} </span>تاريخ التقرير: </h5>
+        <h5><span> {{supplier.name}} </span>كشف حساب
+            {% if supplier.type == 1 %}
+            المورد:
+            {% else %}
+            المستورد:
+            {% endif %}
+            </h5>
+    </dl>
+
+    <table style="margin-top: 100px">
+        <tr>
+            <th>
+            {{ count }}
+            </th>
+            <th>اجمالي عدد القطع</th>
+        </tr>
+        <tr>
+            <th>
+            {{ account|floatformat:2 }}
+            </th>
+            <th>اجمالي الحساب</th>
+        </tr>
+        <tr>
+            <th>{{ total|floatformat:2 }}</th>
+            <th>اجمالي المسحوبات</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>
+            {% if account|sub:total > 0 %}
+                {% if supplier.type == 1 %}
+                    للمورد
+                {% else %}
+                    علي المستورد
+                {% endif %}
+                {{ account|sub:total|floatformat:2 }}
+            {% elif account|sub:total < 0  %}
+                {% if supplier.type == 1 %}
+                    علي المورد
+                {% else %}
+                    للمستورد
+                {% endif %}
+                {{ account|sub:total|mul:-1|floatformat:2 }}
+            {% else %}
+                0.0
+            {% endif %}
+            </th>
+            <th>الباقي</th>
+        </tr>
+    </table>
+  </body>
+</html>

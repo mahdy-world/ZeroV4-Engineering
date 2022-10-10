@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block title %}
+<title> تقارير {{name}}</title>
+
+{% endblock title %}
+
+{% block main %}
+{% load  crispy_forms_tags %}
+<div class="main-content">
+
+  <div class="page-content">
+    <div class="container">
+      
+      {% if name.worker_type != 6  %}
+        <!--تقرير الحضور-->
+        <div class="row">
+          <div class="col-lg-12 ">
+            <div class="card shadow-lg">
+              <div class="card-body">
+                <div class="tab-pane" id="processing" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="bg-dark">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="p-3">
+                              <h3
+                                class="text-center font-weight-bold"
+                                style="color: white"
+                              >
+                              <i class="fas fa-file-alt"></i>
+                                  تقرير حضور: {{ name }}
+                              </h3>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+      
+                      <div class="table-responsive" id="order_list">
+                        <table class="table table-nowrap mb-0">
+                          <thead>
+                            <form method="get" action="#" id="my_form">
+                              <input name="type" type="hidden" value="{{ request.GET.type }}">
+                              <tr>
+                                <th
+                                  class="col-lg-6 col-xl-6 col-md-6">
+                                  
+                                  {{form.from_date|as_crispy_field}}
+                                </th>
+                                <th
+                                  class="col-lg-6 col-xl-6 col-md-6"
+                                  
+                                >
+                                  {{form.to_date|as_crispy_field}}
+                                </th>
+
+                                <th>
+                                  <button type="submit" name="submit" id="print"  value="1" class="btn btn-success"
+                                  onclick="document.getElementById('my_form').action = '{% url  'Workers:PrintWorkerAttendance' name.id  %}'; document.getElementById('my_form').target = '_blank' "
+                                  >  
+                                  <i class="fas fa-print"></i> 
+                                  بحث
+                                  </button>
+                                </th>
+                                
+                              </tr>
+                            </form>
+                          </thead>
+                        </table>
+                      </div>
+                      <style>
+                        .table-responsive {
+                          max-height: 500px;
+                        }
+                        .table-responsive::-webkit-scrollbar {
+                          display: none;
+                        }
+                      </style>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+      <!-- تقرير الانتاج -->
+      <div class="row">
+        <div class="col-lg-12 ">
+          <div class="card shadow-lg">
+            <div class="card-body">
+              <div class="tab-pane" id="processing" role="tabpanel">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="bg-dark">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="p-3">
+                            <h3
+                              class="text-center font-weight-bold"
+                              style="color: white"
+                            >
+                            <i class="fas fa-file-alt"></i>
+                                تقرير الانتاج: {{ name }}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="table-responsive" id="order_list">
+                      <table class="table table-nowrap mb-0">
+                        <thead>
+                          <form method="get" action="#" id="my_form">
+                            <input name="type" type="hidden" value="{{ request.GET.type }}">
+                            <tr>
+                              <th
+                                class="col-lg-6 col-xl-6 col-md-6">
+                                
+                                {{form.from_date|as_crispy_field}}
+                              </th>
+                              <th
+                                class="col-lg-6 col-xl-6 col-md-6"
+                                
+                              >
+                                {{form.to_date|as_crispy_field}}
+                              </th>
+
+                              <th>
+                                <button type="submit" name="submit" id="print"  value="1" class="btn btn-success"
+                                onclick="document.getElementById('my_form').action = '{% url  'Workers:PrintWorkerproductions' name.id  %}'; document.getElementById('my_form').target = '_blank' "
+                                >  
+                                <i class="fas fa-print"></i> 
+                                بحث
+                                </button>
+                              </th>
+                              
+                            </tr>
+                          </form>
+                        </thead>
+                      </table>
+                    </div>
+                    <style>
+                      .table-responsive {
+                        max-height: 500px;
+                      }
+                      .table-responsive::-webkit-scrollbar {
+                        display: none;
+                      }
+                    </style>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+      <!-- تقرير المسحوبات -->
+      <div class="row">
+        <div class="col-lg-12 ">
+          <div class="card shadow-lg">
+            <div class="card-body">
+              <!-- حضور المصنع -->
+              <div class="tab-pane" id="processing" role="tabpanel">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="bg-dark">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="p-3">
+                            <h3
+                              class="text-center font-weight-bold"
+                              style="color: white"
+                            >
+                            <i class="fas fa-file-alt"></i>
+                                تقرير المسحوبات: {{ name }}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="table-responsive" id="order_list">
+                      <table class="table table-nowrap mb-0">
+                        <thead>
+                          <form method="get" action="#" id="payment_form">
+                            <input name="type" type="hidden" value="{{ request.GET.type }}">
+                            <tr>
+                              <th
+                                class="col-lg-6 col-xl-6 col-md-6">
+                                
+                                {{form.from_date|as_crispy_field}}
+                              </th>
+                              <th
+                                class="col-lg-6 col-xl-6 col-md-6"
+                                
+                              >
+                                {{form.to_date|as_crispy_field}}
+                              </th>
+
+                              <th>
+                                <button  name="submit" id="print" value="1" class="btn btn-success"
+                                  onclick="document.getElementById('payment_form').action = '{% url 'Workers:PrintWorkerPayment' name.id  %}'; document.getElementById('payment_form').target = '_blank' ">
+                                  <i class="fas fa-print"></i>
+                                  بحث
+                                </button>
+                              </th>
+                              
+                            </tr>
+                          </form>
+                        </thead>
+                      </table>
+                    </div>
+                    <style>
+                      .table-responsive {
+                        max-height: 500px;
+                      }
+                      .table-responsive::-webkit-scrollbar {
+                        display: none;
+                      }
+                    </style>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock main %}
+
+

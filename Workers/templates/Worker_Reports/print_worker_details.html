@@ -1,0 +1,68 @@
+{% load mathfilters %}
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>{{date|date:'Y-m-d'}} {{worker.name}}</title>
+    <meta name="description" content="Invoice demo sample">
+  </head>
+
+  <body>
+    <h1 style="margin-top: -100px">
+      {% if system_info.logo %}
+       <img src={{system_info.logo.url}} width="150px" height="150px">
+       {% else %}
+       <img src="/static/assets/images/new.png" width="150px" height="150px">
+      {% endif %}
+    </h1>
+
+    <dl id="informations" style="margin-top: -100px">
+        <h2 class="text-center">{{system_info.name}}</h2>
+        <h5><span> {{date|date:'Y-m-d'}} </span>تاريخ التقرير: </h5>
+        <h5><span> {{worker.name}} </span>كشف حساب العامل: </h5>
+    </dl>
+
+    <table style="margin-top: 100px">
+        <tr>
+            {% if total_production > 0 %}
+            <th>
+            {{ total_production }} قطعة
+            </th>
+            <th>اجمالي الإنتاج</th>
+            {% else %}
+            <th>
+                {{ real_days }} يوم
+                و {{ rest_hours }} ساعة
+            </th>
+            <th>اجمالي أيام الحضور</th>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>{{ total|floatformat:2 }}</th>
+            <th>اجمالي الحساب المستحق</th>
+        </tr>
+        <tr>
+            <th>{{ payment_sum|floatformat:2 }}</th>
+            <th>اجمالي المسحوبات</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>
+            {% if total|sub:payment_sum > 0 %}
+                للعامل
+                {{ total|sub:payment_sum|floatformat:2 }}
+            {% elif total|sub:payment_sum < 0  %}
+                علي العامل
+                {{ total|sub:payment_sum|mul:-1|floatformat:2 }}
+            {% else %}
+                0.0
+            {% endif %}
+            </th>
+            <th>الباقي</th>
+        </tr>
+    </table>
+  </body>
+</html>
