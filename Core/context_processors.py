@@ -1,6 +1,6 @@
 from Core.models import SystemInformation
 from Engineering.models import *
-from Factories.models import Factory, Supplier
+from Factories.models import Factory
 from Invoices.models import *
 from django.db.models import F
 from Workers.models import Worker
@@ -37,7 +37,6 @@ def allcontext(request):
         'products_notify':products_notify,
         'notification_count':notification_count,
         'modules':modules,
-
         'companies': companies,
         'geoplaces': geoplaces,
     }

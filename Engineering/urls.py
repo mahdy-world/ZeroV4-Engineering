@@ -21,4 +21,15 @@ urlpatterns = [
     path('geo_restore/<int:pk>', GeoPlaceRestore.as_view(), name="GeoPlaceRestore"),
     path('geo_superDelete/<int:pk>', GeoPlaceSuperDelete.as_view(), name="GeoPlaceSuperDelete"),
     path('geo_price_history/<int:pk>', GeoPlacePriceHistoryList.as_view(), name="GeoPlacePriceHistoryList"),
+
+    ####################################################################
+    path('supplier_list/', SupplierList.as_view(), name="SupplierList"),
+    path('supplier_trach/', SupplierTrachList.as_view(), name="SupplierTrachList"),
+    path('supplier_create/', SupplierCreate.as_view(), name="SupplierCreate"),
+    path('supplier_update/<int:pk>', SupplierUpdate.as_view(), name="SupplierUpdate"),
+    path('supplier_delete/<int:pk>', SupplierDelete.as_view(), name="SupplierDelete"),
+    path('supplier_restore/<int:pk>', SupplierRestore.as_view(), name="SupplierRestore"),
+    path('supplier_superDelete/<int:pk>', SupplierSuperDelete.as_view(), name="SupplierSuperDelete"),
+
+    ####################################################################
 ]

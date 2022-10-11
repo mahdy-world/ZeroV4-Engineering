@@ -37,3 +37,12 @@ class GeoPlacePriceHistory(models.Model):
 
     def __str__(self):
         return self.geo.name
+
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=50, verbose_name="اسم المورد")
+    phone = models.CharField(max_length=12, null=True, blank=True, verbose_name="رقم الهاتف")
+    deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
