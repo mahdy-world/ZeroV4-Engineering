@@ -361,3 +361,154 @@ class GeoPlacePriceHistoryList(LoginRequiredMixin, ListView):
         context['type'] = 'list'
         context['prices'] = GeoPlacePriceHistory.objects.filter(geo=geo).order_by('-created', '-id')
         return context
+
+
+####################################################################################
+
+class SupplierList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Supplier
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=False).order_by('-id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['title'] = 'قائمة '
+        context['page'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+
+class SupplierTrachList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login'
+    model = Supplier
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=True).order_by('-id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'trach'
+        context['count'] = self.model.objects.filter(deleted=True).count()
+        return context
+
+
+class SupplierCreate(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = Supplier
+    form_class = SupplierForm
+    template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('Engineering:SupplierList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'اضافة مورد جديدة'
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('Engineering:SupplierCreate')
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "تم اضافة مورد جديد", extra_tags="success")
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+
+class SupplierUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Supplier
+    form_class = SupplierForm
+    template_name = 'forms/form_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل مورد: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Engineering:SupplierUpdate', kwargs={'pk': self.object.id})
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "تم تعديل المورد " + str(self.object) + " بنجاح ", extra_tags="success")
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+
+class SupplierDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Supplier
+    form_class = SupplierFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SupplierList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'نقل المورد الي سلة المهملات: ' + str(self.object)
+        context['message'] = 'delete'
+        context['action_url'] = reverse_lazy('Engineering:SupplierDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم نقل المورد " + str(self.object) + ' الي سلة المهملات بنجاح ', extra_tags="success")
+        myform = Supplier.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 1
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class SupplierRestore(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Supplier
+    form_class = SupplierFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SupplierTrachList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استرجاع مورد: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('Engineering:SupplierRestore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم استرجاع المورد " + str(self.object) + ' الي القائمة بنجاح ', extra_tags="success")
+        myform = Supplier.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 0
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class SupplierSuperDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Supplier
+    form_class = SupplierFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SupplierTrachList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف مورد: ' + str(self.object)
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('Engineering:SupplierSuperDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف المورد " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
+        my_form = Supplier.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+        return redirect(self.get_success_url())

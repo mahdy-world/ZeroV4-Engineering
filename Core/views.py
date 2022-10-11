@@ -298,6 +298,30 @@ class CompanySearch(LoginRequiredMixin, ListView):
             return self.model.objects.filter(deleted=False)
 
 
+class SupplierSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Supplier
+    template_name = 'Engineering/supplier_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['page'] = 'active'
+        context['supplier_search'] = self.request.GET.get("supplier")
+        context['type'] = 'list'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        supplier_search = self.request.GET.get("supplier")
+        queryset = self.model.objects.filter(name__icontains=supplier_search, deleted=False)
+        if queryset:
+            return queryset
+        else:
+            messages.error(self.request, "لا يوجد مورد بهذا الإسم .. ابحث في سلة المهملات", extra_tags="danger")
+            return self.model.objects.filter(deleted=False)
+
+
 class GeoPlaceSearch(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     model = GeoPlace
