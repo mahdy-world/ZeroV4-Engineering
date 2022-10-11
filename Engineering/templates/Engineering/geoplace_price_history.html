@@ -1,0 +1,122 @@
+{% load mathfilters %}
+<style>
+    .expand_modal {
+        max-width: 100%;
+        margin: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        display: flex;
+        position: fixed;
+        z-index: 100000;
+    }
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <b class="font-weight-bold text-center"> {{ title }}</b>
+            <span style="float: left">
+            <button type="button" class="btn btn-tool" data-card-widget="maximize"
+            onclick="
+            if (document.getElementById('expand_modal').value === '0'){
+                document.getElementById('expand_modal').value = 1;
+                document.getElementById('action_modal2').className = 'modal-dialog expand_modal';
+                document.getElementById('sub_modal2').className = 'modal-dialog modal-lg expand_modal';
+            }
+            else {
+                document.getElementById('expand_modal').value = 0;
+                document.getElementById('action_modal2').className = 'modal-dialog';
+                document.getElementById('sub_modal2').className = 'modal-dialog modal-lg';
+            }
+
+            "
+            >
+                <input type="number" value="0" id="expand_modal" hidden>
+                <i class="fas fa-expand"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-dismiss="modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </span>
+        </div>
+    </div>
+            
+               
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+                        <div class="card" >
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-centered">
+                                        <thead class="thead-light text-center">
+                                            <tr>
+                                                <th scope="col" >#</th>
+                                                <th scope="col">
+                                                    التاريخ
+                                                </th>
+                                                <th scope="col">
+                                                    السعر القديم
+                                                </th>
+                                                <th scope="col">
+                                                    السعر الجديد
+                                                </th>
+                                                <th scope="col">
+                                                    المسؤول
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center ">
+                                          {% for x in prices  %}
+                                          <tr>
+                                            <td>
+                                                {{forloop.counter}}
+                                            </td>
+                                            <td>
+                                                <h5 class="font-size-16">
+                                                    {{x.created|date:'Y-m-d'}}
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="font-size-16">
+                                                    <i class="fas fa-dollar-sign"></i>
+                                                    {{x.old_price}}
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <h5
+                                                        {% if forloop.first %}
+                                                        class="badge badge-danger font-size-16"
+                                                        {% else %}
+                                                        class="font-size-16"
+                                                        {% endif %}
+                                                >
+                                                    <i class="fas fa-dollar-sign"></i>
+                                                    {{x.new_price}}
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="font-size-16">
+                                                    {{x.admin.username}}
+                                                </h5>
+                                            </td>
+                                        </tr>
+                                      
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+</div>
+               
+                
+
+
+

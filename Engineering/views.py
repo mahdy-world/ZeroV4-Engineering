@@ -219,8 +219,20 @@ class GeoPlaceCreate(LoginRequiredMixin, CreateView):
         form.fields['company'].queryset = Company.objects.filter(deleted=0, active=True)
         return form
 
+    def form_valid(self, form):
+        form.save()
+        obj = form.save(commit=False)
+        geo = GeoPlace.objects.get(id=obj.id)
+        price_history = GeoPlacePriceHistory()
+        price_history.geo = geo
+        price_history.old_price = 0.0
+        price_history.new_price = obj.price
+        price_history.admin = self.request.user
+        price_history.save()
+        return redirect(self.get_success_url())
+
     def get_success_url(self):
-        messages.success(self.request, "تم اضافة شركة جديدة", extra_tags="success")
+        messages.success(self.request, "تم اضافة موقع جديد", extra_tags="success")
 
         if self.request.POST.get('url'):
             return self.request.POST.get('url')
@@ -245,6 +257,18 @@ class GeoPlaceUpdate(LoginRequiredMixin, UpdateView):
     #     form = super().get_form(form_class=self.form_class)
     #     form.fields['company'].queryset = Company.objects.filter(deleted=0, active=True)
     #     return form
+
+    def form_valid(self, form):
+        geo = GeoPlace.objects.get(id=self.kwargs['pk'])
+        form.save()
+        obj = form.save(commit=False)
+        price_history = GeoPlacePriceHistory()
+        price_history.geo = geo
+        price_history.old_price = geo.price
+        price_history.new_price = obj.price
+        price_history.admin = self.request.user
+        price_history.save()
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         messages.success(self.request, "تم تعديل موقع " + str(self.object) + " بنجاح ", extra_tags="success")
@@ -323,3 +347,17 @@ class GeoPlaceSuperDelete(LoginRequiredMixin, UpdateView):
         my_form = GeoPlace.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url())
+
+
+class GeoPlacePriceHistoryList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = GeoPlacePriceHistory
+    template_name = 'Engineering/geoplace_price_history.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        geo = GeoPlace.objects.get(id=self.kwargs['pk'])
+        context['title'] = 'أسعار الموقع: ' + str(geo.name)
+        context['type'] = 'list'
+        context['prices'] = GeoPlacePriceHistory.objects.filter(geo=geo).order_by('-created', '-id')
+        return context
