@@ -408,7 +408,7 @@ class SupplierCreate(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'اضافة مورد جديدة'
+        context['title'] = 'اضافة مورد جديد'
         context['message'] = 'add'
         context['action_url'] = reverse_lazy('Engineering:SupplierCreate')
         return context
