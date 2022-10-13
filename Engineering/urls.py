@@ -42,6 +42,7 @@ urlpatterns = [
     path('sheet_delete/<int:pk>', SheetDelete.as_view(), name="SheetDelete"),
     path('sheet_restore/<int:pk>', SheetRestore.as_view(), name="SheetRestore"),
     path('sheet_superDelete/<int:pk>', SheetDelete.as_view(), name="SheetDelete"),
+    path('sheet_detail/<int:pk>/', SheetDetail, name="SheetDetail"),
 
     ####################################################################
 ]

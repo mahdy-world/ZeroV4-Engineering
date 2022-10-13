@@ -1,7 +1,7 @@
 import datetime
 from django.db.models.aggregates import Sum
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import *
@@ -198,6 +198,7 @@ class GeoPlaceTrachList(LoginRequiredMixin, ListView):
         context['type'] = 'trach'
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
+
 
 
 class GeoPlaceCreate(LoginRequiredMixin, CreateView):
@@ -662,3 +663,58 @@ class SheetSuperDelete(LoginRequiredMixin, UpdateView):
         my_form = Sheet.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url())
+
+
+def SheetDetail(request, pk):
+    sheet = get_object_or_404(Sheet, id=pk)
+    # if invoice.saved == 0:
+    #     invoice.old_value = SellerDebit(invoice.seller.id) * -1
+    #     invoice.save()
+    # product = InvoiceItem.objects.filter(invoice=invoice).order_by('id')
+    # count_product = product.count()
+    #
+    # total = product.aggregate(total=Sum('total_price')).get('total')
+    # quantity1 = product.filter(unit=1).aggregate(quantity=Sum('quantity')).get('quantity')
+    # if quantity1:
+    #     quantity1 = quantity1
+    # else:
+    #     quantity1 = 0.0
+    # quantity2 = product.filter(unit=12).aggregate(quantity=Sum('quantity')).get('quantity')
+    # if quantity2:
+    #     quantity2 = quantity2
+    # else:
+    #     quantity2 = 0.0
+    # quantity = quantity1 + (quantity2 * 12)
+    #
+    # if total:
+    #     invoice.total = total
+    #     invoice.save()
+    #
+    form = BonForm()
+    # products = []
+    # for prod in product:
+    #     products.append(prod.item.id)
+    #
+    # form.fields['item'].queryset = Product.objects.filter(deleted=False).exclude(id__in=products).order_by('name')
+
+    type_page = "list"
+    page = "active"
+    # action_url = reverse_lazy('Invoices:AddProductInvoice', kwargs={'pk': invoice.id})
+
+    # if int(invoice.invoice_type) == 1 or int(invoice.invoice_type) == 2:
+    #     if invoice.seller.agreement:
+    #         messages.warning(request, "اتفاق مسبق مع التاجر: " + str(invoice.seller.agreement), extra_tags="warning")
+    context = {
+        'sheet': sheet,
+        'type': type_page,
+        'page': page,
+        'form': form,
+        # 'action_url': action_url,
+        # 'product': product,
+        # 'count_product': count_product,
+        # 'total': total,
+        # 'qu': quantity,
+        'date': datetime.now().date(),
+
+    }
+    return render(request, 'Engineering/sheet_detail.html', context)
