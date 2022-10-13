@@ -62,3 +62,25 @@ class SupplierFormDelete(forms.ModelForm):
         widgets = {
             'deleted': forms.HiddenInput()
         }
+
+
+# create supplier form
+class SheetForm(forms.ModelForm):
+    class Meta:
+        model = Sheet
+        exclude = ['deleted', 'admin']
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control'}),
+            'date': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'company': forms.Select(attrs={'class':'form-control', 'id':'comapny_sheet', 'style': 'width:100%'}),
+            'supplier': forms.Select(attrs={'class':'form-control', 'id':'supplier_sheet', 'style': 'width:100%'}),
+        }
+
+# delete supplier form
+class SheetFormDelete(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['deleted']
+        widgets = {
+            'deleted': forms.HiddenInput()
+        }

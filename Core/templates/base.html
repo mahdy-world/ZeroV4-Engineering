@@ -444,7 +444,7 @@
                                 <div class="card" style="background: #fefefa;">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <b class="font-weight-bold text-center">اقسام البونات</b>
+                                            <b class="font-weight-bold text-center">اقسام الشيتات</b>
                                             <span class="card-tools" style="float: left">
                                             <button type="button" class="btn btn-tool" data-card-widget="maximize" onclick="
                                                     if (document.getElementById('expand_modal').value === '0'){
@@ -473,14 +473,14 @@
                                     <div class="card-body" style="background: #fefefa;">
                                         <div class="row">
                                             <div class="col-xl-4 col-lg-6 col-md-6">
-                                                <a href="{% url 'Invoices:InvoiceList' 3 %}">
+                                                <a href="{% url 'Engineering:SheetList'  %}">
                                                     <div class="container_new">
                                                         <div class="card">
                                                         <div class="imgBx">
                                                             <img class="image" src="/static/assets/images/vector/list.png">
                                                         </div>
                                                         <div class="contentBx">
-                                                            <h2>قائمة البونات</h2>
+                                                            <h2>قائمة الشيتات</h2>
                                                         </div>
                                                         </div>
                                                     </div>
@@ -489,14 +489,14 @@
 
 
                                             <div class="col-xl-4 col-lg-6 col-md-6">
-                                                <a  href="{% url 'Invoices:InvoiceCreate' 3 %}" data-target="#sub_modal" data-toggle="modal">
+                                                <a  href="{% url 'Engineering:SheetCreate'  %}" data-target="#sub_modal" data-toggle="modal">
                                                     <div class="container_new">
                                                         <div class="card">
                                                         <div class="imgBx">
                                                             <img class="image" src="/static/assets/images/vector/add.png">
                                                         </div>
                                                         <div class="contentBx">
-                                                            <h2>اضافة بون جديد</h2>
+                                                            <h2>اضافة الشيتات جديد</h2>
                                                         </div>
                                                         </div>
                                                     </div>
@@ -504,7 +504,7 @@
                                             </div>
 
                                             <div class="col-xl-4 col-lg-6 col-md-6">
-                                                <a  href="{% url 'Invoices:InvoiceTrashList' 3 %}" >
+                                                <a  href="{% url 'Engineering:SheetTrashList'  %}" >
                                                     <div class="container_new">
                                                         <div class="card">
                                                         <div class="imgBx">
@@ -517,8 +517,6 @@
                                                     </div>
                                                 </a>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -681,6 +679,8 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-right d-none d-sm-block">
+                            <span>201033318813+<i class='bx bxs-phone'></i></span>
+                            <span>201024018402+<i class='bx bxs-phone'></i></span>
                             <img src="/static/assets/images/flags/egypt.png" width="20px" height="20px" style="margin-bottom: 3px">
                             <img src="/static/assets/images/new.png" width="20px" height="20px" style="margin-bottom: 5px">
                             <span style="font-size: larger">.Designed &amp; Developed by ZerOne Team</span>

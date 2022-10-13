@@ -512,3 +512,153 @@ class SupplierSuperDelete(LoginRequiredMixin, UpdateView):
         my_form = Supplier.objects.get(id=self.kwargs['pk'])
         my_form.delete()
         return redirect(self.get_success_url())
+
+
+###################################################################
+
+class SheetList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Sheet
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=False).order_by('-id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'list'
+        context['title'] = 'قائمة'
+        context['page'] = 'active'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+
+class SheetTrashList(LoginRequiredMixin, ListView):
+    login_url = '/auth/login'
+    model = Sheet
+    paginate_by = 12
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(deleted=True).order_by('-id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'trach'
+        context['count'] = self.model.objects.filter(deleted=True).count()
+        return context
+
+class SheetCreate(LoginRequiredMixin, CreateView):
+    login_url = '/auth/login/'
+    model = Sheet
+    form_class = SheetForm
+    template_name = 'forms/form_template.html'
+    success_url = reverse_lazy('Engineering:SheetList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'اضافة شيت جديد'
+        context['message'] = 'add'
+        context['action_url'] = reverse_lazy('Engineering:SheetCreate')
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "تم اضافة شيت جديد", extra_tags="success")
+
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+
+class SheetUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Sheet
+    form_class = SheetForm
+    template_name = 'forms/form_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل شيت: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Engineering:SheetUpdate', kwargs={'pk': self.object.id})
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "تم تعديل الشيت " + str(self.object) + " بنجاح ", extra_tags="success")
+        if self.request.POST.get('url'):
+            return self.request.POST.get('url')
+        else:
+            return self.success_url
+
+
+class SheetDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Sheet
+    form_class = SheetFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SheetList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'نقل الشيت الي سلة المهملات: ' + str(self.object)
+        context['message'] = 'delete'
+        context['action_url'] = reverse_lazy('Engineering:SheetDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم نقل الشيت " + str(self.object) + ' الي سلة المهملات بنجاح ', extra_tags="success")
+        myform = Sheet.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 1
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class SheetRestore(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Sheet
+    form_class = SheetFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SheetTrashList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'استرجاع شيت: ' + str(self.object)
+        context['message'] = 'restore'
+        context['action_url'] = reverse_lazy('Engineering:SheetRestore', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم استرجاع الشيت " + str(self.object) + ' الي القائمة بنجاح ', extra_tags="success")
+        myform = Sheet.objects.get(id=self.kwargs['pk'])
+        myform.deleted = 0
+        myform.save()
+        return redirect(self.get_success_url())
+
+
+class SheetSuperDelete(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Sheet
+    form_class = SheetFormDelete
+    template_name = 'forms/form_template.html'
+
+    def get_success_url(self):
+        return reverse('Engineering:SheetTrachList')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'حذف شيت: ' + str(self.object)
+        context['message'] = 'super_delete'
+        context['action_url'] = reverse_lazy('Engineering:SheetSuperDelete', kwargs={'pk': self.object.id})
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, " تم حذف الشيت " + str(self.object) + " نهائيا بنجاح ", extra_tags="success")
+        my_form = Sheet.objects.get(id=self.kwargs['pk'])
+        my_form.delete()
+        return redirect(self.get_success_url())

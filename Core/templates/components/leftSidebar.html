@@ -110,18 +110,18 @@
                     <li>
                         <a href="javascript: void(0);"  class="has-arrow waves-effect">
                             <i class='bx bx-receipt bx-sm' ></i>
-                            <span key="t-ecommerce">البونات</span>
+                            <span key="t-ecommerce">الشيتات</span>
                         </a>
 
                         <ul class="sub-menu bg-light" aria-expanded="false">
 
-                            <li><a href="{% url 'Products:SellerList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
-                            قائمة البونات </a></li>
+                            <li><a href="{% url 'Engineering:SheetList' %}"  key="t-products"><i class='bx bx-list-ul' ></i>
+                            قائمة الشيتات </a></li>
 
-                            <li><a href="{% url 'Products:SellerCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
-                            اضافة بون جديد</a></li>
+                            <li><a href="{% url 'Engineering:SheetCreate' %}" data-target="#sub_modal" data-toggle="modal"  key="t-product-detail"> <i class='bx bxs-add-to-queue'></i>
+                            اضافة شيت جديد</a></li>
 
-                            <li><a href="{% url 'Products:SellerTrashList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
+                            <li><a href="{% url 'Engineering:SheetTrashList' %}" key="t-product-detail"> <i class='bx bx-trash'></i>
                                 سلة المهملات</a></li>
 
                         </ul>
