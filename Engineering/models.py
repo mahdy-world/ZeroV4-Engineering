@@ -55,6 +55,8 @@ class Sheet(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
     admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name="المسئول")
+    deleted = models.BooleanField(default=False, verbose_name="حذف")
+
 
     def __str__(self):
         return self.title
