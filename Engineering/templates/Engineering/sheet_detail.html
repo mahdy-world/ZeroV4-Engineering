@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+{% block title %}
+<title>
+
+</title>
+{% endblock title %}
+
+{% block css %}
+
+<style>
+    .sel .select2-selection__rendered {
+        line-height: 31px !important;
+        height: 37px !important;
+    }
+    .sel .select2-container .select2-selection--single {
+        height: 37px !important;
+        border: 1px solid lightgray;
+    }
+    .sel .select2-selection__arrow {
+        height: 37px !important;
+    }
+</style>
+{% endblock css %}
+    
+
+{% block main %}
+{% load  crispy_forms_tags %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+           
+                <div class="row">
+                    <div class="col-12"> {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                            <i class="mdi mdi-check-all mr-2"></i>
+                            {{ message|safe }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+
+            
+                      {% endif %}
+                    </div>
+                   
+                </div>
+              
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            
+                                <h3 class="mb-0">
+                                    <i class="fas fa-quote-left"></i> {{ sheet.title }}
+                                </h3>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    {% if invoice.deleted == 0 %}
+                                    <li class="breadcrumb-item"><a href="{% url 'Engineering:SheetList'  %}">قائمة الشيتات</a></li>
+                                    {% else %}
+                                    <li class="breadcrumb-item"><a href="{% url 'Engineering:SheetTrashList'  %}">قائمة الشيتات</a></li>
+                                    {% endif %}
+
+                                    <li class="breadcrumb-item active">
+                                        {{sheet.title}}
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- معلومات الطلب -->
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card alert alert-primary">
+                            <div class="row ">
+                                  <h3 class="mb-0 ">
+                                 <a href="#sheet_data"  data-toggle="collapse" >
+                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> معلومات:</span>
+                                 </a>
+                            </h3>
+                            </div>
+
+                            <div class="row collapse mt-3 show" id="sheet_data">
+                                <div class="col-lg-8">
+                                   <div class="row">
+                                        <div class="mr-4"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> العنوان:  </span>
+                                            <span class="text-dark">{{ sheet.title }}</span>
+                                        </div>
+                                        <div class="mr-4"><span class="font-weight-bold"><i class="fas fa-building"></i> الشركة:  </span>
+                                            <span class="text-dark">{{ sheet.company }}</span>
+                                        </div>
+                                        <div class="mr-4"><span class="font-weight-bold"><i class="fas fa-portrait"></i> المورد:  </span>
+                                            <span class="text-dark">{{ sheet.supplier }}</span>
+                                        </div>
+                                        <div class="mr-4"><span class="font-weight-bold"><i class="fas fa-calendar-alt"></i> تاريخ الاضافة:  </span>
+                                            <span class="text-dark">{{ sheet.date|date:'Y-m-d'}}</span>
+                                        </div>
+                                   </div>
+
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="row">
+                                        <span> <a href="{% url 'Engineering:SheetUpdate' sheet.id %}" class="mr-3 text-info" data-toggle="modal" data-target="#action_modal" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a></span>
+                                        <span> <a href="{% url 'Engineering:SheetDelete' sheet.id  %}" class="text-danger" data-target="#action_modal" data-toggle="modal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"></i></a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                  <div class="row mt-1" >
+
+                            <div class="table-responsive bg-light">
+                                <table class="table table-nowrap mb-0">
+                                    <thead>
+                                        <form method="post" action="{{action_url}}">
+                                            {% csrf_token %}
+                                            <tr>
+                                                <th class="col-lg-2 col-xl-2 col-md-2">
+                                                    {{form.date|as_crispy_field}}
+                                                </th>
+                                                <th >{{form.bon_number|as_crispy_field}}</th>
+                                                <th >{{form.car_number|as_crispy_field}} </th>
+                                                <th >{{form.car_owner|as_crispy_field}} </th>
+                                                <th >{{form.geo_place|as_crispy_field}} </th>
+                                                <th >{{form.bon_quantity|as_crispy_field}} </th>
+                                                <th >{{form.bon_price|as_crispy_field}} </th>
+                                                <th class="col-lg-2 col-xl-2 col-md-2">
+                                                    <button style="width: 100%" type="submit" class="btn btn-success">اضافة</button>
+                                                </th>
+                                            </tr>
+                                        </form>
+                                    </thead>
+                                </table>
+                                <br/>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group " >
+                                            <label>فلترة برقم البون: </label>
+                                            <select id="ModelFltr" class="form-control">
+                                                <option value=" ">عرض الكل</option>
+                                                {% for prod in quantity_prods %}
+                                                <option value="{{prod}}">{{prod}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group " >
+                                            <label>فلترة بالتاريخ من: </label>
+                                            <input type="date" id="min" name="min" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group " >
+                                            <label>فلترة بالتاريخ الي: </label>
+                                            <input type="date" id="max" name="max" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="table-responsive">
+                                                            <table class="table table-centered table-nowrap text-center display" id="Quantable">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th>التاريخ</th>
+                                                                        <th>رقم البون</th>
+                                                                        <th>رقم الشاحنة</th>
+                                                                        <th>صاحب الشاحنة</th>
+                                                                        <th>الموقع</th>
+                                                                        <th>سعر الموقع</th>
+                                                                        <th>الكمية</th>
+                                                                        <th>السعر</th>
+                                                                        <th>الاجمالي</th>
+                                                                        <th>اجمالي الربح</th>
+                                                                        {% if not supplier.deleted %}
+                                                                        <th>حذف</th>
+                                                                        {% endif %}
+                                                                        <th>المسؤول</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    {% if quantity %}
+                                                                    {% for x in quantity  %}
+                                                                    <tr style="text-align: center;">
+
+                                                                        <td>
+                                                                            {{x.date|date:'Y-m-d'}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{x.product}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{x.product_count}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{x.product_price}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ x.total_account }}
+                                                                        </td>
+                                                                        {% if not supplier.deleted %}
+                                                                        <td>
+                                                                            <a href="#" class="text-danger" data-toggle="modal" data-target="#DelModal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"
+                                                                            onclick="document.getElementById('del_clck').href='{% url 'Factories:DelSupplierQuantity' x.id %}'"
+                                                                            ></i></a>
+                                                                        </td>
+                                                                        {% endif %}
+                                                                        <td>
+                                                                            {{ x.admin }}
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    {% endfor %}
+
+                                                                    {% endif %}
+
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        {% if not supplier.deleted %}
+                                                                        <th></th>
+                                                                        {% endif %}
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+
+                        </div>
+                </div>
+
+                            </div>
+
+
+
+                {% if is_paginated %}
+                {% include "components/paginator.html" %}
+                {% endif %}
+
+              
+
+          </div>
+      </div>
+  </div>
+{% endblock main %}
+
+
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+        $('#item').select2();
+        $('#product').select2();
+    });
+</script>
+
+<script>
+    $( '#item' ).on('change keyup', function () {
+        e = this.value;
+        var unit = parseFloat($('#unit').val());
+        var quantity = parseFloat($('#quantity').val());
+        $.ajax({
+            url: "{% url 'Invoices:get_item_price' %}?e=" + e,
+            success: function (data) {
+                $("#unit_price").val(data.product_price);
+                $('#total_price').val(data.product_price*quantity*unit);
+            }
+        });
+    });
+</script>
+
+<script>
+    $( '#unit_price' ).on('change keyup', function () {
+        var unit_price = parseFloat(this.value);
+        var quantity = parseFloat($('#quantity').val());
+        var unit = parseFloat($('#unit').val());
+        $('#total_price').val(unit_price*quantity*unit);
+    });
+
+    $( '#quantity' ).on('change keyup', function () {
+        var quantity = parseFloat(this.value);
+        var unit = parseFloat($('#unit').val());
+        var unit_price = parseFloat($('#unit_price').val());
+        $('#total_price').val(unit_price*quantity*unit);
+    });
+
+    $( '#unit' ).on('change keyup', function () {
+        var unit = parseFloat(this.value);
+        var quantity = parseFloat($('#quantity').val());
+        var unit_price = parseFloat($('#unit_price').val());
+        $('#total_price').val(unit_price*quantity*unit);
+    });
+</script>
+{% endblock js %}

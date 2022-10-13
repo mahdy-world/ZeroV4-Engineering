@@ -129,7 +129,7 @@
 
                                 <div class="col-lg-6">
                                     <div>
-                                        <a href="{% url 'Invoices:InvoiceDetail' x.id %}" class="d-block text-primary mb-2">
+                                        <a href="{% url 'Engineering:SheetDetail' x.id %}" class="d-block text-primary mb-2">
                                             #
                                             {{ x.id }}
                                             <br>
@@ -176,7 +176,7 @@
 {#                                                {% endif %}#}
 
                                                 <div class="mr-3">
-                                                    <a href="{% url 'Invoices:InvoiceDetail' x.id %}"  data-placement="top" title="" data-original-title="Message">
+                                                    <a href="{% url 'Engineering:SheetDetail' x.id %}"  data-placement="top" title="" data-original-title="Message">
                                                         <span class="badge badge-dark"><i class='bx bx-area'></i>تفاصيل</span>
                                                    </a>
                                                 </div>
@@ -216,7 +216,7 @@
                                                       </div>
 
                                                       <div class="">
-                                                          <a href="{% url 'Invoices:InvoiceSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
+                                                          <a href="{% url 'Engineering:SheetSuperDelete' x.id %}" data-toggle="modal" data-target="#action_modal" data-placement="top" title="" data-original-title="Profile">
                                                               <span class="badge badge-danger"><i class='bx bxs-trash '   ></i> حذف نهائي </span>
 
                                                           </a>
@@ -277,7 +277,7 @@
                             <div class="mt-3 text-center">
                                 
                                 {% if message == "active" %}
-                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'Invoices:InvoiceCreate' type %}" data-toggle="modal" data-target="#sub_modal">اضافة بيانات</a>
+                                    <a class="btn btn-primary waves-effect waves-light" href="{% url 'Engineering:SheetCreate' type %}" data-toggle="modal" data-target="#sub_modal">اضافة بيانات</a>
                                 {% endif %}
                                     
                             </div>
