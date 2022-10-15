@@ -673,7 +673,7 @@ class SheetSuperDelete(LoginRequiredMixin, UpdateView):
 
 def SheetDetail(request, pk):
     sheet = get_object_or_404(Sheet, id=pk)
-    bons = Bon.objects.filter(sheet=sheet)
+    bons = Bon.objects.filter(sheet=sheet).order_by('-id')
     bons_geos = bons.values_list('geo_place__name', flat=True).distinct()
 
     form = BonForm()
