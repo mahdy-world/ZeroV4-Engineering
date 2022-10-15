@@ -564,6 +564,12 @@ class SheetCreate(LoginRequiredMixin, CreateView):
         context['action_url'] = reverse_lazy('Engineering:SheetCreate')
         return context
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=self.form_class)
+        form.fields['company'].queryset = Company.objects.filter(deleted=0, active=True)
+        form.fields['supplier'].queryset = Supplier.objects.filter(deleted=0)
+        return form
+
     def get_success_url(self):
         messages.success(self.request, "تم اضافة شيت جديد", extra_tags="success")
 
@@ -649,7 +655,7 @@ class SheetSuperDelete(LoginRequiredMixin, UpdateView):
     template_name = 'forms/form_template.html'
 
     def get_success_url(self):
-        return reverse('Engineering:SheetTrachList')
+        return reverse('Engineering:SheetTrashList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -667,54 +673,53 @@ class SheetSuperDelete(LoginRequiredMixin, UpdateView):
 
 def SheetDetail(request, pk):
     sheet = get_object_or_404(Sheet, id=pk)
-    # if invoice.saved == 0:
-    #     invoice.old_value = SellerDebit(invoice.seller.id) * -1
-    #     invoice.save()
-    # product = InvoiceItem.objects.filter(invoice=invoice).order_by('id')
-    # count_product = product.count()
-    #
-    # total = product.aggregate(total=Sum('total_price')).get('total')
-    # quantity1 = product.filter(unit=1).aggregate(quantity=Sum('quantity')).get('quantity')
-    # if quantity1:
-    #     quantity1 = quantity1
-    # else:
-    #     quantity1 = 0.0
-    # quantity2 = product.filter(unit=12).aggregate(quantity=Sum('quantity')).get('quantity')
-    # if quantity2:
-    #     quantity2 = quantity2
-    # else:
-    #     quantity2 = 0.0
-    # quantity = quantity1 + (quantity2 * 12)
-    #
-    # if total:
-    #     invoice.total = total
-    #     invoice.save()
-    #
+    bons = Bon.objects.filter(sheet=sheet)
+    bons_geos = bons.values_list('geo_place__name', flat=True).distinct()
+
     form = BonForm()
-    # products = []
-    # for prod in product:
-    #     products.append(prod.item.id)
-    #
-    # form.fields['item'].queryset = Product.objects.filter(deleted=False).exclude(id__in=products).order_by('name')
+    form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=sheet.company, deleted=False)
 
-    type_page = "list"
-    page = "active"
-    # action_url = reverse_lazy('Invoices:AddProductInvoice', kwargs={'pk': invoice.id})
+    action_url = reverse_lazy('Engineering:AddSheetBon', kwargs={'pk': sheet.id})
 
-    # if int(invoice.invoice_type) == 1 or int(invoice.invoice_type) == 2:
-    #     if invoice.seller.agreement:
-    #         messages.warning(request, "اتفاق مسبق مع التاجر: " + str(invoice.seller.agreement), extra_tags="warning")
+    system_info = SystemInformation.objects.all()
+    if system_info.count() > 0:
+        system_info = system_info.last()
+    else:
+        system_info = None
+
     context = {
         'sheet': sheet,
-        'type': type_page,
-        'page': page,
         'form': form,
-        # 'action_url': action_url,
-        # 'product': product,
-        # 'count_product': count_product,
-        # 'total': total,
-        # 'qu': quantity,
+        'bons': bons,
+        'bons_geos': bons_geos,
+        'action_url': action_url,
+        'system_info': system_info,
         'date': datetime.now().date(),
-
     }
     return render(request, 'Engineering/sheet_detail.html', context)
+
+
+def AddSheetBon(request, pk):
+    sheet = Sheet.objects.get(id=pk)
+    form = BonForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.sheet = sheet
+        obj.bon_total = obj.bon_price * obj.bon_quantity
+        obj.geo_price = obj.geo_place.price
+        obj.profit = obj.geo_place.price - obj.bon_price
+        obj.total_profit = (obj.geo_place.price - obj.bon_price) * obj.bon_quantity
+        obj.admin = request.user
+        obj.save()
+        messages.success(request, " تم اضافة يون جديد بنجاح ", extra_tags="success")
+    else:
+        messages.error(request, " حدثث خطأ أثناء اضافة البون ", extra_tags="danger")
+    return redirect('Engineering:SheetDetail', pk=sheet.id)
+
+
+def DelSheetBon(request, pk):
+    bon = Bon.objects.get(id=pk)
+    id = bon.sheet.id
+    bon.delete()
+    messages.success(request, " تم حذف بون بنجاح ", extra_tags="success")
+    return redirect('Engineering:SheetDetail', pk=id)

@@ -25,10 +25,6 @@ urlpatterns = [
     path('admin/', include('Core.urls')),
     path('', include('Core.urls')),
     path('',include('Auth.urls')),
-    path('factory/', include('Factories.urls')),
-    path('product/', include('Products.urls')),
-    path('worker/', include('Workers.urls')),
-    path('invoices/',include('Invoices.urls'), ),
     path('engineering/',include('Engineering.urls'), ),
 ]
 
