@@ -54,6 +54,7 @@ class Sheet(models.Model):
     date = models.DateField(default=datetime.today(), verbose_name="تاريخ الاضافة")
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
+    profit = models.FloatField(null=True, blank=True, verbose_name="الربح")
     admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name="المسئول")
     deleted = models.BooleanField(default=False, verbose_name="حذف")
 

@@ -10,4 +10,7 @@ urlpatterns = [
     path('supplier_search/', views.SupplierSearch.as_view(), name='SupplierSearch'),
     path('geoplace_search/', views.GeoPlaceSearch.as_view(), name='GeoPlaceSearch'),
     path('company_geoplace_search/', views.CompanyGeosSearch.as_view(), name='CompanyGeosSearch'),
+    path('sheet_search/', views.SheetSearch.as_view(), name='SheetSearch'),
+    path('sheet_company_search/', views.SheetCompanySearch.as_view(), name='SheetCompanySearch'),
+    path('sheet_supplier_search/', views.SheetSupplierSearch.as_view(), name='SheetSupplierSearch'),
 ]

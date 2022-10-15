@@ -633,6 +633,50 @@
                                                     </form>
 
                                                 </div>
+
+                                                <div class="col-lg-6">
+                                                    <span style="margin-right: 10px;" class="font-weight-bold">بحث عن مورد ...</span>
+                                                    <form class="app-search d-none d-lg-block" method="get" action="{% url 'Core:SupplierSearch' %}">
+                                                        <div class="position-relative" >
+
+                                                            <input type="text" value="{{supplier_search}}" list="sup" autocomplete="off" class="form-control" name="supplier" placeholder="بحث ... بإسم المورد">
+                                                            <span >
+                                                                <button class="bx bx-search-alt btn btn-light" type="submit">
+                                                                </button>
+                                                            </span>
+                                                            <datalist id="sup" >
+                                                                {% for sup in suppliers %}
+                                                                    <option value="{{ sup.name }}">
+                                                                        {{ sup.name }}
+                                                                        </option>
+                                                                {% endfor %}
+                                                            </datalist>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <span style="margin-right: 10px;" class="font-weight-bold">بحث عن شيت ...</span>
+                                                    <form class="app-search d-none d-lg-block" method="get" action="{% url 'Core:SheetSearch' %}">
+                                                        <div class="position-relative" >
+
+                                                            <input type="text" value="{{sheet_search}}" list="sheets" autocomplete="off" class="form-control" name="sheet" placeholder="بحث ... بعنوان الشيت">
+                                                            <span >
+                                                                <button class="bx bx-search-alt btn btn-light" type="submit">
+                                                                </button>
+                                                            </span>
+                                                            <datalist id="sheets" >
+                                                                {% for sheet in sheets %}
+                                                                    <option value="{{ sheet.title }}">
+                                                                        {{ sheet.title }}
+                                                                        </option>
+                                                                {% endfor %}
+                                                            </datalist>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
                                                 {% endif %}
 
                                             </div>

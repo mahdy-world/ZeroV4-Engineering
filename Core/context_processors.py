@@ -10,11 +10,13 @@ def allcontext(request):
     companies = Company.objects.filter(deleted=False)
     geoplaces = GeoPlace.objects.filter(deleted=False)
     suppliers = Supplier.objects.filter(deleted=False)
+    sheets = Sheet.objects.filter(deleted=False)
     context = {
         'info':info,
         'modules':modules,
         'companies': companies,
         'geoplaces': geoplaces,
         'suppliers': suppliers,
+        'sheets': sheets,
     }
     return context

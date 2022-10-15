@@ -711,6 +711,8 @@ def AddSheetBon(request, pk):
         obj.total_profit = (obj.geo_place.price - obj.bon_price) * obj.bon_quantity
         obj.admin = request.user
         obj.save()
+        sheet.profit = Bon.objects.filter(sheet=sheet).aggregate(sum=Sum('total_profit')).get('sum')
+        sheet.save(update_fields=['profit'])
         messages.success(request, " تم اضافة يون جديد بنجاح ", extra_tags="success")
     else:
         messages.error(request, " حدثث خطأ أثناء اضافة البون ", extra_tags="danger")
@@ -719,7 +721,10 @@ def AddSheetBon(request, pk):
 
 def DelSheetBon(request, pk):
     bon = Bon.objects.get(id=pk)
-    id = bon.sheet.id
+    sheet = bon.sheet
     bon.delete()
+    sheet = Sheet.objects.get(id=pk)
+    sheet.profit = Bon.objects.filter(sheet=sheet).aggregate(sum=Sum('total_profit')).get('sum')
+    sheet.save(update_fields=['profit'])
     messages.success(request, " تم حذف بون بنجاح ", extra_tags="success")
-    return redirect('Engineering:SheetDetail', pk=id)
+    return redirect('Engineering:SheetDetail', pk=sheet.id)

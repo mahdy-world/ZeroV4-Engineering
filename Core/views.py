@@ -160,3 +160,75 @@ class CompanyGeosSearch(LoginRequiredMixin, ListView):
         else:
             messages.error(self.request, "لاتوجد مواقع لهذه الشركة .. ابحث في سلة المهملات", extra_tags="danger")
             return self.model.objects.filter(deleted=False)
+
+
+class SheetSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Sheet
+    template_name = 'Engineering/sheet_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['page'] = 'active'
+        context['sheet_search'] = self.request.GET.get("sheet")
+        context['type'] = 'list'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        sheet_search = self.request.GET.get("sheet")
+        queryset = self.model.objects.filter(title__icontains=sheet_search, deleted=False)
+        if queryset:
+            return queryset
+        else:
+            messages.error(self.request, "لايوجد شيت بهذا العنوان .. ابحث في سلة المهملات", extra_tags="danger")
+            return self.model.objects.filter(deleted=False)
+
+
+class SheetCompanySearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Sheet
+    template_name = 'Engineering/sheet_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['page'] = 'active'
+        context['sheet_company_search'] = self.request.GET.get("sheet_company")
+        context['type'] = 'list'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        sheet_company_search = self.request.GET.get("sheet_company")
+        queryset = self.model.objects.filter(company__name__icontains=sheet_company_search, deleted=False)
+        if queryset:
+            return queryset
+        else:
+            messages.error(self.request, "لايوجد شيتات لهذه الشركة .. ابحث في سلة المهملات", extra_tags="danger")
+            return self.model.objects.filter(deleted=False)
+
+
+class SheetSupplierSearch(LoginRequiredMixin, ListView):
+    login_url = '/auth/login/'
+    model = Sheet
+    template_name = 'Engineering/sheet_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'active'
+        context['page'] = 'active'
+        context['sheet_supplier_search'] = self.request.GET.get("sheet_supplier")
+        context['type'] = 'list'
+        context['count'] = self.model.objects.filter(deleted=False).count()
+        return context
+
+    def get_queryset(self):
+        sheet_supplier_search = self.request.GET.get("sheet_supplier")
+        queryset = self.model.objects.filter(supplier__name__icontains=sheet_supplier_search, deleted=False)
+        if queryset:
+            return queryset
+        else:
+            messages.error(self.request, "لايوجد شيتات لهذا المورد .. ابحث في سلة المهملات", extra_tags="danger")
+            return self.model.objects.filter(deleted=False)
