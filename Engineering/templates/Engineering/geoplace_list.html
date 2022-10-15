@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load mathfilters %}
 {% block title %}
-<title>قائمة المواقع</title>
+<title>
+    {% if page == "active" %}
+    قائمة المواقع
+    {% else %}
+    سلة مهملات المواقع
+    {% endif %}
+</title>
 
 {% endblock title %}
 
