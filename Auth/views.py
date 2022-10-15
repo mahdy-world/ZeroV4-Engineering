@@ -71,18 +71,18 @@ def ChangePassword(request):
             user.set_password(password) 
             user.save()
             messages.success(request, " تم تغيير كلمة السر بنجاح", extra_tags="success")
-            if request.POST.get('url'):
-                return request.POST.get('url')
-            else:
-                return success_url
-            # return redirect('Core:index')
+            # if request.POST.get('url'):
+            #     return request.POST.get('url')
+            # else:
+            #     return success_url
+            return redirect('Core:index')
         else:
             messages.success(request, " خطأ! كلمة السر القديمة غير صحيحة .. حاول مرة أخري", extra_tags="danger")
-            if request.POST.get('url'):
-                return request.POST.get('url')
-            else:
-                return success_url
-            # return redirect('Core:index')
+            # if request.POST.get('url'):
+            #     return request.POST.get('url')
+            # else:
+            #     return success_url
+            return redirect('Core:index')
             
     return render(request,'forms/form_template.html', context)        
 
