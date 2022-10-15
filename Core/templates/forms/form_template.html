@@ -51,75 +51,33 @@
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
-                                "{{ object.name }}"
+                                "{{ object.name }}{{ object.title }}"
                                 الي سلة المهملات
                                 ؟
-                            </h5>
-                        {% elif message == 'deletee' %}
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من نقل العنصر
-                                "فاتورة {{ object.id }}"
-                                الي سلة المهملات
-                                ؟
-                            </h5>
-                        {% elif message == 'inv_back' %}
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center">فتح الفاتورة مرة اخري؟
-                            </h5>
-                        {% elif message == 'close' %}
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center">حفظ نهائي للفاتورة؟
                             </h5>
                         {% elif message == 'restore' %}
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
-                                "{{ object.name }}"
+                                "{{ object.name }}{{ object.title }}"
                                 الى القائمة النشطة مرة اخري
-                                ؟
-                            </h5>
-                        {% elif message == 'restoree' %}
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من ارجاع العنصر
-                                "{{ object.id }}"
-                                الى القائمة النشطة مرة اخري
-                                ؟
-                            </h5>
-                        {% elif message == 'super_deletee' %}
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
-                                "{{ object.id }}"
-                                بشكل نهائي
                                 ؟
                             </h5>
                         {% elif message == 'super_delete' %}
                             {% csrf_token %}
                             {% bootstrap_form form %}
                             <h5 class="font-weight-bold text-center">هل انت متأكد من حذف العنصر
-                                
-                                {% if object.name %}
-                                "{{ object.name }}"
-                                {% elif object.invoice %}
-                                "{{object.item.name}}"
-                                {% else %}
-                                "{{ object.id }}"
-                                {% endif %}
-                                    
+                                "{{ object.name }}{{ object.title }}"
                                 بشكل نهائي
                                 ؟
                             </h5>
-                        {% elif message == 'operation' %} 
+                        {% elif message == 'operation' %}
                             {% csrf_token %}
                             {% bootstrap_form form %}
-                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>   
-                        {% elif message == 'info' %}   
+                            <h5 class="font-weight-bold text-center"> تأكيد العملية !</h5>
+                        {% elif message == 'info' %}
 {#                        <img src="{{info_obj.logo.url}}" width="200px" height="200px"> #}
-                        
+
                         {% csrf_token %}
                         {% bootstrap_form form %}
 
@@ -142,13 +100,13 @@
                         {% endif %}
                     </div>
                     <div class="card-footer text-center">
-                        {% if message == 'delete' or message == 'super_delete' or message == 'super_deletee' or message == 'deletee' %}
+                        {% if message == 'delete' or message == 'super_delete' %}
                            <button type="submit" class="btn btn-danger">
                                 <i class="fa fa-save"></i>
                                  نعم
                                
                         </button>
-                        {% elif message == 'restore' or message == 'restoree' %}
+                        {% elif message == 'restore'%}
                            <button type="submit" class="btn btn-info ">
                                 <i class="fa fa-save"></i>
                                  نعم
@@ -160,11 +118,6 @@
                             تعديل
                         </button>
                         {% elif message == 'operation' %} 
-                        <button type="submit" class="btn btn-info ">
-                            <i class="fa fa-save"></i>
-                             نعم
-
-                        {% elif message == 'inv_back' or message == 'close' %}
                         <button type="submit" class="btn btn-info ">
                             <i class="fa fa-save"></i>
                              نعم
@@ -201,14 +154,6 @@
 
         get_url();
     </script>
-
-
-
-<script>
-    $(document).ready(function() {
-        $('#seller_s2').select2();
-    });
-</script>
 
 <script>
     $(document).ready(function() {

@@ -88,13 +88,13 @@ class SheetFormDelete(forms.ModelForm):
 class BonForm(forms.ModelForm):
     class Meta:
         model = Bon
-        exclude = ['admin']
+        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'geo_place', 'bon_quantity', 'bon_price']
         widgets = {
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'bon_number': forms.TextInput(attrs={'class': 'form-control'}),
             'car_number': forms.TextInput(attrs={'class': 'form-control', }),
             'car_owner': forms.TextInput(attrs={'class': 'form-control',}),
-            'geo_place': forms.Select(attrs={'class': 'form-control', }),
+            'geo_place': forms.Select(attrs={'class': 'form-control', 'id':'geo_place_bon',}),
             'bon_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
             'bon_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
         }

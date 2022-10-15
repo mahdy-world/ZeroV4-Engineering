@@ -3,13 +3,131 @@
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/context_processors.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/context_processors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/migrations/0002_modules_supplier_loads_active.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/components/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/components/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/forms/factory_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/forms/form_template.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/forms/form_template.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/forms/product_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/forms/user_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/forms/user_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0002_geoplace_price.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0003_geoplacepricehistory.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0004_supplier.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0005_supplier_deleted.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0006_auto_20221011_2313.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0007_auto_20221012_2243.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0008_auto_20221012_2243.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/factory_inside.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/factory_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/factory_outside.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/factory_payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/inside_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/outside_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory/payment_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/factory_inside_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/factory_outside_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/factory_payment_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/print_factory_details.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/print_inside.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/print_outside.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Factory_Reports/print_payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Supplier/supplier_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Supplier/supplier_payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Supplier/supplier_qunatity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/templates/Supplier_Reports/print_supplier_details.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factories/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templates/Invoices/invoice_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templates/Invoices/invoice_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templates/Invoices/invoice_return.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templates/Invoices/print_main_invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templatetags/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/templatetags/invoice_tags.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Invoices/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/migrations/0002_alter_sellerpayments_date.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/migrations/0003_alter_sellerpayments_date.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/migrations/0004_alter_sellerpayments_date.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/print_seller_invoices_details.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/product_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/product_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/productsellers_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/productsellers_invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templates/Products/productsellers_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templatetags/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/templatetags/products_tags.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/migrations/0002_auto_20221003_0226.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/migrations/0003_auto_20221005_1705.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/migrations/0004_auto_20221012_2243.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_attendance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_attendance_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_payment_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_production.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker/worker_production_div.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker_Reports/print_worker_attendance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker_Reports/print_worker_details.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker_Reports/print_worker_payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker_Reports/print_worker_productions.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/templates/Worker_Reports/worker_reports.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workers/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ZerOne/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ZerOne/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ZerOne/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ZerOne/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db.sqlite3" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +167,7 @@
   <component name="ProjectId" id="2AV6GuUmcNXwWYDctold206TMxu" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Engineering/templates/Engineering" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../KitHRMS-master/KitHRMS-master" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -167,6 +285,7 @@
       <workItem from="1664753913509" duration="24919000" />
       <workItem from="1665450270762" duration="6246000" />
       <workItem from="1665498914395" duration="186000" />
+      <workItem from="1665711173013" duration="4420000" />
     </task>
     <servers />
   </component>

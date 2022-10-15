@@ -44,10 +44,6 @@ INSTALLED_APPS = [
     'Auth',
     'bootstrap4',
     'crispy_forms',
-    'Products',
-    'Factories',
-    'Workers',
-    'Invoices',
     'Engineering',
 ]
 
