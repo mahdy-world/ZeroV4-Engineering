@@ -68,7 +68,7 @@ class SupplierFormDelete(forms.ModelForm):
 class SheetForm(forms.ModelForm):
     class Meta:
         model = Sheet
-        exclude = ['deleted', 'admin']
+        exclude = ['deleted', 'admin', 'profit']
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control'}),
             'date': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
