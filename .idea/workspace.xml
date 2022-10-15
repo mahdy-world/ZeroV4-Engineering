@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/context_processors.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/context_processors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -172,7 +161,7 @@
       <workItem from="1664753913509" duration="24919000" />
       <workItem from="1665450270762" duration="6246000" />
       <workItem from="1665498914395" duration="186000" />
-      <workItem from="1665711173013" duration="8795000" />
+      <workItem from="1665711173013" duration="9043000" />
     </task>
     <servers />
   </component>
