@@ -107,12 +107,12 @@ table.dataTable thead .sorting_desc_disabled {
                             <div class="row ">
                                   <h3 class="mb-0 ">
                                  <a href="#sheet_data"  data-toggle="collapse" >
-                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> معلومات:</span>
+                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> معلومات</span>
                                  </a>
                             </h3>
                             </div>
 
-                            <div class="row collapse mt-3 show" id="sheet_data">
+                            <div class="row collapse mt-3 " id="sheet_data">
                                 <div class="col-lg-12 text-center">
                                     <div class="row">
                                         <div class="col-md-4"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عنوان الشيت:  </span>
@@ -129,6 +129,8 @@ table.dataTable thead .sorting_desc_disabled {
                                         <div class="col-md-4"><span class="font-weight-bold"><i class="fas fa-calendar-alt"></i> تاريخ الاضافة:  </span>
                                             <span class="text-dark">{{ sheet.date|date:'Y-m-d'}}</span>
                                         </div>
+
+                                    {% if request.user.is_superuser %}
                                         <div class="col-md-4"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> اجمالي الربح:  </span>
                                             <span class="text-dark">
                                                 {% if sheet.profit%}
@@ -138,6 +140,7 @@ table.dataTable thead .sorting_desc_disabled {
                                                 {% endif %}
                                             </span>
                                         </div>
+                                    {% endif %}
                                         <div class="col-md-4">
                                             <span> <a href="{% url 'Engineering:SheetUpdate' sheet.id %}" class="mr-3 text-info" data-toggle="modal" data-target="#action_modal" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a></span>
                                             <span> <a href="{% url 'Engineering:SheetDelete' sheet.id  %}" class="text-danger" data-target="#action_modal" data-toggle="modal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"></i></a></span>
@@ -224,8 +227,10 @@ table.dataTable thead .sorting_desc_disabled {
                                                                         <th>السعر</th>
                                                                         <th>الاجمالي</th>
                                                                         <th>سعر الموقع</th>
+                                                                    {% if request.user.is_superuser %}
                                                                         <th>الربح</th>
                                                                         <th>اجمالي الربح</th>
+                                                                    {% endif %}
                                                                         <th>رقم البون</th>
                                                                         <th>الموقع</th>
                                                                         <th>رقم الشاحنة</th>
@@ -256,12 +261,14 @@ table.dataTable thead .sorting_desc_disabled {
                                                                         <td>
                                                                             {{ x.geo_price }}
                                                                         </td>
+                                                                    {% if request.user.is_superuser %}
                                                                         <td>
                                                                             {{ x.profit }}
                                                                         </td>
                                                                         <td>
                                                                             {{ x.total_profit }}
                                                                         </td>
+                                                                    {% endif %}
                                                                         <td>
                                                                             {{x.bon_number}}
                                                                         </td>
