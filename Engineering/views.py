@@ -550,6 +550,7 @@ class SheetTrashList(LoginRequiredMixin, ListView):
         context['count'] = self.model.objects.filter(deleted=True).count()
         return context
 
+
 class SheetCreate(LoginRequiredMixin, CreateView):
     login_url = '/auth/login/'
     model = Sheet
@@ -572,11 +573,18 @@ class SheetCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, "تم اضافة شيت جديد", extra_tags="success")
-
         if self.request.POST.get('url'):
             return self.request.POST.get('url')
         else:
             return self.success_url
+
+    def form_valid(self, form):
+        form.save()
+        obj = form.save(commit=False)
+        myform = Sheet.objects.get(id=obj.id)
+        myform.admin = self.request.user
+        myform.save()
+        return redirect(self.get_success_url())
 
 
 class SheetUpdate(LoginRequiredMixin, UpdateView):
@@ -728,3 +736,48 @@ def DelSheetBon(request, pk):
     sheet.save(update_fields=['profit'])
     messages.success(request, " تم حذف بون بنجاح ", extra_tags="success")
     return redirect('Engineering:SheetDetail', pk=sheet.id)
+
+
+#####################################################
+#  Company Sheet
+class CompanySheet(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Sheet
+    template_name = 'Engineering/More/company_sheet.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company_sheet'] = self.model.objects.filter(company__id=self.kwargs['pk']).order_by('-id')
+        context['company'] = get_object_or_404(Company, id=self.kwargs['pk'])
+        context['company_profit'] = self.model.objects.filter(company=self.kwargs['pk']).aggregate(sum=Sum('profit')).get('sum')
+        return context
+
+
+# Geo Place Sheet
+class GeoSheet(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Bon
+    template_name = 'Engineering/More/geo_sheet.html'
+
+    def get_context_data(self, **kwargs):
+        # return geo bon
+        context = super().get_context_data(**kwargs)
+        context['geo'] = get_object_or_404(GeoPlace, id=self.kwargs['pk'])
+        context['geo_sheet'] = self.model.objects.filter(geo_place__id=self.kwargs['pk']).order_by('-id')
+        context['geo_profit'] = self.model.objects.filter(geo_place__id=self.kwargs['pk']).aggregate(sum=Sum('total_profit')).get('sum')
+        return context
+
+
+# Supplier Sheet
+class SupplierSheet(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Sheet
+    template_name = 'Engineering/More/supplier_sheet.html'
+
+    def get_context_data(self, **kwargs):
+        # return geo bon
+        context = super().get_context_data(**kwargs)
+        context['supplier'] = get_object_or_404(Supplier, id=self.kwargs['pk'])
+        context['supplier_sheet'] = self.model.objects.filter(supplier__id=self.kwargs['pk']).order_by('-id')
+        context['supplier_profit'] = self.model.objects.filter(supplier__id=self.kwargs['pk']).aggregate(sum=Sum('profit')).get('sum')
+        return context

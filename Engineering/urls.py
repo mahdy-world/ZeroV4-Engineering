@@ -47,4 +47,9 @@ urlpatterns = [
     path('DelSheetBon/<int:pk>/', DelSheetBon, name="DelSheetBon"),
 
     ####################################################################
+
+    # more
+    path('company_sheet/<int:pk>', CompanySheet.as_view(), name="CompanySheet"),
+    path('geo_sheet/<int:pk>', GeoSheet.as_view(), name="GeoSheet"),
+    path('supplier_sheet/<int:pk>', SupplierSheet.as_view(), name="SupplierSheet")
 ]

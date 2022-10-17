@@ -41,6 +41,7 @@ class GeoPlacePriceHistory(models.Model):
 
 
 class Supplier(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
     name = models.CharField(max_length=50, verbose_name="اسم المورد")
     phone = models.CharField(max_length=12, null=True, blank=True, verbose_name="رقم الهاتف")
     deleted = models.BooleanField(default=False)
