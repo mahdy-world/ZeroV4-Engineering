@@ -34,7 +34,7 @@ class GeoPlacePriceHistory(models.Model):
     geo = models.ForeignKey(GeoPlace, on_delete=models.CASCADE, verbose_name="الموقع")
     old_price = models.FloatField(default=0.0, verbose_name='السعر القديم')
     new_price = models.FloatField(default=0.0, verbose_name='السعر الجديد')
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name="المسئول")
+    admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
 
     def __str__(self):
         return self.geo.name
@@ -56,7 +56,7 @@ class Sheet(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
     profit = models.FloatField(null=True, blank=True, verbose_name="الربح")
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name="المسئول")
+    admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
     deleted = models.BooleanField(default=False, verbose_name="حذف")
 
 
@@ -74,11 +74,12 @@ class Bon(models.Model):
     sheet = models.ForeignKey(Sheet, on_delete=models.CASCADE, verbose_name="الشيت")
     bon_quantity = models.FloatField(default=0.0, verbose_name="الكمية")
     bon_price = models.FloatField(default=0.0, verbose_name="السعر")
-    bon_total = models.FloatField(null=True, blank=True, verbose_name="الاجمالي")
-    geo_price = models.FloatField(null=True, blank=True, verbose_name="سعر الموقع")
-    profit = models.FloatField(null=True, blank=True, verbose_name="الربح")
-    total_profit = models.FloatField(null=True, blank=True, verbose_name="اجمالي الربح")
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name="المسئول")
+    bon_total = models.FloatField(default=0.0, null=True, blank=True, verbose_name="الاجمالي")
+    geo_price = models.FloatField(default=0.0, null=True, blank=True, verbose_name="سعر الموقع")
+    bon_overall = models.FloatField(default=0.0, null=True, blank=True, verbose_name="الحساب")
+    profit = models.FloatField(default=0.0, null=True, blank=True, verbose_name="الربح")
+    total_profit = models.FloatField(default=0.0, null=True, blank=True, verbose_name="اجمالي الربح")
+    admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
 
     def __str__(self):
         return self.bon_number

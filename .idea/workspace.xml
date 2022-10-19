@@ -3,7 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/templates/components/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/geoplace_price_history.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geoplace_price_history.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,15 +61,16 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering\More" />
+      <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Factory" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering" />
+      <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering\More" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV3\Engineering\templates\Engineering" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV3\Engineering" />
       <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Supplier_Reports" />
-      <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Supplier" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Factory" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -161,7 +175,8 @@
       <workItem from="1664753913509" duration="24919000" />
       <workItem from="1665450270762" duration="6246000" />
       <workItem from="1665498914395" duration="186000" />
-      <workItem from="1665711173013" duration="12775000" />
+      <workItem from="1665711173013" duration="13476000" />
+      <workItem from="1666030054989" duration="44105000" />
     </task>
     <servers />
   </component>

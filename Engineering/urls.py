@@ -51,5 +51,15 @@ urlpatterns = [
     # more
     path('company_sheet/<int:pk>', CompanySheet.as_view(), name="CompanySheet"),
     path('geo_sheet/<int:pk>', GeoSheet.as_view(), name="GeoSheet"),
-    path('supplier_sheet/<int:pk>', SupplierSheet.as_view(), name="SupplierSheet")
+    path('supplier_sheet/<int:pk>', SupplierSheet.as_view(), name="SupplierSheet"),
+
+    path('company_bon/<int:pk>', CompanyBon.as_view(), name="CompanyBon"),
+    path('geo_bon/<int:pk>', GeoBon.as_view(), name="GeoBon"),
+    path('supplier_bon/<int:pk>', SupplierBon.as_view(), name="SupplierBon"),
+
+    path('company_profit/<int:pk>', CompanyProfit.as_view(), name="CompanyProfit"),
+    path('geo_profit/<int:pk>', GeoProfit.as_view(), name="GeoProfit"),
+    path('supplier_profit/<int:pk>', SupplierProfit.as_view(), name="SupplierProfit"),
+
+    path('months_profit/', MonthsProfit, name="MonthsProfit"),
 ]
