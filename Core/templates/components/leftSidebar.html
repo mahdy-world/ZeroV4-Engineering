@@ -40,12 +40,14 @@
                         </a>
                     </li>
 
+                    {% if request.user.is_superuser %}
                     <li>
-                        <a href="#" class="waves-effects">
+                        <a href="{% url 'Engineering:MonthsProfit' %}" class="waves-effects">
                             <i class='bx bx-money'></i>
                              <span>الأرباح الشهرية</span>
                         </a>
                     </li>
+                    {% endif %}
 
                 <li class="menu-title " key="t-menu"><hr></li>
 

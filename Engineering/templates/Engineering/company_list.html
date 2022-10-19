@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load mathfilters %}
+{% load engineering_tags %}
 {% block title %}
 <title>
     {% if page == "active" %}
@@ -10,8 +11,6 @@
 </title>
 
 {% endblock title %}
-
-{% load engineering_tags %}
 
 {% block main %}
     <div class="main-content">
@@ -128,7 +127,7 @@
                         </div>
                     <div class="row">
                     {% for x in object_list  %}
-{#                        {% product_12_quantity x.id as product_12_quantity %}#}
+                        {% company_has_bons x.id as has_bons %}
                         <div class="col-xl-4 col-md-4 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -153,25 +152,26 @@
                                     </div>
                                     <div class="card-footer bg-transparent border-top">
                                         <div class="contact-links d-flex justify-content-center font-size-20">
+                                            {% if request.user.is_superuser %}
                                             <div class="mr-3">
-                                               <a href="" data-toggle="modal" data-target="#sub_modal" data-placement="top" title="" data-original-title="Message">
+                                               <a href="{% url 'Engineering:CompanyProfit' x.id %}" data-toggle="modal" data-target="#sub_modal" data-placement="top" title="" data-original-title="Message">
                                                    <span class="badge badge-success"><i class='bx bx-list-ul' ></i>الأرباح</span>
                                               </a>
                                            </div>
+                                            {% endif %}
                                             <div class="mr-3">
                                                <a href="{% url 'Engineering:CompanySheet' x.id %}" data-toggle="modal" data-target="#sub_modal" data-placement="top" title="" data-original-title="Message">
-                                                   <span class="badge badge-info"><i class='bx bx-list-ul' ></i>الشيتات</span>
+                                                   <span class="badge badge-primary"><i class='bx bx-list-ul' ></i>الشيتات</span>
                                               </a>
                                            </div>
                                             <div class="mr-3">
-                                               <a href="" data-toggle="modal" data-target="#sub_modal" data-placement="top" title="" data-original-title="Message">
+                                               <a href="{% url 'Engineering:CompanyBon' x.id %}" data-toggle="modal" data-target="#sub_modal" data-placement="top" title="" data-original-title="Message">
                                                    <span class="badge badge-warning"><i class='bx bx-list-ul' ></i>البونات</span>
                                               </a>
                                            </div>
                                         </div>
                                         <div class="contact-links d-flex justify-content-center font-size-20">
 
-                                          {% if request.user.is_superuser %}
                                           {% if type == "list"  %}
               
                                           <div class="mr-3">
@@ -182,17 +182,17 @@
                   
                                           <div class="mr-3">
                                               <a
-{#                                                  {% if x.quantity <= 0 %}#}
+                                                  {% if has_bons %}
+                                                  style="cursor: pointer"
+                                                  {% else %}
                                                   href="{% url 'Engineering:CompanyDelete' x.id %}" data-toggle="modal" data-target="#action_modal"
-{#                                                  {% else %}#}
-{#                                                  href="#"#}
-{#                                                  {% endif %}#}
+                                                  {% endif %}
                                                   data-placement="top" title="" data-original-title="Profile">
-{#                                                  {% if x.quantity > 0 %}#}
-{#                                                  <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. المنتج يحتوي علي كميات"><i class='bx bxs-trash' ></i>حذف</span>#}
-{#                                                  {% else %}#}
+                                                  {% if has_bons %}
+                                                  <span class="badge badge-danger" style="text-decoration: line-through;" data-placement="top" title="لايمكن الحذف .. يوجد بونات مرتبطة بالشركة -- يمكنك ايقاف الشركة من أيقونة التعديل"><i class='bx bxs-trash' ></i>حذف</span>
+                                                  {% else %}
                                                   <span class="badge badge-danger"><i class='bx bxs-trash'></i>حذف</span>
-{#                                                  {% endif %}#}
+                                                  {% endif %}
                                               </a>
                                           </div>
                                       {% else %}
@@ -210,8 +210,7 @@
                                               </a>
                                           </div>
                                       {% endif %}
-                                          {% endif %}
-                                            
+
                                           </div>
                                     </div>
                                 </div>

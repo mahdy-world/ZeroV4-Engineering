@@ -17,7 +17,7 @@
 <div class="card">
   <div class="card-header">
     <div class="card-title">
-      <b class="font-weight-bold text-center"> شيتات موقع: {{ geo }}</b>
+      <b class="font-weight-bold text-center"> بونات المورد: {{ supplier }}</b>
         <span class="card-tools" style="float: left">
       <button
         type="button"
@@ -56,8 +56,8 @@
                         <div class="card alert alert-success">
                             <div class="row ">
                                   <h3 class="mb-0 ">
-                                 <a href="#sheet_data"  data-toggle="collapse" >
-                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> إجماليات شيتات موقع: {{ geo }}  </span>
+                                 <a href="#sheet_data"  data-toggle="collapse">
+                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> إجماليات بونات المورد: {{ supplier }}  </span>
                                  </a>
                             </h3>
                             </div>
@@ -65,19 +65,19 @@
                             <div class="row collapse mt-3 show text-center" id="sheet_data">
                                 <div class="col-lg-12 ">
                                     <div class="row">
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد الشيتات </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد البونات </span>
                                             <br><span class="text-dark">
-                                                {% if geo_sheet.count > 0 %}
-                                                {{ geo_sheet.count }}
+                                                {% if supplier_bon.count > 0 %}
+                                                {{ supplier_bon.count }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد البونات </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد الشيتات </span>
                                             <br><span class="text-dark">
-                                                {% if geo_sheet_bons > 0 %}
-                                                {{ geo_sheet_bons }}
+                                                {% if supplier_bon_sheets > 0 %}
+                                                {{ supplier_bon_sheets }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -85,8 +85,8 @@
                                         </div>
                                         <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-calculator"></i> إجمالي الكميات </span>
                                             <br><span class="text-dark">
-                                                {% if geo_quantity > 0 %}
-                                                {{ geo_quantity }}
+                                                {% if supplier_quantity > 0 %}
+                                                {{ supplier_quantity }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -94,8 +94,8 @@
                                         </div>
                                         <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي التكلفة </span>
                                             <br><span class="text-dark">
-                                                {% if geo_prices > 0 %}
-                                                {{ geo_prices }}
+                                                {% if supplier_prices > 0 %}
+                                                {{ supplier_prices }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -104,8 +104,8 @@
                                         {% if request.user.is_superuser %}
                                         <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي الحساب </span>
                                             <br><span class="text-dark">
-                                                {% if geo_total > 0 %}
-                                                {{ geo_total }}
+                                                {% if supplier_total > 0 %}
+                                                {{ supplier_total }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -113,8 +113,8 @@
                                         </div>
                                         <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> اجمالي الربح </span>
                                             <br><span class="text-dark">
-                                                {% if geo_profit%}
-                                                {{ geo_profit}}
+                                                {% if supplier_profit%}
+                                                {{ supplier_profit}}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -128,44 +128,54 @@
                     </div>
 
                     <div class="table-rep-plugin">
-                        <div class="table-responsive table-bordered mb-0 fixed-solution mb-0" data-pattern="priority-columns">
+                        <div class="table-bordered mb-0 fixed-solution mb-0" data-pattern="priority-columns">
                             <div class="table-responsive" style="max-height: 280px">
                             <table id="tech-companies-1" class="table table-centered">
                                 <thead class="bg-dark text-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>تاريخ الاضافة</th>
-                                    <th>عنوان الشيت</th>
-                                    <th>الشركة</th>
-                                    <th>المورد</th>
+                                    <th>التاريخ</th>
+                                    <th>رقم البون</th>
+                                    <th>رقم السيارة</th>
+                                    <th>صاحب السيارة</th>
+                                    <th>الموقع</th>
+                                    <th>الكمية</th>
+                                    <th>السعر</th>
+                                    <th>الإجمالي</th>
                                     {% if request.user.is_superuser %}
-                                    <th>أرباح الشيت</th>
+                                    <th>سعر الموقع</th>
+                                    <th>الحساب</th>
+                                    <th>الربح</th>
+                                    <th>إجمالي الربح</th>
                                     {% endif %}
+                                    <th>الشيت</th>
+                                    <th>الشركة</th>
                                     <th>المسؤول</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for x in geo_sheet %}
+                                {% for x in supplier_bon %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.date|date:'Y-m-d'}}</td>
-                                    <th><a href="{% url 'Engineering:SheetDetail' x.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.title }}</a></th>
-                                    <td>{{ x.company }}</td>
-                                    <td>{{ x.supplier }}</td>
+                                    <td>{{ x.bon_number}}</td>
+                                    <td>{{ x.car_number}}</td>
+                                    <td>{{ x.car_owner}}</td>
+                                    <td>{{ x.geo_place.name}}</td>
+                                    <td>{{ x.bon_quantity}}</td>
+                                    <td>{{ x.bon_price}}</td>
+                                    <td>{{ x.bon_total}}</td>
                                     {% if request.user.is_superuser %}
-                                    <td>
-                                        {% if x.profit %}
-                                        {{ x.profit }}
-                                        {% else %}
-                                        0.0
-                                        {% endif %}
-                                    </td>
+                                    <td>{{ x.geo_price}}</td>
+                                    <td>{{ x.bon_overall}}</td>
+                                    <td>{{ x.profit}}</td>
+                                    <td>{{ x.total_profit}}</td>
                                     {% endif %}
+                                    <th><a href="{% url 'Engineering:SheetDetail' x.sheet.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.sheet.title}} </a></th>
+                                    <td>{{ x.sheet.company.name }}</td>
                                     <td>{{ x.admin.username }}</td>
                                 </tr>
                                 {% endfor %}
-
                                 </tbody>
                             </table>
                             </div>
