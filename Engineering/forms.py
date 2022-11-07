@@ -98,3 +98,14 @@ class BonForm(forms.ModelForm):
             'bon_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
             'bon_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
         }
+
+# Supplier Pyament Create Form
+class SupplierPaymentForm(forms.ModelForm):
+    class Meta:
+        model = SupplierPayment
+        fields = ['cash_amount', 'admin', 'payment_date']
+        widgets = {
+            'payment_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'تاريخ السحب...', 'id': 'payment_date'}),
+            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':0}),
+            'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
+        }

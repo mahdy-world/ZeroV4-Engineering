@@ -32,6 +32,11 @@ urlpatterns = [
     path('supplier_delete/<int:pk>', SupplierDelete.as_view(), name="SupplierDelete"),
     path('supplier_restore/<int:pk>', SupplierRestore.as_view(), name="SupplierRestore"),
     path('supplier_superDelete/<int:pk>', SupplierSuperDelete.as_view(), name="SupplierSuperDelete"),
+    path('detail_payment/<int:pk>', SupplierPayments.as_view(), name="SupplierPayment"),
+    path('detail_payment_div/<int:pk>', SupplierPayments_div.as_view(), name="SupplierPayment_div"),
+
+    path('supplier_payment/create/', SupplierPaymentCreate, name="SupplierPaymentCreate"),
+    path('supplier_payment/delete/', SupplierPaymentDelete, name="SupplierPaymentDelete"),
 
     ####################################################################
     # Sheet

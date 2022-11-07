@@ -1,5 +1,6 @@
 from django.db import models
 from Auth.models import User
+from datetime import date
 from datetime import datetime
 # Create your models here.
 
@@ -83,3 +84,16 @@ class Bon(models.Model):
 
     def __str__(self):
         return self.bon_number
+
+
+
+# Supplier Payment
+class SupplierPayment(models.Model):
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
+    cash_amount = models.FloatField( verbose_name="القيمة النقدية")
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="المسئول")
+    payment_date = models.DateField(null=True, verbose_name="التاريخ", default=date.today)
+
+    def __str__(self):
+        return self.supplier.name

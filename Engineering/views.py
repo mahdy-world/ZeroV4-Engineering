@@ -1,6 +1,6 @@
 import datetime
 from django.db.models.aggregates import Sum, Count
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -975,3 +975,104 @@ def MonthsProfit(request):
         'months_name': months_name,
         'months_val': months_val,
     })
+
+
+# Supplier payment list
+class SupplierPayments(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Supplier
+    template_name = 'Engineering/Payment/supplier_payment.html'
+
+    def get_context_data(self, **kwargs):
+        queryset = SupplierPayment.objects.filter(supplier=self.object)
+        payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
+        total_account = Bon.objects.filter(sheet__supplier_id=self.object).aggregate(total=Sum('bon_total')).get('total')
+        total = ''
+        if total_account and payment_sum != None:
+            total = total_account - payment_sum
+
+        context = super().get_context_data(**kwargs)
+        context['payment'] = queryset.order_by('-payment_date')
+        context['payment_sum'] = payment_sum
+        context['total_account'] = total_account
+        context['total'] = total
+        context['title'] = 'مسحوبات المورد: ' + str(self.object)
+        context['form'] = SupplierPaymentForm(self.request.POST or None)
+        context['type'] = 'list'
+        context['supplier'] = self.object
+        return context
+
+
+
+# Supplier payment list_div
+class SupplierPayments_div(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Supplier
+    template_name = 'Engineering/Payment/supplier_payment_div.html'
+
+    def get_context_data(self, **kwargs):
+        queryset = SupplierPayment.objects.filter(supplier=self.object)
+        payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
+        total_account = Bon.objects.filter(sheet__supplier_id=self.object).aggregate(total=Sum('bon_total')).get(
+            'total')
+        total = ''
+        if total_account and payment_sum != None:
+            total = total_account - payment_sum
+
+        context = super().get_context_data(**kwargs)
+        context['payment'] = queryset.order_by('-payment_date')
+        context['payment_sum'] = payment_sum
+        context['total_account'] = total_account
+        context['total'] = total
+        context['title'] = 'مسحوبات المورد: ' + str(self.object)
+        context['form'] = SupplierPaymentForm(self.request.POST or None)
+        context['type'] = 'list'
+        context['supplier'] = self.object
+        return context
+
+
+# create supplier payment function
+def SupplierPaymentCreate(request):
+    if request.is_ajax():
+        supplier_id = request.POST.get('id')
+        supplier = Supplier.objects.get(id=supplier_id)
+
+        payment_date = request.POST.get('payment_date')
+        cash_amount = request.POST.get('cash_amount')
+
+
+        if supplier and payment_date and cash_amount:
+            obj = SupplierPayment()
+            obj.supplier = supplier
+            obj.payment_date = payment_date
+            obj.admin = request.user
+            obj.cash_amount = cash_amount
+            obj.save()
+
+            if obj:
+                response = {
+                    'msg': 1
+                }
+        else:
+            response = {
+                'msg': 0
+            }
+        return JsonResponse(response)
+
+# delete supplier payment item
+def SupplierPaymentDelete(request):
+    if request.is_ajax():
+        payment_id = request.POST.get('payment_id')
+        obj = SupplierPayment.objects.get(id=payment_id)
+        obj.delete()
+
+        if obj:
+            response = {
+                'msg': 'Send Successfully'
+            }
+        else:
+            response = {
+                'msg': 'خطأ'
+            }
+
+        return JsonResponse(response)
