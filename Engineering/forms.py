@@ -109,3 +109,15 @@ class SupplierPaymentForm(forms.ModelForm):
             'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':0}),
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
+
+
+# Company Pyament Create Form
+class CompanyPaymentForm(forms.ModelForm):
+    class Meta:
+        model = CompanyPayment
+        fields = ['cash_amount', 'admin', 'payment_date']
+        widgets = {
+            'payment_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'تاريخ السحب...', 'id': 'payment_date'}),
+            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':0}),
+            'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
+        }

@@ -2,17 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment_div.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/assets/vendor/Zero.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/vendor/Zero.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,6 +177,7 @@
       <workItem from="1666437236298" duration="89000" />
       <workItem from="1667755288141" duration="5486000" />
       <workItem from="1667820252324" duration="10658000" />
+      <workItem from="1667897107253" duration="3917000" />
     </task>
     <servers />
   </component>

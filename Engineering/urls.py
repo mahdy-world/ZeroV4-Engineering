@@ -12,6 +12,12 @@ urlpatterns = [
     path('com_restore/<int:pk>', CompanyRestore.as_view(), name="CompanyRestore"),
     path('com_superDelete/<int:pk>', CompanySuperDelete.as_view(), name="CompanySuperDelete"),
 
+    path('detail_payment/<int:pk>', CompanyPayments.as_view(), name="CompanyPayments"),
+    path('detail_payment_div/<int:pk>', CompanyPayments_div.as_view(), name="CompanyPayments_div"),
+
+    path('company_payment/create/', CompanyPaymentCreate, name="CompanyPaymentCreate"),
+    path('company_payment/delete/', CompanyPaymentDelete, name="CompanyPaymentDelete"),
+
     ####################################################################
     # GeoPlace
     path('geo_list/', GeoPlaceList.as_view(), name="GeoPlaceList"),
@@ -32,6 +38,7 @@ urlpatterns = [
     path('supplier_delete/<int:pk>', SupplierDelete.as_view(), name="SupplierDelete"),
     path('supplier_restore/<int:pk>', SupplierRestore.as_view(), name="SupplierRestore"),
     path('supplier_superDelete/<int:pk>', SupplierSuperDelete.as_view(), name="SupplierSuperDelete"),
+
     path('detail_payment/<int:pk>', SupplierPayments.as_view(), name="SupplierPayment"),
     path('detail_payment_div/<int:pk>', SupplierPayments_div.as_view(), name="SupplierPayment_div"),
 

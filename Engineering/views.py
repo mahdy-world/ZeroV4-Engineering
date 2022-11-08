@@ -992,7 +992,7 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
             total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
-        context['payment'] = queryset.order_by('-payment_date')
+        context['payment'] = queryset.order_by('-id')
         context['payment_sum'] = payment_sum
         context['total_account'] = total_account
         context['total'] = total
@@ -1020,7 +1020,7 @@ class SupplierPayments_div(LoginRequiredMixin, DetailView):
             total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
-        context['payment'] = queryset.order_by('-payment_date')
+        context['payment'] = queryset.order_by('-id')
         context['payment_sum'] = payment_sum
         context['total_account'] = total_account
         context['total'] = total
@@ -1064,6 +1064,104 @@ def SupplierPaymentDelete(request):
     if request.is_ajax():
         payment_id = request.POST.get('payment_id')
         obj = SupplierPayment.objects.get(id=payment_id)
+        obj.delete()
+
+        if obj:
+            response = {
+                'msg': 'Send Successfully'
+            }
+        else:
+            response = {
+                'msg': 'خطأ'
+            }
+
+        return JsonResponse(response)
+
+
+
+# Supplier payment list
+class CompanyPayments(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Company
+    template_name = 'Engineering/Payment/company_payment.html'
+
+    def get_context_data(self, **kwargs):
+        queryset = CompanyPayment.objects.filter(company=self.object)
+        payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
+        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_total')).get('total')
+        total = ''
+        if total_account and payment_sum != None:
+            total = total_account - payment_sum
+
+        context = super().get_context_data(**kwargs)
+        context['payment'] = queryset.order_by('-id')
+        context['payment_sum'] = payment_sum
+        context['total_account'] = total_account
+        context['total'] = total
+        context['title'] = 'مسحوبات الشركة: ' + str(self.object)
+        context['form'] = CompanyPaymentForm(self.request.POST or None)
+        context['type'] = 'list'
+        context['company'] = self.object
+        return context
+
+# Company_div payment list
+class CompanyPayments_div(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    model = Company
+    template_name = 'Engineering/Payment/company_payment_div.html'
+
+    def get_context_data(self, **kwargs):
+        queryset = CompanyPayment.objects.filter(company=self.object)
+        payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
+        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_total')).get('total')
+        total = ''
+        if total_account and payment_sum != None:
+            total = total_account - payment_sum
+
+        context = super().get_context_data(**kwargs)
+        context['payment'] = queryset.order_by('-id')
+        context['payment_sum'] = payment_sum
+        context['total_account'] = total_account
+        context['total'] = total
+        context['title'] = 'مسحوبات الشركة: ' + str(self.object)
+        context['form'] = CompanyPaymentForm(self.request.POST or None)
+        context['type'] = 'list'
+        context['company'] = self.object
+        return context
+
+# create compnay payment function
+def CompanyPaymentCreate(request):
+    if request.is_ajax():
+        company_id = request.POST.get('id')
+        company = Company.objects.get(id=company_id)
+
+        payment_date = request.POST.get('payment_date')
+        cash_amount = request.POST.get('cash_amount')
+
+        if company and payment_date and cash_amount:
+            obj = CompanyPayment()
+            obj.company = company
+            obj.payment_date = payment_date
+            obj.admin = request.user
+            obj.cash_amount = cash_amount
+            obj.save()
+
+            if obj:
+                response = {
+                    'msg': 1
+                }
+        else:
+            response = {
+                'msg': 0
+            }
+        return JsonResponse(response)
+
+
+# delete supplier payment item
+def CompanyPaymentDelete(request):
+    if request.is_ajax():
+        payment_id = request.POST.get('payment_id')
+        obj = CompanyPayment.objects.get(id=payment_id)
         obj.delete()
 
         if obj:
