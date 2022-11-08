@@ -1,0 +1,149 @@
+ <div class="table-rep-plugin">
+    <div class="table-responsive table-bordered mb-0 fixed-solution mb-0" data-pattern="priority-columns">
+                            <div class="table-responsive" style="max-height: 280px">
+                            {% comment %}payment table {% endcomment %}
+                            <table id="tech-companies-1" class="table table-centered">
+                                <thead class="bg-dark text-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>تاريخ العملية</th>
+                                    <th>القيمة النقدية</th>
+                                    <th>المسؤول</th>
+                                    <th><i class="fas fa-cogs"></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for x in payment %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ x.payment_date|date:'Y-m-d'}}</td>
+                                    <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.admin.username }}</td>
+                                     {% if request.user.is_superuser %}
+                                        <td>
+                                        <a
+                                          onclick="
+                                                  var result = confirm('هل أنت متأكد من الحذف؟');
+                                                    if (result) {
+                                                        PaymentDelete('{{x.id}}')
+                                                    }
+                                                  "
+                                          style="cursor: pointer"
+                                          class="text-danger"
+                                          ><i class="mdi mdi-close font-size-18"></i
+                                        ></a>
+                                      </td>
+
+                                    {% else %}
+                                        <td>
+                                        <a  data-placement="top" title="غير مسموح لك بعملية الحذف..."
+                                          style="cursor: pointer; text-decoration: line-through"
+                                          class="text-danger"
+                                          ><i class="mdi mdi-close font-size-18"></i
+                                        >
+                                        </a>
+                                      </td>
+
+
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
+    </div>
+<div style="margin-top: 10px;">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mini-stats-wid mb-0">
+          <div class="card-body bg-info" style="border-radius: 4px">
+            <div class="d-flex flex-wrap">
+              <div class="mr-3">
+                <h3 class="mb-2 text-light">اجمالي الحساب</h3>
+                <span class="mb-0 text-dark">
+                    {% if total_account %}
+                    {{total_account}}
+                    {% else %}
+                    0.0
+                    {% endif %}
+                    جنية
+                </span>
+              </div>
+
+              <div class="avatar-sm ml-auto">
+                <div
+                  class="avatar-title bg-light rounded-circle text-dark font-size-20"
+                >
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card mini-stats-wid mb-0">
+          <div class="card-body bg-info" style="border-radius: 4px">
+            <div class="d-flex flex-wrap">
+              <div class="">
+                <h3 class="mb-2 text-light">
+                  اجمالي المسحوبات
+                </h3>
+                <span class="mb-0 text-dark">
+                    {% if payment_sum %}
+                    {{payment_sum}}
+                    {% else %}
+                    0.0
+                    {% endif %}
+                    جنية
+                </span>
+              </div>
+
+              <div class="avatar-sm ml-auto">
+                <div
+                  class="avatar-title bg-light rounded-circle text-dark font-size-20"
+                >
+                  <i class="fas fa-hand-holding-usd"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <div class="col-lg-4">
+    <div class="card mini-stats-wid mb-0">
+      <div class="card-body bg-info" style="border-radius: 4px">
+        <div class="d-flex flex-wrap">
+          <div class="">
+            <h3 class="mb-2 text-light">
+               باقي المستحق
+            </h3>
+            <span class="mb-0 text-dark">
+                {% if total %}
+                {{total}}
+                {% else %}
+                0.0
+                {% endif %}
+                جنية
+            </span>
+          </div>
+
+          <div class="avatar-sm ml-auto">
+            <div
+              class="avatar-title bg-light rounded-circle text-dark font-size-20"
+            >
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </div>
+</div>

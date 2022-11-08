@@ -97,3 +97,15 @@ class SupplierPayment(models.Model):
 
     def __str__(self):
         return self.supplier.name
+
+
+# Company Payment
+class CompanyPayment(models.Model):
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
+    cash_amount = models.FloatField( verbose_name="القيمة النقدية")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="المسئول")
+    payment_date = models.DateField(null=True, verbose_name="التاريخ", default=date.today)
+
+    def __str__(self):
+        return self.company.name

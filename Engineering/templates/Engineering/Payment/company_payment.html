@@ -1,0 +1,297 @@
+{% load crispy_forms_tags %}
+<style>
+  .expand_modal {
+    max-width: 100%;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    z-index: 100000;
+  }
+</style>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      <b class="font-weight-bold text-center"> مسحوبات الشركة: {{ company }}</b>
+        <span class="card-tools" style="float: left">
+      <button
+        type="button"
+        class="btn btn-tool"
+        data-card-widget="maximize"
+        onclick="
+            if (document.getElementById('expand_modal').value === '0'){
+                document.getElementById('expand_modal').value = 1;
+                document.getElementById('action_modal2').className = 'modal-dialog expand_modal';
+                document.getElementById('sub_modal2').className = 'modal-dialog modal-xl expand_modal';
+            }
+            else {
+                document.getElementById('expand_modal').value = 0;
+                document.getElementById('action_modal2').className = 'modal-dialog';
+                document.getElementById('sub_modal2').className = 'modal-dialog modal-xl';
+            }
+
+            "
+    >
+        <input type="number" value="0" id="expand_modal" hidden />
+        <i class="fas fa-expand"></i>
+      </button>
+      <button type="button" class="btn btn-tool" data-dismiss="modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </span>
+    </div>
+  </div>
+
+   <div class="row">
+    <div class="col-12">
+{#form to create new item#}
+         <div class="col-lg-12 col-md-12">
+            <div class="card alert alert-success">
+                {% comment %}From for payment{% endcomment %}
+                <div class="row " id="sheet_data">
+                    <div class="col-lg-12 ">
+                        <div class="row">
+
+                            <div class="col-md-2">
+                                 {{form.payment_date|as_crispy_field}}
+                            </div>
+
+                            <div class="col-md-2">
+                                 {{form.cash_amount|as_crispy_field}}
+                            </div>
+
+                            <div class="col-md-2">
+                                <button
+                                  style="margin-top: 32px"
+                                  onclick="PaymentCreate()"
+                                  class="btn btn-success"
+                                >
+                                <i class="fas fa-plus-circle"></i>
+                                  إضافة
+                                </button>
+                            </div>
+
+                       </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+            <div class="card">
+                <div class="card-body" id="compnay_payment">
+                    <div class="table-rep-plugin">
+                        <div class="table-responsive table-bordered mb-0 fixed-solution mb-0" data-pattern="priority-columns">
+                            <div class="table-responsive" style="max-height:400px">
+                            {% comment %}payment table {% endcomment %}
+                            <table id="tech-companies-1" class="table table-centered">
+                                <thead class="bg-dark text-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>تاريخ العملية</th>
+                                    <th>القيمة النقدية</th>
+                                    <th>المسؤول</th>
+                                    <th><i class="fas fa-cogs"></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for x in payment %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ x.payment_date|date:'Y-m-d'}}</td>
+                                    <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.admin.username }}</td>
+                                    {% if request.user.is_superuser %}
+                                        <td>
+                                        <a
+                                          onclick="
+                                                  var result = confirm('هل أنت متأكد من الحذف؟');
+                                                    if (result) {
+                                                        PaymentDelete('{{x.id}}')
+                                                    }
+                                                  "
+                                          style="cursor: pointer"
+                                          class="text-danger"
+                                          ><i class="mdi mdi-close font-size-18"></i
+                                        ></a>
+                                      </td>
+
+                                    {% else %}
+                                        <td>
+                                        <a  data-placement="top" title="غير مسموح لك بعملية الحذف..."
+                                          style="cursor: pointer; text-decoration: line-through"
+                                          class="text-danger"
+                                          ><i class="mdi mdi-close font-size-18"></i
+                                        >
+                                        </a>
+                                      </td>
+
+
+                                    {% endif %}
+
+                                </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="card mini-stats-wid mb-0">
+                              <div class="card-body bg-info" style="border-radius: 4px">
+                                <div class="d-flex flex-wrap">
+                                  <div class="mr-3">
+                                    <h3 class="mb-2 text-light">اجمالي الحساب</h3>
+                                    <span class="mb-0 text-dark font-weight-bold">
+                                        {% if total_account %}
+                                        {{total_account}}
+                                        {% else %}
+                                        0.0
+                                        {% endif %}
+                                        جنية
+                                    </span>
+                                  </div>
+
+                                  <div class="avatar-sm ml-auto">
+                                    <div
+                                      class="avatar-title bg-light rounded-circle text-dark font-size-20"
+                                    >
+                                      <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <div class="card mini-stats-wid mb-0">
+                              <div class="card-body bg-info" style="border-radius: 4px">
+                                <div class="d-flex flex-wrap">
+                                  <div class="">
+                                    <h3 class="mb-2 text-light">
+                                      اجمالي المسحوبات
+                                    </h3>
+                                    <span class="mb-0 text-dark font-weight-bold">
+                                        {% if payment_sum %}
+                                        {{payment_sum}}
+                                        {% else %}
+                                        0.0
+                                        {% endif %}
+                                        جنية
+                                    </span>
+                                  </div>
+
+                                  <div class="avatar-sm ml-auto">
+                                    <div
+                                      class="avatar-title bg-light rounded-circle text-dark font-size-20"
+                                    >
+                                      <i class="fas fa-hand-holding-usd"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                         <div class="col-lg-4">
+                        <div class="card mini-stats-wid mb-0">
+                          <div class="card-body bg-info" style="border-radius: 4px">
+                            <div class="d-flex flex-wrap">
+                              <div class="">
+                                <h3 class="mb-2 text-light">
+                                   باقي المستحق
+                                </h3>
+                                <span class="mb-0 text-dark font-weight-bold">
+                                    {% if total %}
+                                    {{total}}
+                                    {% else %}
+                                    0.0
+                                    {% endif %}
+                                    جنية
+                                </span>
+                              </div>
+
+                              <div class="avatar-sm ml-auto">
+                                <div
+                                  class="avatar-title bg-light rounded-circle text-dark font-size-20"
+                                >
+                                  <i class="fas fa-hand-holding-usd"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block js %}
+       <script>
+          function PaymentCreate() {
+            $.ajax({
+              type: "POST",
+              url: "{% url 'Engineering:CompanyPaymentCreate'  %}",
+              data: {
+                id: "{{object.id}}",
+                payment_date: $("#payment_date").val(),
+                cash_amount: $("#cash_amount").val(),
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                dataType: "json",
+              },
+              success: function (response) {
+                /* response message */
+                if (response.msg == 1) {
+                  $("#cash_amount").val("");
+                  $("#compnay_payment")
+                    .html("&nbsp;")
+                    .load(
+                      "{% url 'Engineering:CompanyPayments_div' object.id %}"
+                    );
+                  alert("تم الاضافة بنجاح");
+                } else {
+                  alert("حاول مرة اخري / خطأ في البيانات");
+                }
+              },
+
+              failure: function () {},
+            });
+          }
+
+          function PaymentDelete(payment_id) {
+                $.ajax({
+                  type: "POST",
+                  url: "{% url 'Engineering:CompanyPaymentDelete' %}",
+                  data: {
+                    payment_id: payment_id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    dataType: "json",
+                  },
+                  success: function (data) {
+                    /* response message */
+                    $("#compnay_payment")
+                      .html("&nbsp;")
+                      .load(
+                        "{% url 'Engineering:CompanyPayments_div' object.id %}"
+                      );
+                    alert("تم الحذف بنجاح");
+                  },
+
+                  failure: function () {},
+                });
+              }
+       </script>
+{% endblock js %}

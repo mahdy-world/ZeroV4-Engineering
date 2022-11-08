@@ -32,7 +32,7 @@ body{
    left: 0;
    width: 100%;
    height: 100%;
-   background: #fefefa;
+   background: #0000006b;
    clip-path: circle(184px  at 80% 20%);
    transition: 0.5s ease-in-out;
    }
@@ -42,7 +42,7 @@ body{
    }
 
    .container_new .card:after {
-   content: '';
+   content: 'ZerOne';
    position: absolute;
    top: 30%;
    left: -20%;
