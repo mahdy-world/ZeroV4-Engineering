@@ -53,30 +53,28 @@
          <div class="col-lg-12 col-md-12">
             <div class="card alert alert-success">
                 {% comment %}From for payment{% endcomment %}
-                <div class="row " id="sheet_data">
-                    <div class="col-lg-12 ">
-                        <div class="row">
+                <div class="row" id="sheet_data">
+                    <div class="col-md-3">
+                         {{form.payment_date|as_crispy_field}}
+                    </div>
 
-                            <div class="col-md-2">
-                                 {{form.payment_date|as_crispy_field}}
-                            </div>
+                    <div class="col-md-3">
+                         {{form.cash_amount|as_crispy_field}}
+                    </div>
 
-                            <div class="col-md-2">
-                                 {{form.cash_amount|as_crispy_field}}
-                            </div>
+                    <div class="col-md-4">
+                         {{form.desc|as_crispy_field}}
+                    </div>
 
-                            <div class="col-md-2">
-                                <button
-                                  style="margin-top: 32px"
-                                  onclick="PaymentCreate()"
-                                  class="btn btn-success"
-                                >
-                                <i class="fas fa-plus-circle"></i>
-                                  إضافة
-                                </button>
-                            </div>
-
-                       </div>
+                    <div class="col-md-2">
+                        <button
+                          style="margin-top: 32px"
+                          onclick="PaymentCreate()"
+                          class="btn btn-success form-control"
+                        >
+                        <i class="fas fa-plus-circle"></i>
+                          إضافة
+                        </button>
                     </div>
                 </div>
             </div>
@@ -93,6 +91,7 @@
                                     <th>#</th>
                                     <th>تاريخ العملية</th>
                                     <th>القيمة النقدية</th>
+                                    <th>الوصف/السبب</th>
                                     <th>المسؤول</th>
                                     <th><i class="fas fa-cogs"></i></th>
                                 </tr>
@@ -103,6 +102,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.payment_date|date:'Y-m-d'}}</td>
                                     <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.desc }}</td>
                                     <td>{{ x.admin.username }}</td>
                                     {% if request.user.is_superuser %}
                                         <td>
@@ -148,7 +148,7 @@
                               <div class="card-body bg-info" style="border-radius: 4px">
                                 <div class="d-flex flex-wrap">
                                   <div class="mr-3">
-                                    <h3 class="mb-2 text-light">اجمالي الحساب</h3>
+                                    <h4 class="mb-2 text-light">اجمالي حساب المورد لديك</h4>
                                     <span class="mb-0 text-dark font-weight-bold">
                                         {% if total_account %}
                                         {{total_account}}
@@ -176,9 +176,9 @@
                               <div class="card-body bg-info" style="border-radius: 4px">
                                 <div class="d-flex flex-wrap">
                                   <div class="">
-                                    <h3 class="mb-2 text-light">
-                                      اجمالي المسحوبات
-                                    </h3>
+                                    <h4 class="mb-2 text-light">
+                                      اجمالي مسحوباته
+                                    </h4>
                                     <span class="mb-0 text-dark font-weight-bold">
                                         {% if payment_sum %}
                                         {{payment_sum}}
@@ -206,9 +206,9 @@
                           <div class="card-body bg-info" style="border-radius: 4px">
                             <div class="d-flex flex-wrap">
                               <div class="">
-                                <h3 class="mb-2 text-light">
-                                   باقي المستحق
-                                </h3>
+                                <h4 class="mb-2 text-light">
+                                   باقي مستحقاته
+                                </h4>
                                 <span class="mb-0 text-dark font-weight-bold">
                                     {% if total %}
                                     {{total}}
@@ -248,6 +248,7 @@
               data: {
                 id: "{{object.id}}",
                 payment_date: $("#payment_date").val(),
+                desc: $("#payment_desc").val(),
                 cash_amount: $("#cash_amount").val(),
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 dataType: "json",
@@ -255,7 +256,8 @@
               success: function (response) {
                 /* response message */
                 if (response.msg == 1) {
-                  $("#cash_amount").val("");
+                  $("#cash_amount").val("1");
+                  $("#payment_desc").val("");
                   $("#supplier_payment")
                     .html("&nbsp;")
                     .load(

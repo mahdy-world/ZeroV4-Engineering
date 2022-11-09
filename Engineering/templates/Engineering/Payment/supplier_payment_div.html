@@ -8,6 +8,7 @@
                                     <th>#</th>
                                     <th>تاريخ العملية</th>
                                     <th>القيمة النقدية</th>
+                                    <th>الوصف/السبب</th>
                                     <th>المسؤول</th>
                                     <th><i class="fas fa-cogs"></i></th>
                                 </tr>
@@ -18,6 +19,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.payment_date|date:'Y-m-d'}}</td>
                                     <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.desc }}</td>
                                     <td>{{ x.admin.username }}</td>
                                      {% if request.user.is_superuser %}
                                         <td>
@@ -62,7 +64,7 @@
                               <div class="card-body bg-info" style="border-radius: 4px">
                                 <div class="d-flex flex-wrap">
                                   <div class="mr-3">
-                                    <h3 class="mb-2 text-light">اجمالي الحساب</h3>
+                                    <h3 class="mb-2 text-light">اجمالي حساب المورد لديك</h3>
                                     <span class="mb-0 text-dark">
                                         {% if total_account %}
                                         {{total_account}}
@@ -91,7 +93,7 @@
                                 <div class="d-flex flex-wrap">
                                   <div class="">
                                     <h3 class="mb-2 text-light">
-                                      اجمالي المسحوبات
+                                      اجمالي مسحوباته
                                     </h3>
                                     <span class="mb-0 text-dark">
                                         {% if payment_sum %}
@@ -121,7 +123,7 @@
                             <div class="d-flex flex-wrap">
                               <div class="">
                                 <h3 class="mb-2 text-light">
-                                   باقي المستحق
+                                   باقي مستحقاته
                                 </h3>
                                 <span class="mb-0 text-dark">
                                     {% if total %}

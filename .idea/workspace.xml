@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment_div.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/vendor/Zero.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/vendor/Zero.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +82,19 @@
       <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Factory" />
     </key>
   </component>
-  <component name="RunManager" selected="Django Server.ZeroV3">
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.ZeroV4-Engineering">
     <configuration name="ZeroV3" type="Python.DjangoServer" factoryName="Django server">
       <module name="ZeroV3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -127,7 +142,7 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -192,11 +207,12 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

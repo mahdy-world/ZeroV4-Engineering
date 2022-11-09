@@ -90,7 +90,8 @@ class Bon(models.Model):
 # Supplier Payment
 class SupplierPayment(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
-    cash_amount = models.FloatField( verbose_name="القيمة النقدية")
+    cash_amount = models.FloatField(default=0, verbose_name="القيمة النقدية", null=True)
+    desc = models.CharField(max_length=250, verbose_name="الوصف/السبب", null=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
     admin = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="المسئول")
     payment_date = models.DateField(null=True, verbose_name="التاريخ", default=date.today)
@@ -102,7 +103,8 @@ class SupplierPayment(models.Model):
 # Company Payment
 class CompanyPayment(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
-    cash_amount = models.FloatField( verbose_name="القيمة النقدية")
+    cash_amount = models.FloatField(default=0, verbose_name="القيمة النقدية", null=True)
+    desc = models.CharField(max_length=250, verbose_name="الوصف/السبب", null=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
     admin = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="المسئول")
     payment_date = models.DateField(null=True, verbose_name="التاريخ", default=date.today)

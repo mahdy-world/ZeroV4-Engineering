@@ -986,10 +986,19 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = SupplierPayment.objects.filter(supplier=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__supplier_id=self.object).aggregate(total=Sum('bon_total')).get('total')
-        total = ''
-        if total_account and payment_sum != None:
-            total = total_account - payment_sum
+        total_account = Bon.objects.filter(sheet__supplier=self.object).aggregate(total=Sum('bon_total')).get('total')
+
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        if total_account:
+            total_account = total_account
+        else:
+            total_account = 0
+
+        total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
@@ -997,7 +1006,9 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
         context['total_account'] = total_account
         context['total'] = total
         context['title'] = 'مسحوبات المورد: ' + str(self.object)
-        context['form'] = SupplierPaymentForm(self.request.POST or None)
+        form = SupplierPaymentForm(self.request.POST or None)
+        form.fields['cash_amount'].initial = 1
+        context['form'] = form
         context['type'] = 'list'
         context['supplier'] = self.object
         return context
@@ -1013,11 +1024,19 @@ class SupplierPayments_div(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = SupplierPayment.objects.filter(supplier=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__supplier_id=self.object).aggregate(total=Sum('bon_total')).get(
-            'total')
-        total = ''
-        if total_account and payment_sum != None:
-            total = total_account - payment_sum
+        total_account = Bon.objects.filter(sheet__supplier=self.object).aggregate(total=Sum('bon_total')).get('total')
+
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        if total_account:
+            total_account = total_account
+        else:
+            total_account = 0
+
+        total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
@@ -1025,7 +1044,9 @@ class SupplierPayments_div(LoginRequiredMixin, DetailView):
         context['total_account'] = total_account
         context['total'] = total
         context['title'] = 'مسحوبات المورد: ' + str(self.object)
-        context['form'] = SupplierPaymentForm(self.request.POST or None)
+        form = SupplierPaymentForm(self.request.POST or None)
+        form.fields['cash_amount'].initial = 1
+        context['form'] = form
         context['type'] = 'list'
         context['supplier'] = self.object
         return context
@@ -1039,6 +1060,7 @@ def SupplierPaymentCreate(request):
 
         payment_date = request.POST.get('payment_date')
         cash_amount = request.POST.get('cash_amount')
+        desc = request.POST.get('desc')
 
 
         if supplier and payment_date and cash_amount:
@@ -1047,6 +1069,7 @@ def SupplierPaymentCreate(request):
             obj.payment_date = payment_date
             obj.admin = request.user
             obj.cash_amount = cash_amount
+            obj.desc = desc
             obj.save()
 
             if obj:
@@ -1088,10 +1111,19 @@ class CompanyPayments(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = CompanyPayment.objects.filter(company=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_total')).get('total')
-        total = ''
-        if total_account and payment_sum != None:
-            total = total_account - payment_sum
+        total_account = Bon.objects.filter(sheet__company=self.object).aggregate(total=Sum('bon_overall')).get('total')
+
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        if total_account:
+            total_account = total_account
+        else:
+            total_account = 0
+
+        total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
@@ -1099,7 +1131,9 @@ class CompanyPayments(LoginRequiredMixin, DetailView):
         context['total_account'] = total_account
         context['total'] = total
         context['title'] = 'مسحوبات الشركة: ' + str(self.object)
-        context['form'] = CompanyPaymentForm(self.request.POST or None)
+        form = CompanyPaymentForm(self.request.POST or None)
+        form.fields['cash_amount'].initial = 1
+        context['form'] = form
         context['type'] = 'list'
         context['company'] = self.object
         return context
@@ -1113,10 +1147,19 @@ class CompanyPayments_div(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = CompanyPayment.objects.filter(company=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_total')).get('total')
-        total = ''
-        if total_account and payment_sum != None:
-            total = total_account - payment_sum
+        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_overall')).get('total')
+
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        if total_account:
+            total_account = total_account
+        else:
+            total_account = 0
+
+        total = total_account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
@@ -1124,7 +1167,9 @@ class CompanyPayments_div(LoginRequiredMixin, DetailView):
         context['total_account'] = total_account
         context['total'] = total
         context['title'] = 'مسحوبات الشركة: ' + str(self.object)
-        context['form'] = CompanyPaymentForm(self.request.POST or None)
+        form = CompanyPaymentForm(self.request.POST or None)
+        form.fields['cash_amount'].initial = 1
+        context['form'] = form
         context['type'] = 'list'
         context['company'] = self.object
         return context
@@ -1137,6 +1182,7 @@ def CompanyPaymentCreate(request):
 
         payment_date = request.POST.get('payment_date')
         cash_amount = request.POST.get('cash_amount')
+        desc = request.POST.get('desc')
 
         if company and payment_date and cash_amount:
             obj = CompanyPayment()
@@ -1144,6 +1190,7 @@ def CompanyPaymentCreate(request):
             obj.payment_date = payment_date
             obj.admin = request.user
             obj.cash_amount = cash_amount
+            obj.desc = desc
             obj.save()
 
             if obj:
