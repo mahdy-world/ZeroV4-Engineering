@@ -12,8 +12,8 @@ urlpatterns = [
     path('com_restore/<int:pk>', CompanyRestore.as_view(), name="CompanyRestore"),
     path('com_superDelete/<int:pk>', CompanySuperDelete.as_view(), name="CompanySuperDelete"),
 
-    path('detail_payment/<int:pk>', CompanyPayments.as_view(), name="CompanyPayments"),
-    path('detail_payment_div/<int:pk>', CompanyPayments_div.as_view(), name="CompanyPayments_div"),
+    path('detail_payment_com/<int:pk>', CompanyPayments.as_view(), name="CompanyPayments"),
+    path('detail_payment_div_com/<int:pk>', CompanyPayments_div.as_view(), name="CompanyPayments_div"),
 
     path('company_payment/create/', CompanyPaymentCreate, name="CompanyPaymentCreate"),
     path('company_payment/delete/', CompanyPaymentDelete, name="CompanyPaymentDelete"),
@@ -39,8 +39,8 @@ urlpatterns = [
     path('supplier_restore/<int:pk>', SupplierRestore.as_view(), name="SupplierRestore"),
     path('supplier_superDelete/<int:pk>', SupplierSuperDelete.as_view(), name="SupplierSuperDelete"),
 
-    path('detail_payment/<int:pk>', SupplierPayments.as_view(), name="SupplierPayment"),
-    path('detail_payment_div/<int:pk>', SupplierPayments_div.as_view(), name="SupplierPayment_div"),
+    path('detail_payment_sup/<int:pk>', SupplierPayments.as_view(), name="SupplierPayment"),
+    path('detail_payment_div_sup/<int:pk>', SupplierPayments_div.as_view(), name="SupplierPayment_div"),
 
     path('supplier_payment/create/', SupplierPaymentCreate, name="SupplierPaymentCreate"),
     path('supplier_payment/delete/', SupplierPaymentDelete, name="SupplierPaymentDelete"),

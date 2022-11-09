@@ -103,10 +103,11 @@ class BonForm(forms.ModelForm):
 class SupplierPaymentForm(forms.ModelForm):
     class Meta:
         model = SupplierPayment
-        fields = ['cash_amount', 'admin', 'payment_date']
+        fields = ['cash_amount', 'admin', 'payment_date', 'desc']
         widgets = {
+            'desc': forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'placeholder': 'الوصف/السبب...', 'id': 'payment_desc'}),
             'payment_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'تاريخ السحب...', 'id': 'payment_date'}),
-            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':0}),
+            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':1}),
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
 
@@ -115,9 +116,10 @@ class SupplierPaymentForm(forms.ModelForm):
 class CompanyPaymentForm(forms.ModelForm):
     class Meta:
         model = CompanyPayment
-        fields = ['cash_amount', 'admin', 'payment_date']
+        fields = ['cash_amount', 'admin', 'payment_date', 'desc']
         widgets = {
+            'desc': forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'placeholder': 'الوصف/السبب...', 'id': 'payment_desc'}),
             'payment_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'تاريخ السحب...', 'id': 'payment_date'}),
-            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':0}),
+            'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':1}),
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
