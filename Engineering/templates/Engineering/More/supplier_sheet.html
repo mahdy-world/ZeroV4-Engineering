@@ -1,4 +1,5 @@
 {% load crispy_forms_tags %}
+{% load mathfilters %}
 <style>
   .expand_modal {
     max-width: 100%;
@@ -76,8 +77,8 @@
                                         </div>
                                         <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد البونات </span>
                                             <br><span class="text-dark">
-                                                {% if supplier_sheet_bons > 0 %}
-                                                {{ supplier_sheet_bons }}
+                                                {% if supplier_bons > 0 %}
+                                                {{ supplier_bons }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -92,7 +93,7 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي التكلفة </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> الإجمالي </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_prices > 0 %}
                                                 {{ supplier_prices }}
@@ -101,26 +102,24 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        {% if request.user.is_superuser %}
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي الحساب </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي العهد </span>
                                             <br><span class="text-dark">
-                                                {% if supplier_total > 0 %}
-                                                {{ supplier_total }}
+                                                {% if supplier_loads > 0 %}
+                                                {{ supplier_loads }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> اجمالي الربح </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> حساب المورد </span>
                                             <br><span class="text-dark">
-                                                {% if supplier_profit%}
-                                                {{ supplier_profit}}
+                                                {% if supplier_prices|sub:supplier_loads %}
+                                                {{ supplier_prices|sub:supplier_loads }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        {% endif %}
                                    </div>
                                 </div>
                             </div>
@@ -136,12 +135,11 @@
                                     <th>#</th>
                                     <th>تاريخ الاضافة</th>
                                     <th>عنوان الشيت</th>
-                                    <th>الشركة</th>
-                                    {% if request.user.is_superuser %}
-                                    <th>أرباح الشيت</th>
-                                    {% endif %}
-                                    <th>المسؤول</th>
-
+                                    <th>عدد البونات</th>
+                                    <th>اجمالي الكميات</th>
+                                    <th>الإجمالي</th>
+                                    <th>قيمة العهد</th>
+                                    <th>حساب المورد</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -150,17 +148,11 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.date|date:'Y-m-d'}}</td>
                                     <th><a href="{% url 'Engineering:SheetDetail' x.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.title }}</a></th>
-                                    <td>{{ x.company }}</td>
-                                    {% if request.user.is_superuser %}
-                                    <td>
-                                        {% if x.profit %}
-                                        {{ x.profit }}
-                                        {% else %}
-                                        0.0
-                                        {% endif %}
-                                    </td>
-                                    {% endif %}
-                                    <td>{{ x.admin.username }}</td>
+                                    <td>{{ x.bons }}</td>
+                                    <td>{{ x.quantity }}</td>
+                                    <td>{{ x.total }}</td>
+                                    <td>{{ x.loads_value }}</td>
+                                    <td>{{ x.total|sub:x.loads_value }}</td>
                                 </tr>
                                 {% endfor %}
 

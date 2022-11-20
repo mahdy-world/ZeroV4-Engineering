@@ -86,29 +86,6 @@
                     <div class="col-lg-3">
                         {% if page == "active" %}
                          <!-- Search Form -->
-                        <form class="app-search d-none d-lg-block" method="get" action="{% url 'Core:SheetCompanySearch' %}">
-                            <div class="position-relative" >
-
-                                <input type="text" style="background-color: white" value="{{sheet_company_search}}" list="sheets_c" autocomplete="off" class="form-control" name="sheet_company" placeholder="بحث ... بإسم الشركة">
-                                <span >
-                                    <button class="bx bx-search-alt btn btn-warning" type="submit">
-                                    </button>
-                                </span>
-                                <datalist id="sheets_c" >
-                                    {% for comp in companies %}
-                                        <option value="{{ comp.name }}">
-                                            {{ comp.name }}
-                                            </option>
-                                    {% endfor %}
-                                </datalist>
-                            </div>
-                        </form>
-                        <!-- end seacrh form -->
-                        {% endif %}
-                    </div>
-                    <div class="col-lg-3">
-                        {% if page == "active" %}
-                         <!-- Search Form -->
                         <form class="app-search d-none d-lg-block" method="get" action="{% url 'Core:SheetSupplierSearch' %}">
                             <div class="position-relative" >
 
@@ -153,6 +130,7 @@
                         {% endif %}
                     </div>
                     <div class="col-lg-3"></div>
+                    <div class="col-lg-3"></div>
 
                 </div>
                 <div class="row">
@@ -177,17 +155,14 @@
                                 <div class="col-lg-6">
                                     <div>
                                         <a href="{% url 'Engineering:SheetDetail' x.id %}" class="d-block text-primary mb-2">
-                                            #{{ x.id }}
-                                            {% if x.title %}
-                                            {{ x.title }}
-                                            {% endif %}
+                                            {{ x.id }}#
                                         </a>
                                         
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item mr-3">
-                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amount"> <i class='bx bxs-factory mr-1 text-primary'></i>
-                                                    {% if x.company %}
-                                                    {{ x.company }}
+                                                <h5 class="font-size-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Amount"> <i class='bx bxs-file mr-1 text-primary'></i>
+                                                    {% if x.title %}
+                                                    {{ x.title }}
                                                     {% else %}
                                                         ...
                                                     {% endif %}

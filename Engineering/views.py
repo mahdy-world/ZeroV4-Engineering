@@ -230,6 +230,13 @@ class GeoPlaceCreate(LoginRequiredMixin, CreateView):
         price_history.new_price = obj.price
         price_history.admin = self.request.user
         price_history.save()
+
+        material_price_history = GeoPlaceMaterialPriceHistory()
+        material_price_history.geo = geo
+        material_price_history.old_price = 0.0
+        material_price_history.new_price = obj.material_price
+        material_price_history.admin = self.request.user
+        material_price_history.save()
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -263,12 +270,21 @@ class GeoPlaceUpdate(LoginRequiredMixin, UpdateView):
         geo = GeoPlace.objects.get(id=self.kwargs['pk'])
         form.save()
         obj = form.save(commit=False)
-        price_history = GeoPlacePriceHistory()
-        price_history.geo = geo
-        price_history.old_price = geo.price
-        price_history.new_price = obj.price
-        price_history.admin = self.request.user
-        price_history.save()
+        if geo.price != obj.price:
+            price_history = GeoPlacePriceHistory()
+            price_history.geo = geo
+            price_history.old_price = geo.price
+            price_history.new_price = obj.price
+            price_history.admin = self.request.user
+            price_history.save()
+
+        if geo.material_price != obj.material_price:
+            material_price_history = GeoPlaceMaterialPriceHistory()
+            material_price_history.geo = geo
+            material_price_history.old_price = geo.material_price
+            material_price_history.new_price = obj.material_price
+            material_price_history.admin = self.request.user
+            material_price_history.save()
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -350,19 +366,18 @@ class GeoPlaceSuperDelete(LoginRequiredMixin, UpdateView):
         return redirect(self.get_success_url())
 
 
-class GeoPlacePriceHistoryList(LoginRequiredMixin, ListView):
-    login_url = '/auth/login/'
-    model = GeoPlacePriceHistory
-    template_name = 'Engineering/More/geoplace_price_history.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        geo = GeoPlace.objects.get(id=self.kwargs['pk'])
-        context['title'] = 'أسعار الموقع: ' + str(geo.name)
-        context['type'] = 'list'
-        context['prices'] = GeoPlacePriceHistory.objects.filter(geo=geo).order_by('-created', '-id')
-        return context
-
+def GeoPlacePriceHistoryList(request, pk):
+    geo = GeoPlace.objects.get(id=pk)
+    title = 'أسعار الموقع / أسعار الخامة: ' + str(geo.name)
+    type = 'list'
+    prices = GeoPlacePriceHistory.objects.filter(geo=geo).order_by('-created', '-id')
+    material_prices = GeoPlaceMaterialPriceHistory.objects.filter(geo=geo).order_by('-created', '-id')
+    return render(request, 'Engineering/More/geoplace_price_history.html', {
+        'title': title,
+        'type': type,
+        'prices': prices,
+        'material_prices': material_prices,
+    })
 
 ####################################################################################
 
@@ -556,7 +571,7 @@ class SheetCreate(LoginRequiredMixin, CreateView):
     model = Sheet
     form_class = SheetForm
     template_name = 'forms/form_template.html'
-    success_url = reverse_lazy('Engineering:SheetList')
+    # success_url = reverse_lazy('Engineering:SheetList')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -567,16 +582,15 @@ class SheetCreate(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=self.form_class)
-        form.fields['company'].queryset = Company.objects.filter(deleted=0, active=True)
         form.fields['supplier'].queryset = Supplier.objects.filter(deleted=0)
         return form
 
-    def get_success_url(self):
-        messages.success(self.request, "تم اضافة شيت جديد", extra_tags="success")
-        if self.request.POST.get('url'):
-            return self.request.POST.get('url')
-        else:
-            return self.success_url
+    # def get_success_url(self):
+    #     messages.success(self.request, "تم اضافة شيت جديد", extra_tags="success")
+    #     if self.request.POST.get('url'):
+    #         return self.request.POST.get('url')
+    #     else:
+    #         return self.success_url
 
     def form_valid(self, form):
         form.save()
@@ -584,7 +598,8 @@ class SheetCreate(LoginRequiredMixin, CreateView):
         myform = Sheet.objects.get(id=obj.id)
         myform.admin = self.request.user
         myform.save()
-        return redirect(self.get_success_url())
+        # return redirect(self.get_success_url())
+        return redirect('Engineering:SheetDetail', pk=obj.id)
 
 
 class SheetUpdate(LoginRequiredMixin, UpdateView):
@@ -682,10 +697,22 @@ class SheetSuperDelete(LoginRequiredMixin, UpdateView):
 def SheetDetail(request, pk):
     sheet = get_object_or_404(Sheet, id=pk)
     bons = Bon.objects.filter(sheet=sheet)
+    last_bon = bons.last()
     bons_geos = bons.values_list('geo_place__name', flat=True).distinct()
+    bons_comps = bons.values_list('company__name', flat=True).distinct()
 
     form = BonForm()
-    form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=sheet.company, deleted=False)
+    form.fields['geo_place'].queryset = GeoPlace.objects.filter(id=-1)
+    form.fields['company'].queryset = Company.objects.filter(deleted=False)
+    if last_bon:
+        form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=last_bon.company, deleted=False)
+        form.fields['car_number'].initial = last_bon.car_number
+        form.fields['car_owner'].initial = last_bon.car_owner
+        form.fields['bon_quantity'].initial = last_bon.bon_quantity
+        form.fields['bon_price'].initial = last_bon.bon_price
+        form.fields['load_value'].initial = last_bon.load_value
+        form.fields['company'].initial = last_bon.company.id
+        form.fields['geo_place'].initial = last_bon.geo_place.id
 
     action_url = reverse_lazy('Engineering:AddSheetBon', kwargs={'pk': sheet.id})
 
@@ -700,6 +727,7 @@ def SheetDetail(request, pk):
         'form': form,
         'bons': bons.order_by('-id'),
         'bons_geos': bons_geos,
+        'bons_comps': bons_comps,
         'action_url': action_url,
         'system_info': system_info,
         'date': datetime.now().date(),
@@ -711,18 +739,28 @@ def AddSheetBon(request, pk):
     sheet = Sheet.objects.get(id=pk)
     form = BonForm(request.POST or None)
     if form.is_valid():
-        obj = form.save(commit=False)
-        obj.sheet = sheet
-        obj.bon_total = obj.bon_price * obj.bon_quantity
-        obj.geo_price = obj.geo_place.price
-        obj.bon_overall = obj.geo_place.price * obj.bon_quantity
-        obj.profit = obj.geo_place.price - obj.bon_price
-        obj.total_profit = (obj.geo_place.price - obj.bon_price) * obj.bon_quantity
-        obj.admin = request.user
-        obj.save()
-        sheet.profit = Bon.objects.filter(sheet=sheet).aggregate(sum=Sum('total_profit')).get('sum')
-        sheet.save(update_fields=['profit'])
-        messages.success(request, " تم اضافة يون جديد بنجاح ", extra_tags="success")
+        bon_number = form.cleaned_data.get("bon_number")
+        if bon_number in Bon.objects.filter(sheet=sheet).values_list('bon_number', flat=True):
+            messages.error(request, "خطأ! رقم بون مكرر! تم إدخال سجل بنفس رقم البون مسبقا في هذا الشيت", extra_tags="danger")
+        else:
+            obj = form.save(commit=False)
+            obj.sheet = sheet
+            obj.bon_total = obj.bon_price * obj.bon_quantity
+            obj.geo_price = obj.geo_place.price
+            obj.bon_overall = obj.geo_place.price * obj.bon_quantity
+            obj.profit = obj.geo_place.price - (obj.geo_place.material_price + obj.bon_price)
+            obj.total_profit = (obj.geo_place.price - (obj.geo_place.material_price + obj.bon_price)) * obj.bon_quantity
+            obj.admin = request.user
+            obj.save()
+            bons = Bon.objects.filter(sheet=sheet)
+            sheet.bons = bons.count()
+            sheet.quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+            sheet.total = bons.aggregate(sum=Sum('bon_total')).get('sum')
+            sheet.overall = bons.aggregate(sum=Sum('bon_overall')).get('sum')
+            sheet.loads_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+            sheet.profit = bons.aggregate(sum=Sum('total_profit')).get('sum')
+            sheet.save(update_fields=['bons', 'quantity', 'total', 'overall', 'loads_value', 'profit'])
+            messages.success(request, " تم اضافة يون جديد بنجاح ", extra_tags="success")
     else:
         messages.error(request, " حدثث خطأ أثناء اضافة البون ", extra_tags="danger")
     return redirect('Engineering:SheetDetail', pk=sheet.id)
@@ -732,193 +770,228 @@ def DelSheetBon(request, pk):
     bon = Bon.objects.get(id=pk)
     sheet = bon.sheet
     bon.delete()
-    sheet.profit = Bon.objects.filter(sheet=sheet).aggregate(sum=Sum('total_profit')).get('sum')
-    sheet.save(update_fields=['profit'])
+    bons = Bon.objects.filter(sheet=sheet)
+    sheet.bons = bons.count()
+    sheet.quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+    sheet.total = bons.aggregate(sum=Sum('bon_total')).get('sum')
+    sheet.overall = bons.aggregate(sum=Sum('bon_overall')).get('sum')
+    sheet.loads_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+    sheet.profit = bons.aggregate(sum=Sum('total_profit')).get('sum')
+    sheet.save(update_fields=['bons', 'quantity', 'total', 'overall', 'loads_value', 'profit'])
     messages.success(request, " تم حذف بون بنجاح ", extra_tags="success")
     return redirect('Engineering:SheetDetail', pk=sheet.id)
 
 
+def get_company_geos(request):
+    if request.is_ajax():
+        if request.GET.get('company_id'):
+            geos = list(GeoPlace.objects.filter(company__id=int(request.GET.get('company_id')), deleted=False).values())
+        else:
+            geos = None
+        data = {
+            'geos': geos,
+        }
+        return JsonResponse(data)
+
+
 #####################################################
 
-class CompanySheet(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/company_sheet.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['company_sheet'] = self.model.objects.filter(company__id=self.kwargs['pk'], deleted=0).order_by('-id')
-        context['company_sheet_bons'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['company'] = get_object_or_404(Company, id=self.kwargs['pk'])
-        context['company_profit'] = self.model.objects.filter(company__id=self.kwargs['pk'], deleted=0).aggregate(sum=Sum('profit')).get('sum')
-        context['company_quantity'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['company_prices'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['company_total'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def CompanySheet(request, pk):
+    company = Company.objects.get(id=pk)
+    bons = Bon.objects.filter(company=company, sheet__deleted=0)
+    com_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=com_bons, deleted=0)
+    return render(request, 'Engineering/More/company_sheet.html', {
+        'company': company,
+        'company_sheet': sheets.order_by('-id'),
+        'company_bons': bons.count(),
+        'company_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'company_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'company_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class GeoSheet(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/geo_sheet.html'
-
-    def get_context_data(self, **kwargs):
-        bons_sheets = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).values_list('sheet__id', flat=True).distinct()
-        context = super().get_context_data(**kwargs)
-        context['geo'] = get_object_or_404(GeoPlace, id=self.kwargs['pk'])
-        context['geo_sheet'] = self.model.objects.filter(id__in=bons_sheets, deleted=0).order_by('-id')
-        context['geo_sheet_bons'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['geo_profit'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('total_profit')).get('sum')
-        context['geo_quantity'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['geo_prices'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['geo_total'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def GeoSheet(request, pk):
+    geo = GeoPlace.objects.get(id=pk)
+    bons = Bon.objects.filter(geo_place=geo, sheet__deleted=0)
+    geo_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=geo_bons, deleted=0)
+    return render(request, 'Engineering/More/geo_sheet.html', {
+        'geo': geo,
+        'geo_sheet': sheets.order_by('-id'),
+        'geo_bons': bons.count(),
+        'geo_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'geo_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'geo_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class SupplierSheet(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/supplier_sheet.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['supplier'] = get_object_or_404(Supplier, id=self.kwargs['pk'])
-        context['supplier_sheet'] = self.model.objects.filter(supplier__id=self.kwargs['pk'], deleted=0).order_by('-id')
-        context['supplier_sheet_bons'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['supplier_profit'] = self.model.objects.filter(supplier__id=self.kwargs['pk'], deleted=0).aggregate(sum=Sum('profit')).get('sum')
-        context['supplier_quantity'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['supplier_prices'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['supplier_total'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def SupplierSheet(request, pk):
+    supplier = Supplier.objects.get(id=pk)
+    sheets = Sheet.objects.filter(supplier=supplier, deleted=0)
+    return render(request, 'Engineering/More/supplier_sheet.html', {
+        'supplier': supplier,
+        'supplier_sheet': sheets.order_by('-id'),
+        'supplier_bons': sheets.aggregate(sum=Sum('bons')).get('sum'),
+        'supplier_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'supplier_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'supplier_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class CompanyBon(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/company_bon.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['company_bon'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).order_by('-id')
-        context['company_bon_sheets'] = self.model.objects.filter(company__id=self.kwargs['pk'], deleted=0).count()
-        context['company'] = get_object_or_404(Company, id=self.kwargs['pk'])
-        context['company_profit'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('total_profit')).get('sum')
-        context['company_quantity'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['company_prices'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['company_total'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def CompanyBon(request, pk):
+    company = Company.objects.get(id=pk)
+    bons = Bon.objects.filter(company=company, sheet__deleted=0)
+    com_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=com_bons, deleted=0)
+    return render(request, 'Engineering/More/company_bon.html', {
+        'company': company,
+        'company_sheet': sheets.count(),
+        'company_bon': bons.order_by('-id'),
+        'company_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'company_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'company_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class GeoBon(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/geo_bon.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['geo'] = get_object_or_404(GeoPlace, id=self.kwargs['pk'])
-        context['geo_bon'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).order_by('-id')
-        context['geo_bon_sheets'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).values('sheet__id').distinct().count()
-        context['geo_profit'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('total_profit')).get('sum')
-        context['geo_quantity'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['geo_prices'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['geo_total'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def GeoBon(request, pk):
+    geo = GeoPlace.objects.get(id=pk)
+    bons = Bon.objects.filter(geo_place=geo, sheet__deleted=0)
+    geo_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=geo_bons, deleted=0)
+    return render(request, 'Engineering/More/geo_bon.html', {
+        'geo': geo,
+        'geo_sheet': sheets.count(),
+        'geo_bon': bons.order_by('-id'),
+        'geo_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'geo_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'geo_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class SupplierBon(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/supplier_bon.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['supplier_bon'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).order_by('-id')
-        context['supplier_bon_sheets'] = self.model.objects.filter(supplier__id=self.kwargs['pk'], deleted=0).count()
-        context['supplier'] = get_object_or_404(Supplier, id=self.kwargs['pk'])
-        context['supplier_profit'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('total_profit')).get('sum')
-        context['supplier_quantity'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['supplier_prices'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['supplier_total'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-        return context
+def SupplierBon(request, pk):
+    supplier = Supplier.objects.get(id=pk)
+    sheets = Sheet.objects.filter(supplier=supplier, deleted=0)
+    return render(request, 'Engineering/More/supplier_bon.html', {
+        'supplier': supplier,
+        'supplier_sheet': sheets.count(),
+        'supplier_bon': Bon.objects.filter(sheet__supplier=supplier, sheet__deleted=0).order_by('-id'),
+        'supplier_bons': sheets.aggregate(sum=Sum('bons')).get('sum'),
+        'supplier_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
+        'supplier_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
+        'supplier_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+    })
 
 
-class CompanyProfit(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/company_profit.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['company_sheet_bons'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['company'] = get_object_or_404(Company, id=self.kwargs['pk'])
-        context['company_profit'] = self.model.objects.filter(company__id=self.kwargs['pk'], deleted=0).aggregate(sum=Sum('profit')).get('sum')
-        context['company_quantity'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['company_prices'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['company_total'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-
-        context['company_months_profit'] = Bon.objects.filter(sheet__company__id=self.kwargs['pk'], sheet__deleted=0).values('date__year', 'date__month').annotate(
+def CompanyProfit(request, pk):
+    company = Company.objects.get(id=pk)
+    bons = Bon.objects.filter(company=company, sheet__deleted=0)
+    com_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=com_bons, deleted=0)
+    return render(request, 'Engineering/More/company_profit.html', {
+        'company': company,
+        'company_bons': bons.count(),
+        'company_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
+        'company_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
+        'company_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'company_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
+        'company_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
             total=Sum('bon_total'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
+    })
 
-        return context
 
-
-class GeoProfit(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/geo_profit.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['geo'] = get_object_or_404(GeoPlace, id=self.kwargs['pk'])
-        context['geo_sheet_bons'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['geo_profit'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('total_profit')).get('sum')
-        context['geo_quantity'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['geo_prices'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['geo_total'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-
-        context['geo_months_profit'] = Bon.objects.filter(geo_place__id=self.kwargs['pk'], sheet__deleted=0).values('date__year', 'date__month').annotate(
+def GeoProfit(request, pk):
+    geo = GeoPlace.objects.get(id=pk)
+    bons = Bon.objects.filter(geo_place=geo, sheet__deleted=0)
+    com_bons = bons.values_list('sheet__id', flat=True).distinct()
+    sheets = Sheet.objects.filter(id__in=com_bons, deleted=0)
+    return render(request, 'Engineering/More/geo_profit.html', {
+        'geo': geo,
+        'geo_bons': bons.count(),
+        'geo_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
+        'geo_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
+        'geo_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'geo_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
+        'geo_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
             total=Sum('bon_total'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
+    })
 
-        return context
 
-
-class SupplierProfit(LoginRequiredMixin, DetailView):
-    login_url = '/auth/login/'
-    model = Sheet
-    template_name = 'Engineering/More/supplier_profit.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['supplier'] = get_object_or_404(Supplier, id=self.kwargs['pk'])
-        context['supplier_sheet_bons'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).count()
-        context['supplier_profit'] = self.model.objects.filter(supplier__id=self.kwargs['pk'], deleted=0).aggregate(sum=Sum('profit')).get('sum')
-        context['supplier_quantity'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_quantity')).get('sum')
-        context['supplier_prices'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_total')).get('sum')
-        context['supplier_total'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).aggregate(sum=Sum('bon_overall')).get('sum')
-
-        context['supplier_months_profit'] = Bon.objects.filter(sheet__supplier__id=self.kwargs['pk'], sheet__deleted=0).values('date__year', 'date__month').annotate(
+def SupplierProfit(request, pk):
+    supplier = Supplier.objects.get(id=pk)
+    sheets = Sheet.objects.filter(supplier=supplier, deleted=0)
+    bons = Bon.objects.filter(sheet__supplier=supplier, sheet__deleted=0)
+    return render(request, 'Engineering/More/supplier_profit.html', {
+        'supplier': supplier,
+        'supplier_bons': bons.count(),
+        'supplier_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
+        'supplier_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
+        'supplier_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'supplier_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
+        'supplier_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
             total=Sum('bon_total'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
-
-        return context
+    })
 
 
 def MonthsProfit(request):
+    supplier_pays = SupplierPayment.objects.all()
+    supplier_payment_sum = supplier_pays.aggregate(price=Sum('cash_amount')).get('price')
+    supplier_total_account = Sheet.objects.filter(deleted=0).aggregate(total=Sum('total')).get('total')
+    supplier_loads_account = Sheet.objects.filter(deleted=0).aggregate(total=Sum('loads_value')).get('total')
+
+    if supplier_payment_sum:
+        supplier_payment_sum = supplier_payment_sum
+    else:
+        supplier_payment_sum = 0
+
+    if supplier_total_account:
+        supplier_total_account = supplier_total_account
+    else:
+        supplier_total_account = 0
+
+    if supplier_loads_account:
+        supplier_loads_account = supplier_loads_account
+    else:
+        supplier_loads_account = 0
+
+    suppliers_all_pays = supplier_payment_sum + supplier_loads_account
+    suppliers_total = supplier_total_account - suppliers_all_pays
+
+    ##########################
+
+    company_pays = CompanyPayment.objects.all()
+    company_payment_sum = company_pays.aggregate(price=Sum('cash_amount')).get('price')
+    company_total_account = Sheet.objects.filter(deleted=0).aggregate(overall=Sum('overall')).get('overall')
+
+    if company_payment_sum:
+        company_payment_sum = company_payment_sum
+    else:
+        company_payment_sum = 0
+
+    if company_total_account:
+        company_total_account = company_total_account
+    else:
+        company_total_account = 0
+
+    companies_total = company_total_account - company_payment_sum
+
+    ##########################
+
     months_profit = Bon.objects.filter(sheet__deleted=0).values('date__year', 'date__month').annotate(
         bons=Count('id'),
         quantity=Sum('bon_quantity'),
@@ -974,6 +1047,12 @@ def MonthsProfit(request):
         'all_profit': all_profit,
         'months_name': months_name,
         'months_val': months_val,
+        'suppliers_all_pays': suppliers_all_pays,
+        'supplier_total_account': supplier_total_account,
+        'suppliers_total': suppliers_total,
+        'company_payment_sum': company_payment_sum,
+        'company_total_account': company_total_account,
+        'companies_total': companies_total,
     })
 
 
@@ -986,7 +1065,8 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = SupplierPayment.objects.filter(supplier=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__supplier=self.object).aggregate(total=Sum('bon_total')).get('total')
+        total_account = Sheet.objects.filter(supplier=self.object, deleted=0).aggregate(total=Sum('total')).get('total')
+        loads_account = Sheet.objects.filter(supplier=self.object, deleted=0).aggregate(total=Sum('loads_value')).get('total')
 
         if payment_sum:
             payment_sum = payment_sum
@@ -998,12 +1078,18 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
         else:
             total_account = 0
 
-        total = total_account - payment_sum
+        if loads_account:
+            loads_account = loads_account
+        else:
+            loads_account = 0
+
+        account = total_account - loads_account
+        total = account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
         context['payment_sum'] = payment_sum
-        context['total_account'] = total_account
+        context['account'] = account
         context['total'] = total
         context['title'] = 'مسحوبات المورد: ' + str(self.object)
         form = SupplierPaymentForm(self.request.POST or None)
@@ -1012,7 +1098,6 @@ class SupplierPayments(LoginRequiredMixin, DetailView):
         context['type'] = 'list'
         context['supplier'] = self.object
         return context
-
 
 
 # Supplier payment list_div
@@ -1024,7 +1109,8 @@ class SupplierPayments_div(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = SupplierPayment.objects.filter(supplier=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__supplier=self.object).aggregate(total=Sum('bon_total')).get('total')
+        total_account = Sheet.objects.filter(supplier=self.object, deleted=0).aggregate(total=Sum('total')).get('total')
+        loads_account = Sheet.objects.filter(supplier=self.object, deleted=0).aggregate(total=Sum('loads_value')).get('total')
 
         if payment_sum:
             payment_sum = payment_sum
@@ -1036,12 +1122,18 @@ class SupplierPayments_div(LoginRequiredMixin, DetailView):
         else:
             total_account = 0
 
-        total = total_account - payment_sum
+        if loads_account:
+            loads_account = loads_account
+        else:
+            loads_account = 0
+
+        account = total_account - loads_account
+        total = account - payment_sum
 
         context = super().get_context_data(**kwargs)
         context['payment'] = queryset.order_by('-id')
         context['payment_sum'] = payment_sum
-        context['total_account'] = total_account
+        context['account'] = account
         context['total'] = total
         context['title'] = 'مسحوبات المورد: ' + str(self.object)
         form = SupplierPaymentForm(self.request.POST or None)
@@ -1082,6 +1174,7 @@ def SupplierPaymentCreate(request):
             }
         return JsonResponse(response)
 
+
 # delete supplier payment item
 def SupplierPaymentDelete(request):
     if request.is_ajax():
@@ -1111,7 +1204,7 @@ class CompanyPayments(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = CompanyPayment.objects.filter(company=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__company=self.object).aggregate(total=Sum('bon_overall')).get('total')
+        total_account = Bon.objects.filter(company=self.object, sheet__deleted=0).aggregate(total=Sum('bon_overall')).get('total')
 
         if payment_sum:
             payment_sum = payment_sum
@@ -1130,7 +1223,7 @@ class CompanyPayments(LoginRequiredMixin, DetailView):
         context['payment_sum'] = payment_sum
         context['total_account'] = total_account
         context['total'] = total
-        context['title'] = 'مسحوبات الشركة: ' + str(self.object)
+        context['title'] = 'مسحوباتي من الشركة: ' + str(self.object)
         form = CompanyPaymentForm(self.request.POST or None)
         form.fields['cash_amount'].initial = 1
         context['form'] = form
@@ -1147,7 +1240,7 @@ class CompanyPayments_div(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         queryset = CompanyPayment.objects.filter(company=self.object)
         payment_sum = queryset.aggregate(price=Sum('cash_amount')).get('price')
-        total_account = Bon.objects.filter(sheet__company_id=self.object).aggregate(total=Sum('bon_overall')).get('total')
+        total_account = Bon.objects.filter(company=self.object, sheet__deleted=0).aggregate(total=Sum('bon_overall')).get('total')
 
         if payment_sum:
             payment_sum = payment_sum
@@ -1166,7 +1259,7 @@ class CompanyPayments_div(LoginRequiredMixin, DetailView):
         context['payment_sum'] = payment_sum
         context['total_account'] = total_account
         context['total'] = total
-        context['title'] = 'مسحوبات الشركة: ' + str(self.object)
+        context['title'] = 'مسحوباتي من الشركة: ' + str(self.object)
         form = CompanyPaymentForm(self.request.POST or None)
         form.fields['cash_amount'].initial = 1
         context['form'] = form

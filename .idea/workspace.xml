@@ -2,20 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Core/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geoplace_price_history.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geoplace_price_history.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment_div.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/company_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templatetags/engineering_tags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/assets/select2/dist/js/select2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/select2/dist/js/select2.min.js" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,21 +80,21 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Engineering/templates/Engineering/Payment" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering\More" />
+      <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Factory" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\My Work\My Work\محمد السيد\project\src\ZeroV4-Engineering\Engineering\templates\Engineering\Payment" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering\More" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV3\Engineering\templates\Engineering" />
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV3\Engineering" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV4-Engineering\Engineering\templates\Engineering\More" />
-      <recent name="C:\Users\Ameen\Desktop\Melegy\venv\Source\ZeroV3\Factories\templates\Factory" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -193,11 +208,18 @@
       <workItem from="1667755288141" duration="5486000" />
       <workItem from="1667820252324" duration="10658000" />
       <workItem from="1667897107253" duration="3917000" />
+      <workItem from="1668093690806" duration="17470000" />
+      <workItem from="1668168757336" duration="1317000" />
+      <workItem from="1668259850304" duration="9106000" />
+      <workItem from="1668278927857" duration="4010000" />
+      <workItem from="1668351236738" duration="1592000" />
+      <workItem from="1668458617005" duration="664000" />
+      <workItem from="1668532744290" duration="940000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />

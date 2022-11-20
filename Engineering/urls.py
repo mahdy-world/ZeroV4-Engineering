@@ -27,7 +27,7 @@ urlpatterns = [
     path('geo_delete/<int:pk>', GeoPlaceDelete.as_view(), name="GeoPlaceDelete"),
     path('geo_restore/<int:pk>', GeoPlaceRestore.as_view(), name="GeoPlaceRestore"),
     path('geo_superDelete/<int:pk>', GeoPlaceSuperDelete.as_view(), name="GeoPlaceSuperDelete"),
-    path('geo_price_history/<int:pk>', GeoPlacePriceHistoryList.as_view(), name="GeoPlacePriceHistoryList"),
+    path('geo_price_history/<int:pk>', GeoPlacePriceHistoryList, name="GeoPlacePriceHistoryList"),
 
     ####################################################################
     # supplier
@@ -57,21 +57,22 @@ urlpatterns = [
     path('sheet_detail/<int:pk>/', SheetDetail, name="SheetDetail"),
     path('AddSheetBon/<int:pk>/', AddSheetBon, name="AddSheetBon"),
     path('DelSheetBon/<int:pk>/', DelSheetBon, name="DelSheetBon"),
+    path('get_company_geos/', get_company_geos, name="get_company_geos"),
 
     ####################################################################
 
     # more
-    path('company_sheet/<int:pk>', CompanySheet.as_view(), name="CompanySheet"),
-    path('geo_sheet/<int:pk>', GeoSheet.as_view(), name="GeoSheet"),
-    path('supplier_sheet/<int:pk>', SupplierSheet.as_view(), name="SupplierSheet"),
+    path('company_sheet/<int:pk>', CompanySheet, name="CompanySheet"),
+    path('geo_sheet/<int:pk>', GeoSheet, name="GeoSheet"),
+    path('supplier_sheet/<int:pk>', SupplierSheet, name="SupplierSheet"),
 
-    path('company_bon/<int:pk>', CompanyBon.as_view(), name="CompanyBon"),
-    path('geo_bon/<int:pk>', GeoBon.as_view(), name="GeoBon"),
-    path('supplier_bon/<int:pk>', SupplierBon.as_view(), name="SupplierBon"),
+    path('company_bon/<int:pk>', CompanyBon, name="CompanyBon"),
+    path('geo_bon/<int:pk>', GeoBon, name="GeoBon"),
+    path('supplier_bon/<int:pk>', SupplierBon, name="SupplierBon"),
 
-    path('company_profit/<int:pk>', CompanyProfit.as_view(), name="CompanyProfit"),
-    path('geo_profit/<int:pk>', GeoProfit.as_view(), name="GeoProfit"),
-    path('supplier_profit/<int:pk>', SupplierProfit.as_view(), name="SupplierProfit"),
+    path('company_profit/<int:pk>', CompanyProfit, name="CompanyProfit"),
+    path('geo_profit/<int:pk>', GeoProfit, name="GeoProfit"),
+    path('supplier_profit/<int:pk>', SupplierProfit, name="SupplierProfit"),
 
     path('months_profit/', MonthsProfit, name="MonthsProfit"),
 ]

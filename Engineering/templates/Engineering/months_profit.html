@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load mathfilters %}
 {% load static %}
 {% block title %}
 <title>
-    الأرباح الشهرية
+    الأرباح الشهرية ورأس المال
 </title>
 
 {% endblock title %}
@@ -32,12 +33,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0">الأرباح الشهرية</h4>
+                                <h4 class="mb-0">الأرباح الشهرية ورأس المال</h4>
                                 <span class="badge badge-dark font-size-15"> عدد الشهور : {{months_profit.count}} </span>
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
-                                    <li class="breadcrumb-item active">الأرباح الشهرية</li>
+                                    <li class="breadcrumb-item active">الأرباح الشهرية ورأس المال</li>
                                 </ol>
                             </div>
 
@@ -53,6 +54,40 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">رأس المال</h6>
+                                        </div><br>
+                                        <div class="table-responsive text-center">
+                                            <table class="table table-hover table-bordered">
+                                              <thead>
+                                                <tr class="text-white">
+                                                    <th class="bg-secondary">حساب الموردين</th>
+                                                    <th class="bg-secondary">العهد والمسحوبات</th>
+                                                    <th class="bg-secondary">الباقي للموردين</th>
+                                                    <th class="bg-dark">حسابي</th>
+                                                    <th class="bg-dark">مسحوباتي</th>
+                                                    <th class="bg-dark">باقي مستحقاتي</th>
+                                                    <th class="bg-info">رأس المال</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <th>{{ supplier_total_account }}</th>
+                                                  <th>{{ suppliers_all_pays }}</th>
+                                                  <th>{{ suppliers_total }}</th>
+                                                  <th>{{ company_total_account }}</th>
+                                                  <th>{{ company_payment_sum }}</th>
+                                                  <th>{{ companies_total }}</th>
+                                                  <th>{{ companies_total|sub:suppliers_total }}</th>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                             <h6 class="m-0 font-weight-bold text-primary">معدل الربح الشهري</h6>
                                         </div>
                                         <div class="chart-area"> <canvas id="myAreaChart" style="min-height: 300px"></canvas>
@@ -62,14 +97,14 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-12 table-responsive text-center">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover table-bordered">
                                           <thead>
                                             <tr class="bg-primary text-white">
                                                 <th>عدد البونات الكلي</th>
-                                                <th>مجموع الكميات</th>
-                                                <th>مجموع الإجماليات</th>
-                                                <th>مجموع الحساب</th>
-                                                <th>مجموع الأرباح</th>
+                                                <th>إجمالي الكميات</th>
+                                                <th>حساب الموردين</th>
+                                                <th>حسابي</th>
+                                                <th>اجمالي الأرباح</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -87,15 +122,15 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-12 table-responsive text-center">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover table-bordered">
                                           <thead>
                                             <tr class="bg-secondary text-white">
                                                 <th>#</th>
                                                 <th>الشهر</th>
                                                 <th>عدد البونات</th>
                                                 <th>الكميات</th>
-                                                <th>الإجماليات</th>
-                                                <th>الحساب</th>
+                                                <th>حساب الموردين</th>
+                                                <th>حسابي</th>
                                                 <th>الأرباح</th>
                                             </tr>
                                           </thead>

@@ -32,6 +32,7 @@ class GeoPlaceForm(forms.ModelForm):
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'material_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'active': forms.CheckboxInput(attrs={'class':'form-control'}),
         }
 
@@ -68,11 +69,10 @@ class SupplierFormDelete(forms.ModelForm):
 class SheetForm(forms.ModelForm):
     class Meta:
         model = Sheet
-        exclude = ['deleted', 'admin', 'profit']
+        fields = ['title', 'date', 'supplier']
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control'}),
             'date': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
-            'company': forms.Select(attrs={'class':'form-control', 'id':'comapny_sheet', 'style': 'width:100%'}),
             'supplier': forms.Select(attrs={'class':'form-control', 'id':'supplier_sheet', 'style': 'width:100%'}),
         }
 
@@ -88,16 +88,25 @@ class SheetFormDelete(forms.ModelForm):
 class BonForm(forms.ModelForm):
     class Meta:
         model = Bon
-        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'geo_place', 'bon_quantity', 'bon_price']
+        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'company', 'geo_place', 'bon_quantity', 'bon_price', 'load_value']
         widgets = {
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'bon_number': forms.TextInput(attrs={'class': 'form-control'}),
             'car_number': forms.TextInput(attrs={'class': 'form-control', }),
             'car_owner': forms.TextInput(attrs={'class': 'form-control',}),
+            'company': forms.Select(attrs={'class': 'form-control', 'id':'company_bon',}),
             'geo_place': forms.Select(attrs={'class': 'form-control', 'id':'geo_place_bon',}),
             'bon_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
             'bon_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'load_value': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(BonForm, self).__init__(*args, **kwargs)
+        self.fields['car_number'].required = False
+        self.fields['car_owner'].required = False
+        self.fields['load_value'].required = False
+
 
 # Supplier Pyament Create Form
 class SupplierPaymentForm(forms.ModelForm):

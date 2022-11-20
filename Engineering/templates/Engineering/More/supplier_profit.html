@@ -17,7 +17,7 @@
 <div class="card">
   <div class="card-header">
     <div class="card-title">
-      <b class="font-weight-bold text-center"> أرباح المورد: {{ supplier }}</b>
+      <b class="font-weight-bold text-center"> أرباحي من المورد: {{ supplier }}</b>
         <span class="card-tools" style="float: left">
       <button
         type="button"
@@ -57,7 +57,7 @@
                             <div class="row ">
                                   <h3 class="mb-0 ">
                                  <a href="#sheet_data"  data-toggle="collapse" >
-                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> إجماليات أرباح المورد: {{ supplier }}  </span>
+                                     <span class="font-weight-bold"><i class="fas fa-info-circle"></i> إجماليات أرباحي من المورد: {{ supplier }}  </span>
                                  </a>
                             </h3>
                             </div>
@@ -65,16 +65,16 @@
                             <div class="row collapse mt-3 show text-center" id="sheet_data">
                                 <div class="col-lg-12 ">
                                     <div class="row">
-                                        <div class="col-md-3"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد البونات </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-quote-left"></i> عدد البونات </span>
                                             <br><span class="text-dark">
-                                                {% if supplier_sheet_bons > 0 %}
-                                                {{ supplier_sheet_bons }}
+                                                {% if supplier_bons > 0 %}
+                                                {{ supplier_bons }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-3"><span class="font-weight-bold"><i class="fas fa-calculator"></i> إجمالي الكميات </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-calculator"></i> إجمالي الكميات </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_quantity > 0 %}
                                                 {{ supplier_quantity }}
@@ -83,7 +83,7 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي التكلفة </span>
+                                        <div class="col-md-3"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي حساب المورد </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_prices > 0 %}
                                                 {{ supplier_prices }}
@@ -92,8 +92,7 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        {% if request.user.is_superuser %}
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي الحساب </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي حسابي </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_total > 0 %}
                                                 {{ supplier_total }}
@@ -102,7 +101,7 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> اجمالي الربح </span>
+                                        <div class="col-md-3"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> اجمالي الربح </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_profit%}
                                                 {{ supplier_profit}}
@@ -111,7 +110,6 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        {% endif %}
                                    </div>
                                 </div>
                             </div>
@@ -128,8 +126,8 @@
                                     <th>الشهر</th>
                                     <th>عدد البونات</th>
                                     <th>الكميات</th>
-                                    <th>الإجماليات</th>
-                                    <th>الحساب</th>
+                                    <th>حساب المورد</th>
+                                    <th>حسابي</th>
                                     <th>الأرباح</th>
                                 </tr>
                                 </thead>

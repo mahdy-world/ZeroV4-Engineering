@@ -50,6 +50,7 @@
    <div class="row">
     <div class="col-12">
 {#form to create new item#}
+        {% if company.deleted == 0 %}
          <div class="col-lg-12 col-md-12">
             <div class="card alert alert-success">
                 {% comment %}From for payment{% endcomment %}
@@ -79,6 +80,7 @@
                 </div>
             </div>
          </div>
+        {% endif %}
             <div class="card">
                 <div class="card-body" id="compnay_payment">
                     <div class="table-rep-plugin">
@@ -93,7 +95,9 @@
                                     <th>القيمة النقدية</th>
                                     <th>الوصف/السبب</th>
                                     <th>المسؤول</th>
+                                    {% if request.user.is_superuser and company.deleted == 0 %}
                                     <th><i class="fas fa-cogs"></i></th>
+                                    {% endif %}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -104,7 +108,7 @@
                                     <td>{{ x.cash_amount}} جنية </td>
                                     <td>{{ x.desc }}</td>
                                     <td>{{ x.admin.username }}</td>
-                                    {% if request.user.is_superuser %}
+                                    {% if request.user.is_superuser and company.deleted == 0 %}
                                         <td>
                                         <a
                                           onclick="
@@ -118,18 +122,6 @@
                                           ><i class="mdi mdi-close font-size-18"></i
                                         ></a>
                                       </td>
-
-                                    {% else %}
-                                        <td>
-                                        <a  data-placement="top" title="غير مسموح لك بعملية الحذف..."
-                                          style="cursor: pointer; text-decoration: line-through"
-                                          class="text-danger"
-                                          ><i class="mdi mdi-close font-size-18"></i
-                                        >
-                                        </a>
-                                      </td>
-
-
                                     {% endif %}
 
                                 </tr>
