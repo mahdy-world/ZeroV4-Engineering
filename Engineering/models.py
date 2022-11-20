@@ -22,7 +22,8 @@ class GeoPlace(models.Model):
     name = models.CharField(max_length=50, verbose_name="اسم الموقع")
     address = models.CharField(null=True, blank=True, max_length=100, verbose_name="العنوان")
     phone = models.CharField(null=True, blank=True, max_length=12, verbose_name="رقم الهاتف")
-    price = models.FloatField(default=0.0, verbose_name='السعر')
+    price = models.FloatField(default=0.0, verbose_name='سعر الموقع')
+    material_price = models.FloatField(default=0.0, verbose_name='سعر الخامة')
     active = models.BooleanField(default=True, verbose_name="نشط")
     deleted = models.BooleanField(default=False)
 
@@ -31,6 +32,17 @@ class GeoPlace(models.Model):
 
 
 class GeoPlacePriceHistory(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
+    geo = models.ForeignKey(GeoPlace, on_delete=models.CASCADE, verbose_name="الموقع")
+    old_price = models.FloatField(default=0.0, verbose_name='السعر القديم')
+    new_price = models.FloatField(default=0.0, verbose_name='السعر الجديد')
+    admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
+
+    def __str__(self):
+        return self.geo.name
+
+
+class GeoPlaceMaterialPriceHistory(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
     geo = models.ForeignKey(GeoPlace, on_delete=models.CASCADE, verbose_name="الموقع")
     old_price = models.FloatField(default=0.0, verbose_name='السعر القديم')
@@ -54,12 +66,15 @@ class Supplier(models.Model):
 class Sheet(models.Model):
     title = models.CharField(max_length=50, verbose_name="عنوان الشيت")
     date = models.DateField(default=datetime.today(), verbose_name="تاريخ الاضافة")
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة")
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, verbose_name="المورد")
-    profit = models.FloatField(null=True, blank=True, verbose_name="الربح")
+    bons = models.IntegerField(default=0, null=True, blank=True, verbose_name="البونات")
+    quantity = models.FloatField(default=0, null=True, blank=True, verbose_name="الكميات")
+    total = models.FloatField(default=0, null=True, blank=True, verbose_name="حساب المورد")
+    overall = models.FloatField(default=0, null=True, blank=True, verbose_name="حسابي")
+    loads_value = models.FloatField(default=0, null=True, blank=True, verbose_name="قيمة العهد")
+    profit = models.FloatField(default=0, null=True, blank=True, verbose_name="الربح")
     admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
     deleted = models.BooleanField(default=False, verbose_name="حذف")
-
 
     def __str__(self):
         return self.title
@@ -69,8 +84,9 @@ class Bon(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الاضافة")
     date = models.DateField(default=datetime.today(), verbose_name="التاريخ")
     bon_number = models.CharField(max_length=50, verbose_name="رقم البون")
-    car_number = models.CharField(max_length=50, verbose_name="رقم الشاحنة")
-    car_owner = models.CharField(max_length=50, verbose_name="صاحب االشاحنة")
+    car_number = models.CharField(max_length=50, verbose_name="رقم الشاحنة", null=True)
+    car_owner = models.CharField(max_length=50, verbose_name="صاحب االشاحنة", null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="الشركة", null=True)
     geo_place = models.ForeignKey(GeoPlace, on_delete=models.CASCADE, verbose_name="الموقع")
     sheet = models.ForeignKey(Sheet, on_delete=models.CASCADE, verbose_name="الشيت")
     bon_quantity = models.FloatField(default=0.0, verbose_name="الكمية")
@@ -80,6 +96,7 @@ class Bon(models.Model):
     bon_overall = models.FloatField(default=0.0, null=True, blank=True, verbose_name="الحساب")
     profit = models.FloatField(default=0.0, null=True, blank=True, verbose_name="الربح")
     total_profit = models.FloatField(default=0.0, null=True, blank=True, verbose_name="اجمالي الربح")
+    load_value = models.FloatField(default=0.0, verbose_name="العهدة", null=True)
     admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="المسئول")
 
     def __str__(self):

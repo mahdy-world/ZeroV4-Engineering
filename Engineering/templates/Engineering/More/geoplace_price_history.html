@@ -50,64 +50,131 @@
                     <div class="col-lg-12">
                         <div class="card" >
                             <div class="card-body">
-                                <div class="table-responsive" style="max-height: 400px">
-                                    <table class="table table-centered">
-                                        <thead class="thead-light text-center">
-                                            <tr>
-                                                <th scope="col" >#</th>
-                                                <th scope="col">
-                                                    التاريخ
-                                                </th>
-                                                <th scope="col">
-                                                    السعر القديم
-                                                </th>
-                                                <th scope="col">
-                                                    السعر الجديد
-                                                </th>
-                                                <th scope="col">
-                                                    المسؤول
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-center ">
-                                          {% for x in prices  %}
-                                          <tr>
-                                            <td>
-                                                {{forloop.counter}}
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-16">
-                                                    {{x.created|date:'Y-m-d'}}
-                                                </h5>
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-16">
-                                                    <i class="fas fa-dollar-sign"></i>
-                                                    {{x.old_price}}
-                                                </h5>
-                                            </td>
-                                            <td>
-                                                <h5
-                                                        {% if forloop.first %}
-                                                        class="badge badge-danger font-size-16"
-                                                        {% else %}
-                                                        class="font-size-16"
-                                                        {% endif %}
-                                                >
-                                                    <i class="fas fa-dollar-sign"></i>
-                                                    {{x.new_price}}
-                                                </h5>
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-16">
-                                                    {{x.admin.username}}
-                                                </h5>
-                                            </td>
-                                        </tr>
-                                      
-                                          {% endfor %}
-                                        </tbody>
-                                    </table>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="table-responsive" style="max-height: 400px">
+                                            <h4 style="text-align: center">تأريخ أسعار الموقع</h4>
+                                            <table class="table table-centered">
+                                                <thead class="thead-light text-center">
+                                                    <tr>
+                                                        <th scope="col" >#</th>
+                                                        <th scope="col">
+                                                            التاريخ
+                                                        </th>
+                                                        <th scope="col">
+                                                            السعر القديم
+                                                        </th>
+                                                        <th scope="col">
+                                                            السعر الجديد
+                                                        </th>
+                                                        <th scope="col">
+                                                            المسؤول
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-center ">
+                                                  {% for x in prices  %}
+                                                  <tr>
+                                                    <td>
+                                                        {{forloop.counter}}
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            {{x.created|date:'Y-m-d'}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            <i class="fas fa-dollar-sign"></i>
+                                                            {{x.old_price}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5
+                                                                {% if forloop.first %}
+                                                                class="badge badge-danger font-size-16"
+                                                                {% else %}
+                                                                class="font-size-16"
+                                                                {% endif %}
+                                                        >
+                                                            <i class="fas fa-dollar-sign"></i>
+                                                            {{x.new_price}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            {{x.admin.username}}
+                                                        </h5>
+                                                    </td>
+                                                </tr>
+
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="table-responsive" style="max-height: 400px">
+                                            <h4 style="text-align: center">تأريخ أسعار الخامة</h4>
+                                            <table class="table table-centered">
+                                                <thead class="thead-light text-center">
+                                                    <tr>
+                                                        <th scope="col" >#</th>
+                                                        <th scope="col">
+                                                            التاريخ
+                                                        </th>
+                                                        <th scope="col">
+                                                            السعر القديم
+                                                        </th>
+                                                        <th scope="col">
+                                                            السعر الجديد
+                                                        </th>
+                                                        <th scope="col">
+                                                            المسؤول
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-center ">
+                                                  {% for x in material_prices  %}
+                                                  <tr>
+                                                    <td>
+                                                        {{forloop.counter}}
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            {{x.created|date:'Y-m-d'}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            <i class="fas fa-dollar-sign"></i>
+                                                            {{x.old_price}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5
+                                                                {% if forloop.first %}
+                                                                class="badge badge-danger font-size-16"
+                                                                {% else %}
+                                                                class="font-size-16"
+                                                                {% endif %}
+                                                        >
+                                                            <i class="fas fa-dollar-sign"></i>
+                                                            {{x.new_price}}
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-16">
+                                                            {{x.admin.username}}
+                                                        </h5>
+                                                    </td>
+                                                </tr>
+
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
