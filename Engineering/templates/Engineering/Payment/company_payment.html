@@ -12,6 +12,16 @@
     position: fixed;
     z-index: 100000;
   }
+
+    .select2-selection__rendered {
+        line-height: 31px !important;
+    }
+    .select2-container .select2-selection--single {
+        height: 36px !important;
+    }
+    .select2-selection__arrow {
+        height: 35px !important;
+    }
 </style>
 
 <div class="card">
@@ -55,26 +65,29 @@
             <div class="card alert alert-success">
                 {% comment %}From for payment{% endcomment %}
                 <div class="row" id="sheet_data">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                          {{form.payment_date|as_crispy_field}}
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                          {{form.cash_amount|as_crispy_field}}
+                    </div>
+
+                    <div class="col-md-3">
+                         {{form.geo_place|as_crispy_field}}
                     </div>
 
                     <div class="col-md-4">
                          {{form.desc|as_crispy_field}}
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button
                           style="margin-top: 32px"
                           onclick="PaymentCreate()"
                           class="btn btn-success form-control"
                         >
                         <i class="fas fa-plus-circle"></i>
-                          إضافة
                         </button>
                     </div>
                 </div>
@@ -93,6 +106,7 @@
                                     <th>#</th>
                                     <th>تاريخ العملية</th>
                                     <th>القيمة النقدية</th>
+                                    <th>الموقع</th>
                                     <th>الوصف/السبب</th>
                                     <th>المسؤول</th>
                                     {% if request.user.is_superuser and company.deleted == 0 %}
@@ -106,6 +120,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.payment_date|date:'Y-m-d'}}</td>
                                     <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.geo_place.name}}</td>
                                     <td>{{ x.desc }}</td>
                                     <td>{{ x.admin.username }}</td>
                                     {% if request.user.is_superuser and company.deleted == 0 %}
@@ -232,60 +247,68 @@
 </div>
 
 {% block js %}
-       <script>
-          function PaymentCreate() {
+   <script>
+      function PaymentCreate() {
+        $.ajax({
+          type: "POST",
+          url: "{% url 'Engineering:CompanyPaymentCreate'  %}",
+          data: {
+            id: "{{object.id}}",
+            payment_date: $("#payment_date").val(),
+            desc: $("#payment_desc").val(),
+            cash_amount: $("#cash_amount").val(),
+            geo_place: $("#geo_place").val(),
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            dataType: "json",
+          },
+          success: function (response) {
+            /* response message */
+            if (response.msg == 1) {
+              $("#cash_amount").val("1");
+              $('#geo_place').val('').trigger('change');
+              $("#payment_desc").val("");
+              $("#compnay_payment")
+                .html("&nbsp;")
+                .load(
+                  "{% url 'Engineering:CompanyPayments_div' object.id %}"
+                );
+              alert("تم الاضافة بنجاح");
+            } else {
+              alert("حاول مرة اخري / خطأ في البيانات");
+            }
+          },
+
+          failure: function () {},
+        });
+      }
+
+      function PaymentDelete(payment_id) {
             $.ajax({
               type: "POST",
-              url: "{% url 'Engineering:CompanyPaymentCreate'  %}",
+              url: "{% url 'Engineering:CompanyPaymentDelete' %}",
               data: {
-                id: "{{object.id}}",
-                payment_date: $("#payment_date").val(),
-                desc: $("#payment_desc").val(),
-                cash_amount: $("#cash_amount").val(),
+                payment_id: payment_id,
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 dataType: "json",
               },
-              success: function (response) {
+              success: function (data) {
                 /* response message */
-                if (response.msg == 1) {
-                  $("#cash_amount").val("1");
-                  $("#payment_desc").val("");
-                  $("#compnay_payment")
-                    .html("&nbsp;")
-                    .load(
-                      "{% url 'Engineering:CompanyPayments_div' object.id %}"
-                    );
-                  alert("تم الاضافة بنجاح");
-                } else {
-                  alert("حاول مرة اخري / خطأ في البيانات");
-                }
+                $("#compnay_payment")
+                  .html("&nbsp;")
+                  .load(
+                    "{% url 'Engineering:CompanyPayments_div' object.id %}"
+                  );
+                alert("تم الحذف بنجاح");
               },
 
               failure: function () {},
             });
           }
+   </script>
+    <script>
+    $(document).ready(function() {
+        $('#geo_place').select2();
+    });
+</script>
 
-          function PaymentDelete(payment_id) {
-                $.ajax({
-                  type: "POST",
-                  url: "{% url 'Engineering:CompanyPaymentDelete' %}",
-                  data: {
-                    payment_id: payment_id,
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    dataType: "json",
-                  },
-                  success: function (data) {
-                    /* response message */
-                    $("#compnay_payment")
-                      .html("&nbsp;")
-                      .load(
-                        "{% url 'Engineering:CompanyPayments_div' object.id %}"
-                      );
-                    alert("تم الحذف بنجاح");
-                  },
-
-                  failure: function () {},
-                });
-              }
-       </script>
 {% endblock js %}
