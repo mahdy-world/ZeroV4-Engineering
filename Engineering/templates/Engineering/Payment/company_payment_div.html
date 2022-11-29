@@ -8,6 +8,7 @@
                                     <th>#</th>
                                     <th>تاريخ العملية</th>
                                     <th>القيمة النقدية</th>
+                                    <th>الموقع</th>
                                     <th>الوصف/السبب</th>
                                     <th>المسؤول</th>
                                     {% if request.user.is_superuser and company.deleted == 0 %}
@@ -21,6 +22,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ x.payment_date|date:'Y-m-d'}}</td>
                                     <td>{{ x.cash_amount}} جنية </td>
+                                    <td>{{ x.geo_place.name}}</td>
                                     <td>{{ x.desc }}</td>
                                     <td>{{ x.admin.username }}</td>
                                      {% if request.user.is_superuser and company.deleted == 0 %}

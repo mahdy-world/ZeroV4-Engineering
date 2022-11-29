@@ -12,7 +12,6 @@ import weasyprint
 from Engineering.models import *
 from django.db.models import F
 
-
 # Create your views here.
 
 class CompanyList(LoginRequiredMixin, ListView):
@@ -700,6 +699,7 @@ def SheetDetail(request, pk):
     last_bon = bons.last()
     bons_geos = bons.values_list('geo_place__name', flat=True).distinct()
     bons_comps = bons.values_list('company__name', flat=True).distinct()
+    bons_cars = bons.values_list('car_number', flat=True).distinct()
 
     form = BonForm()
     form.fields['geo_place'].queryset = GeoPlace.objects.filter(id=-1)
@@ -708,7 +708,10 @@ def SheetDetail(request, pk):
         form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=last_bon.company, deleted=False)
         form.fields['car_number'].initial = last_bon.car_number
         form.fields['car_owner'].initial = last_bon.car_owner
+        form.fields['kassara'].initial = last_bon.kassara
         form.fields['bon_quantity'].initial = last_bon.bon_quantity
+        form.fields['bon_quantity_discount'].initial = last_bon.bon_quantity_discount
+        form.fields['bon_quantity_diff'].initial = last_bon.bon_quantity_diff
         form.fields['bon_price'].initial = last_bon.bon_price
         form.fields['load_value'].initial = last_bon.load_value
         form.fields['company'].initial = last_bon.company.id
@@ -728,6 +731,7 @@ def SheetDetail(request, pk):
         'bons': bons.order_by('-id'),
         'bons_geos': bons_geos,
         'bons_comps': bons_comps,
+        'bons_cars': bons_cars,
         'action_url': action_url,
         'system_info': system_info,
         'date': datetime.now().date(),
@@ -745,21 +749,37 @@ def AddSheetBon(request, pk):
         else:
             obj = form.save(commit=False)
             obj.sheet = sheet
-            obj.bon_total = obj.bon_price * obj.bon_quantity
+            bon_quantity_after_discount = obj.bon_quantity - obj.bon_quantity_discount
+            obj.bon_quantity_after_discount = bon_quantity_after_discount
+            bon_total = obj.bon_price * obj.bon_quantity
+            obj.bon_total = bon_total
             obj.geo_price = obj.geo_place.price
-            obj.bon_overall = obj.geo_place.price * obj.bon_quantity
-            obj.profit = obj.geo_place.price - (obj.geo_place.material_price + obj.bon_price)
-            obj.total_profit = (obj.geo_place.price - (obj.geo_place.material_price + obj.bon_price)) * obj.bon_quantity
+            obj.material_price = obj.geo_place.material_price
+            material_total = obj.geo_place.material_price * obj.bon_quantity
+            obj.material_total = material_total
+            bon_overall = obj.geo_place.price * bon_quantity_after_discount
+            obj.bon_overall = bon_overall
+            supplier_value = bon_total - obj.load_value
+            obj.supplier_value = supplier_value
+            profit = bon_overall - (bon_total + material_total)
+            obj.profit = profit
+            diff_profit = obj.geo_place.material_price * obj.bon_quantity_diff
+            obj.diff_profit = diff_profit
+            obj.total_profit = profit + diff_profit
             obj.admin = request.user
             obj.save()
             bons = Bon.objects.filter(sheet=sheet)
             sheet.bons = bons.count()
             sheet.quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+            sheet.quantity_discount = bons.aggregate(sum=Sum('bon_quantity_discount')).get('sum')
+            sheet.quantity_after_discount = bons.aggregate(sum=Sum('bon_quantity_after_discount')).get('sum')
+            sheet.quantity_diff = bons.aggregate(sum=Sum('bon_quantity_diff')).get('sum')
             sheet.total = bons.aggregate(sum=Sum('bon_total')).get('sum')
             sheet.overall = bons.aggregate(sum=Sum('bon_overall')).get('sum')
             sheet.loads_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+            sheet.supplier_value = bons.aggregate(sum=Sum('supplier_value')).get('sum')
             sheet.profit = bons.aggregate(sum=Sum('total_profit')).get('sum')
-            sheet.save(update_fields=['bons', 'quantity', 'total', 'overall', 'loads_value', 'profit'])
+            sheet.save(update_fields=['bons', 'quantity', 'quantity_discount', 'quantity_after_discount', 'quantity_diff', 'total', 'overall', 'loads_value', 'supplier_value', 'profit'])
             messages.success(request, " تم اضافة يون جديد بنجاح ", extra_tags="success")
     else:
         messages.error(request, " حدثث خطأ أثناء اضافة البون ", extra_tags="danger")
@@ -773,11 +793,15 @@ def DelSheetBon(request, pk):
     bons = Bon.objects.filter(sheet=sheet)
     sheet.bons = bons.count()
     sheet.quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+    sheet.quantity_discount = bons.aggregate(sum=Sum('bon_quantity_discount')).get('sum')
+    sheet.quantity_after_discount = bons.aggregate(sum=Sum('bon_quantity_after_discount')).get('sum')
+    sheet.quantity_diff = bons.aggregate(sum=Sum('bon_quantity_diff')).get('sum')
     sheet.total = bons.aggregate(sum=Sum('bon_total')).get('sum')
     sheet.overall = bons.aggregate(sum=Sum('bon_overall')).get('sum')
     sheet.loads_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+    sheet.supplier_value = bons.aggregate(sum=Sum('supplier_value')).get('sum')
     sheet.profit = bons.aggregate(sum=Sum('total_profit')).get('sum')
-    sheet.save(update_fields=['bons', 'quantity', 'total', 'overall', 'loads_value', 'profit'])
+    sheet.save(update_fields=['bons', 'quantity', 'quantity_discount', 'quantity_after_discount', 'quantity_diff', 'total', 'overall', 'loads_value', 'supplier_value', 'profit'])
     messages.success(request, " تم حذف بون بنجاح ", extra_tags="success")
     return redirect('Engineering:SheetDetail', pk=sheet.id)
 
@@ -793,7 +817,6 @@ def get_company_geos(request):
         }
         return JsonResponse(data)
 
-
 #####################################################
 
 def CompanySheet(request, pk):
@@ -806,8 +829,9 @@ def CompanySheet(request, pk):
         'company_sheet': sheets.order_by('-id'),
         'company_bons': bons.count(),
         'company_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
-        'company_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
-        'company_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+        'company_quantity_discount': sheets.aggregate(sum=Sum('quantity_discount')).get('sum'),
+        'company_quantity_after_discount': sheets.aggregate(sum=Sum('quantity_after_discount')).get('sum'),
+        'company_prices': sheets.aggregate(sum=Sum('overall')).get('sum'),
     })
 
 
@@ -821,8 +845,9 @@ def GeoSheet(request, pk):
         'geo_sheet': sheets.order_by('-id'),
         'geo_bons': bons.count(),
         'geo_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
-        'geo_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
-        'geo_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+        'geo_quantity_discount': sheets.aggregate(sum=Sum('quantity_discount')).get('sum'),
+        'geo_quantity_after_discount': sheets.aggregate(sum=Sum('quantity_after_discount')).get('sum'),
+        'geo_prices': sheets.aggregate(sum=Sum('overall')).get('sum'),
     })
 
 
@@ -849,8 +874,9 @@ def CompanyBon(request, pk):
         'company_sheet': sheets.count(),
         'company_bon': bons.order_by('-id'),
         'company_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
-        'company_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
-        'company_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+        'company_quantity_discount': sheets.aggregate(sum=Sum('quantity_discount')).get('sum'),
+        'company_quantity_after_discount': sheets.aggregate(sum=Sum('quantity_after_discount')).get('sum'),
+        'company_prices': sheets.aggregate(sum=Sum('overall')).get('sum'),
     })
 
 
@@ -864,8 +890,9 @@ def GeoBon(request, pk):
         'geo_sheet': sheets.count(),
         'geo_bon': bons.order_by('-id'),
         'geo_quantity': sheets.aggregate(sum=Sum('quantity')).get('sum'),
-        'geo_prices': sheets.aggregate(sum=Sum('total')).get('sum'),
-        'geo_loads': sheets.aggregate(sum=Sum('loads_value')).get('sum'),
+        'geo_quantity_discount': sheets.aggregate(sum=Sum('quantity_discount')).get('sum'),
+        'geo_quantity_after_discount': sheets.aggregate(sum=Sum('quantity_after_discount')).get('sum'),
+        'geo_prices': sheets.aggregate(sum=Sum('overall')).get('sum'),
     })
 
 
@@ -893,12 +920,14 @@ def CompanyProfit(request, pk):
         'company_bons': bons.count(),
         'company_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
         'company_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
-        'company_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'company_prices': bons.aggregate(sum=Sum('supplier_value')).get('sum'),
         'company_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
         'company_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
-            total=Sum('bon_total'),
+            quantity_discount=Sum('bon_quantity_discount'),
+            quantity_after_discount=Sum('bon_quantity_after_discount'),
+            total=Sum('supplier_value'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
@@ -915,12 +944,14 @@ def GeoProfit(request, pk):
         'geo_bons': bons.count(),
         'geo_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
         'geo_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
-        'geo_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'geo_prices': bons.aggregate(sum=Sum('supplier_value')).get('sum'),
         'geo_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
         'geo_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
-            total=Sum('bon_total'),
+            quantity_discount=Sum('bon_quantity_discount'),
+            quantity_after_discount=Sum('bon_quantity_after_discount'),
+            total=Sum('supplier_value'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
@@ -936,12 +967,12 @@ def SupplierProfit(request, pk):
         'supplier_bons': bons.count(),
         'supplier_profit': sheets.aggregate(sum=Sum('profit')).get('sum'),
         'supplier_quantity': bons.aggregate(sum=Sum('bon_quantity')).get('sum'),
-        'supplier_prices': bons.aggregate(sum=Sum('bon_total')).get('sum'),
+        'supplier_prices': bons.aggregate(sum=Sum('supplier_value')).get('sum'),
         'supplier_total': bons.aggregate(sum=Sum('bon_overall')).get('sum'),
         'supplier_months_profit': bons.values('date__year', 'date__month').annotate(
             bons=Count('id'),
             quantity=Sum('bon_quantity'),
-            total=Sum('bon_total'),
+            total=Sum('supplier_value'),
             profit=Sum('total_profit'),
             overall=Sum('bon_overall'),
         ).order_by('-date__year', '-date__month')
@@ -995,7 +1026,9 @@ def MonthsProfit(request):
     months_profit = Bon.objects.filter(sheet__deleted=0).values('date__year', 'date__month').annotate(
         bons=Count('id'),
         quantity=Sum('bon_quantity'),
-        total=Sum('bon_total'),
+        quantity_discount=Sum('bon_quantity_discount'),
+        quantity_after_discount=Sum('bon_quantity_after_discount'),
+        total=Sum('supplier_value'),
         profit=Sum('total_profit'),
         overall=Sum('bon_overall'),
     ).order_by('-date__year', '-date__month')
@@ -1003,7 +1036,9 @@ def MonthsProfit(request):
     all_profit = Bon.objects.filter(sheet__deleted=0).aggregate(
         bons=Count('id'),
         quantity=Sum('bon_quantity'),
-        total=Sum('bon_total'),
+        quantity_discount=Sum('bon_quantity_discount'),
+        quantity_after_discount=Sum('bon_quantity_after_discount'),
+        total=Sum('supplier_value'),
         profit=Sum('total_profit'),
         overall=Sum('bon_overall'),
     )
@@ -1229,6 +1264,7 @@ class CompanyPayments(LoginRequiredMixin, DetailView):
         context['form'] = form
         context['type'] = 'list'
         context['company'] = self.object
+        context['geos'] = GeoPlace.objects.filter(company=self.object)
         return context
 
 # Company_div payment list
@@ -1265,6 +1301,7 @@ class CompanyPayments_div(LoginRequiredMixin, DetailView):
         context['form'] = form
         context['type'] = 'list'
         context['company'] = self.object
+        context['geos'] = GeoPlace.objects.filter(company=self.object)
         return context
 
 # create compnay payment function
@@ -1275,6 +1312,7 @@ def CompanyPaymentCreate(request):
 
         payment_date = request.POST.get('payment_date')
         cash_amount = request.POST.get('cash_amount')
+        geo_place = request.POST.get('geo_place')
         desc = request.POST.get('desc')
 
         if company and payment_date and cash_amount:
@@ -1283,6 +1321,10 @@ def CompanyPaymentCreate(request):
             obj.payment_date = payment_date
             obj.admin = request.user
             obj.cash_amount = cash_amount
+            if geo_place:
+                obj.geo_place = GeoPlace.objects.get(id=int(geo_place))
+            else:
+                obj.geo_place = None
             obj.desc = desc
             obj.save()
 
@@ -1314,3 +1356,28 @@ def CompanyPaymentDelete(request):
             }
 
         return JsonResponse(response)
+
+
+def BonsReports(request):
+    bons = Bon.objects.filter(sheet__deleted=0)
+    bons_sups = bons.values_list('sheet__supplier__name', flat=True).distinct()
+    bons_geos = bons.values_list('geo_place__name', flat=True).distinct()
+    bons_comps = bons.values_list('company__name', flat=True).distinct()
+    bons_cars = bons.values_list('car_number', flat=True).distinct()
+
+    system_info = SystemInformation.objects.all()
+    if system_info.count() > 0:
+        system_info = system_info.last()
+    else:
+        system_info = None
+
+    context = {
+        'bons': bons.order_by('-id'),
+        'bons_sups': bons_sups,
+        'bons_geos': bons_geos,
+        'bons_comps': bons_comps,
+        'bons_cars': bons_cars,
+        'system_info': system_info,
+        'date': datetime.now().date(),
+    }
+    return render(request, 'Engineering/bons_reports.html', context)

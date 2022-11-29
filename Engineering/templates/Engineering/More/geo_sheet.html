@@ -93,28 +93,28 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> الإجمالي </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> اجمالي الخصم </span>
                                             <br><span class="text-dark">
-                                                {% if geo_prices > 0 %}
+                                                {% if geo_quantity_discount > 0 %}
+                                                {{ geo_quantity_discount }}
+                                                {% else %}
+                                                0.0
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي الكميات بعد الخصم </span>
+                                            <br><span class="text-dark">
+                                                {% if geo_quantity_after_discount > 0 %}
+                                                {{ geo_quantity_after_discount }}
+                                                {% else %}
+                                                0.0
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> حسابي بدون المسحوبات </span>
+                                            <br><span class="text-dark">
+                                                {% if geo_prices %}
                                                 {{ geo_prices }}
-                                                {% else %}
-                                                0.0
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي العهد </span>
-                                            <br><span class="text-dark">
-                                                {% if geo_loads > 0 %}
-                                                {{ geo_loads }}
-                                                {% else %}
-                                                0.0
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> حساب المورد </span>
-                                            <br><span class="text-dark">
-                                                {% if geo_prices|sub:geo_loads %}
-                                                {{ geo_prices|sub:geo_loads }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -137,9 +137,9 @@
                                     <th>عنوان الشيت</th>
                                     <th>عدد البونات</th>
                                     <th>اجمالي الكميات</th>
-                                    <th>الإجمالي</th>
-                                    <th>قيمة العهد</th>
-                                    <th>حساب المورد</th>
+                                    <th>الخصم</th>
+                                    <th>الكميات بعد الخصم</th>
+                                    <th>حسابي</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -150,9 +150,9 @@
                                     <th><a href="{% url 'Engineering:SheetDetail' x.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.title }}</a></th>
                                     <td>{{ x.bons }}</td>
                                     <td>{{ x.quantity }}</td>
-                                    <td>{{ x.total }}</td>
-                                    <td>{{ x.loads_value }}</td>
-                                    <td>{{ x.total|sub:x.loads_value }}</td>
+                                    <td>{{ x.quantity_discount }}</td>
+                                    <td>{{ x.quantity_after_discount }}</td>
+                                    <td>{{ x.overall }}</td>
                                 </tr>
                                 {% endfor %}
 

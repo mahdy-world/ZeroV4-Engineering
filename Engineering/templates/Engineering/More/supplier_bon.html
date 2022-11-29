@@ -111,7 +111,7 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> حساب المورد </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> الصافي للمورد بدون المسحوبات </span>
                                             <br><span class="text-dark">
                                                 {% if supplier_prices|sub:supplier_loads %}
                                                 {{ supplier_prices|sub:supplier_loads }}
@@ -136,14 +136,16 @@
                                     <th>التاريخ</th>
                                     <th>الشركة</th>
                                     <th>الموقع</th>
+                                    <th>رقم البون</th>
                                     <th>الكمية</th>
                                     <th>السعر</th>
                                     <th>الاجمالي</th>
                                     <th>العهدة</th>
-                                    <th>الحساب النهائي</th>
-                                    <th>رقم البون</th>
+                                    <th>الصافي</th>
                                     <th>رقم الشاحنة</th>
                                     <th>صاحب الشاحنة</th>
+                                    <th>اسم الكسارة</th>
+                                    <th>فرق التكعيب</th>
                                     <th>الشيت</th>
                                 </tr>
                                 </thead>
@@ -161,6 +163,9 @@
                                         {{x.geo_place.name}}
                                     </td>
                                     <td>
+                                        {{x.bon_number}}
+                                    </td>
+                                    <td>
                                         {{ x.bon_quantity }}
                                     </td>
                                     <td>
@@ -176,13 +181,16 @@
                                         {{ x.bon_total|sub:x.load_value }}
                                     </td>
                                     <td>
-                                        {{x.bon_number}}
-                                    </td>
-                                    <td>
                                         {{x.car_number}}
                                     </td>
                                     <td>
                                         {{ x.car_owner }}
+                                    </td>
+                                    <td>
+                                        {{ x.kassara }}
+                                    </td>
+                                    <td>
+                                        {{ x.bon_quantity_diff }}
                                     </td>
                                     <th><a href="{% url 'Engineering:SheetDetail' x.sheet.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.sheet.title}} </a></th>
                                 </tr>

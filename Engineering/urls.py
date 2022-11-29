@@ -75,4 +75,5 @@ urlpatterns = [
     path('supplier_profit/<int:pk>', SupplierProfit, name="SupplierProfit"),
 
     path('months_profit/', MonthsProfit, name="MonthsProfit"),
+    path('bons_reports/', BonsReports, name="bons_reports"),
 ]

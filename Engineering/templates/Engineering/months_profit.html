@@ -102,6 +102,8 @@
                                             <tr class="bg-primary text-white">
                                                 <th>عدد البونات الكلي</th>
                                                 <th>إجمالي الكميات</th>
+                                                <th>خصم الكميات</th>
+                                                <th>الكميات بعد الخصم</th>
                                                 <th>حساب الموردين</th>
                                                 <th>حسابي</th>
                                                 <th>اجمالي الأرباح</th>
@@ -111,6 +113,8 @@
                                             <tr>
                                               <th>{{ all_profit.bons }}</th>
                                               <th>{{ all_profit.quantity }}</th>
+                                              <th>{{ all_profit.quantity_discount }}</th>
+                                              <th>{{ all_profit.quantity_after_discount }}</th>
                                               <th>{{ all_profit.total }}</th>
                                               <th>{{ all_profit.overall }}</th>
                                               <th>{{ all_profit.profit }}</th>
@@ -129,6 +133,8 @@
                                                 <th>الشهر</th>
                                                 <th>عدد البونات</th>
                                                 <th>الكميات</th>
+                                                <th>خصم الكميات</th>
+                                                <th>الكميات بعد الخصم</th>
                                                 <th>حساب الموردين</th>
                                                 <th>حسابي</th>
                                                 <th>الأرباح</th>
@@ -141,6 +147,8 @@
                                                 <td>{{ month.date__year}}-{{ month.date__month }}</td>
                                                 <td>{{ month.bons }}</td>
                                                 <td>{{ month.quantity }}</td>
+                                                <td>{{ month.quantity_discount }}</td>
+                                                <td>{{ month.quantity_after_discount }}</td>
                                                 <td>{{ month.total }}</td>
                                                 <td>{{ month.overall }}</td>
                                                 <td>{{ month.profit }}</td>

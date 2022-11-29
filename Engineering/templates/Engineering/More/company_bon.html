@@ -93,28 +93,28 @@
                                                 {% endif %}
                                             </span>
                                         </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> الإجمالي </span>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> اجمالي الخصم </span>
                                             <br><span class="text-dark">
-                                                {% if company_prices > 0 %}
+                                                {% if company_quantity_discount > 0 %}
+                                                {{ company_quantity_discount }}
+                                                {% else %}
+                                                0.0
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي الكميات بعد الخصم </span>
+                                            <br><span class="text-dark">
+                                                {% if company_quantity_after_discount > 0 %}
+                                                {{ company_quantity_after_discount }}
+                                                {% else %}
+                                                0.0
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> حسابي بدون المسحوبات </span>
+                                            <br><span class="text-dark">
+                                                {% if company_prices %}
                                                 {{ company_prices }}
-                                                {% else %}
-                                                0.0
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill"></i> إجمالي العهد </span>
-                                            <br><span class="text-dark">
-                                                {% if company_loads > 0 %}
-                                                {{ company_loads }}
-                                                {% else %}
-                                                0.0
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-2"><span class="font-weight-bold"><i class="fas fa-money-bill-wave"></i> حساب المورد </span>
-                                            <br><span class="text-dark">
-                                                {% if company_prices|sub:company_loads %}
-                                                {{ company_prices|sub:company_loads }}
                                                 {% else %}
                                                 0.0
                                                 {% endif %}
@@ -136,14 +136,16 @@
                                     <th>التاريخ</th>
                                     <th>الشركة</th>
                                     <th>الموقع</th>
-                                    <th>الكمية</th>
-                                    <th>السعر</th>
-                                    <th>الاجمالي</th>
-                                    <th>العهدة</th>
-                                    <th>الحساب النهائي</th>
                                     <th>رقم البون</th>
+                                    <th>الكمية</th>
+                                    <th>الخصم</th>
+                                    <th>الكمية بعد الخصم</th>
+                                    <th>سعر الموقع</th>
+                                    <th>حسابي</th>
                                     <th>رقم الشاحنة</th>
                                     <th>صاحب الشاحنة</th>
+                                    <th>اسم الكسارة</th>
+                                    <th>فرق التكعيب</th>
                                     <th>الشيت</th>
                                 </tr>
                                 </thead>
@@ -161,28 +163,34 @@
                                         {{x.geo_place.name}}
                                     </td>
                                     <td>
+                                        {{x.bon_number}}
+                                    </td>
+                                    <td>
                                         {{ x.bon_quantity }}
                                     </td>
                                     <td>
-                                        {{ x.bon_price }}
+                                        {{ x.bon_quantity_discount }}
                                     </td>
                                     <td>
-                                        {{ x.bon_total }}
+                                        {{ x.bon_quantity_after_discount }}
                                     </td>
                                     <td>
-                                        {{ x.load_value }}
+                                        {{ x.geo_price }}
                                     </td>
                                     <td>
-                                        {{ x.bon_total|sub:x.load_value }}
-                                    </td>
-                                    <td>
-                                        {{x.bon_number}}
+                                        {{ x.bon_overall }}
                                     </td>
                                     <td>
                                         {{x.car_number}}
                                     </td>
                                     <td>
                                         {{ x.car_owner }}
+                                    </td>
+                                    <td>
+                                        {{ x.kassara }}
+                                    </td>
+                                    <td>
+                                        {{ x.bon_quantity_diff }}
                                     </td>
                                     <th><a href="{% url 'Engineering:SheetDetail' x.sheet.id %}" target="_blank"><i class="fas fa-expand-alt"></i> {{ x.sheet.title}} </a></th>
                                 </tr>

@@ -88,15 +88,20 @@ class SheetFormDelete(forms.ModelForm):
 class BonForm(forms.ModelForm):
     class Meta:
         model = Bon
-        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'company', 'geo_place', 'bon_quantity', 'bon_price', 'load_value']
+        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'kassara', 'company', 'geo_place',
+                  'bon_quantity', 'bon_quantity_discount', 'bon_quantity_diff', 'bon_price', 'load_value',
+                  ]
         widgets = {
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'bon_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'bon_number': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'car_number': forms.TextInput(attrs={'class': 'form-control', }),
             'car_owner': forms.TextInput(attrs={'class': 'form-control',}),
-            'company': forms.Select(attrs={'class': 'form-control', 'id':'company_bon',}),
-            'geo_place': forms.Select(attrs={'class': 'form-control', 'id':'geo_place_bon',}),
+            'kassara': forms.TextInput(attrs={'class': 'form-control',}),
+            'company': forms.Select(attrs={'class': 'form-control', 'id':'company_bon', 'style': 'width:100%'}),
+            'geo_place': forms.Select(attrs={'class': 'form-control', 'id':'geo_place_bon', 'style': 'width:100%'}),
             'bon_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
+            'bon_quantity_discount': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
+            'bon_quantity_diff': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
             'bon_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'load_value': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
         }
@@ -105,6 +110,9 @@ class BonForm(forms.ModelForm):
         super(BonForm, self).__init__(*args, **kwargs)
         self.fields['car_number'].required = False
         self.fields['car_owner'].required = False
+        self.fields['kassara'].required = False
+        self.fields['bon_quantity_discount'].required = False
+        self.fields['bon_quantity_diff'].required = False
         self.fields['load_value'].required = False
 
 
@@ -125,10 +133,11 @@ class SupplierPaymentForm(forms.ModelForm):
 class CompanyPaymentForm(forms.ModelForm):
     class Meta:
         model = CompanyPayment
-        fields = ['cash_amount', 'admin', 'payment_date', 'desc']
+        fields = ['cash_amount', 'geo_place', 'admin', 'payment_date', 'desc']
         widgets = {
             'desc': forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'placeholder': 'الوصف/السبب...', 'id': 'payment_desc'}),
             'payment_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'تاريخ السحب...', 'id': 'payment_date'}),
             'cash_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'القيمة النقدية...', 'id': 'cash_amount', 'min':1}),
+            'geo_place': forms.Select(attrs={'class': 'form-control', 'id': 'geo_place', 'style': 'width:100%'}),
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }

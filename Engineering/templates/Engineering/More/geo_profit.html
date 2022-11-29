@@ -126,6 +126,8 @@
                                     <th>الشهر</th>
                                     <th>عدد البونات</th>
                                     <th>الكميات</th>
+                                    <th>الخصم</th>
+                                    <th>الكميات بعد الخصم</th>
                                     <th>حساب موردين الموقع</th>
                                     <th>حسابي</th>
                                     <th>الأرباح</th>
@@ -138,6 +140,8 @@
                                     <td>{{ x.date__year}}-{{ x.date__month }}</td>
                                     <td>{{ x.bons }}</td>
                                     <td>{{ x.quantity }}</td>
+                                    <td>{{ x.quantity_discount }}</td>
+                                    <td>{{ x.quantity_after_discount }}</td>
                                     <td>{{ x.total }}</td>
                                     <td>{{ x.overall }}</td>
                                     <td>{{ x.profit }}</td>
