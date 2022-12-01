@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/reports/print_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/reports/supplier_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/reports/supplier_report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +190,7 @@
       <workItem from="1669742420179" duration="607000" />
       <workItem from="1669755047350" duration="936000" />
       <workItem from="1669816300620" duration="26300000" />
-      <workItem from="1669905027685" duration="10150000" />
+      <workItem from="1669905027685" duration="10825000" />
     </task>
     <servers />
   </component>
