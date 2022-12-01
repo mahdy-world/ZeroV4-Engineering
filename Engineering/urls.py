@@ -76,4 +76,10 @@ urlpatterns = [
 
     path('months_profit/', MonthsProfit, name="MonthsProfit"),
     path('bons_reports/', BonsReports, name="bons_reports"),
+
+    ###################################################################
+
+    # Supplier Reoprt
+    path('supplier_report/<int:pk>', SupplierReport, name="SupplierReport"),
+
 ]

@@ -2,29 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/reports/supplier_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0002_auto_20221015_1748.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0003_auto_20221015_2318.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0004_auto_20221017_0704.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0005_auto_20221018_0330.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0006_auto_20221019_0055.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0007_auto_20221019_0059.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0008_auto_20221019_0102.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0009_auto_20221108_1112.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0010_auto_20221108_1116.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0011_auto_20221109_1546.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0012_auto_20221109_2103.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0013_auto_20221109_2108.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0014_auto_20221109_2159.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0015_auto_20221109_2219.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0016_auto_20221109_2356.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0017_auto_20221110_0003.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0018_auto_20221110_0145.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0019_auto_20221110_0150.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0020_auto_20221110_0216.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0021_auto_20221110_1754.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0022_auto_20221124_1752.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0023_auto_20221124_2158.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0024_auto_20221124_2242.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0025_auto_20221124_2251.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/migrations/0026_auto_20221127_0129.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/supplier_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,19 +104,7 @@
       <recent name="C:\Users\Ameen\Desktop\Engineering\venv\Source\ZeroV3\Engineering" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Django server.ZeroV4-Engineering">
+  <component name="RunManager" selected="Django Server.ZeroV3">
     <configuration name="ZeroV3" type="Python.DjangoServer" factoryName="Django server">
       <module name="ZeroV3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -151,7 +152,7 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -220,11 +221,13 @@
       <workItem from="1669673291685" duration="290000" />
       <workItem from="1669677058036" duration="9000" />
       <workItem from="1669742420179" duration="607000" />
+      <workItem from="1669755047350" duration="936000" />
+      <workItem from="1669816300620" duration="25946000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
@@ -234,12 +237,11 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
