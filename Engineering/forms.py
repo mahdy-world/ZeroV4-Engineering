@@ -141,3 +141,23 @@ class CompanyPaymentForm(forms.ModelForm):
             'geo_place': forms.Select(attrs={'class': 'form-control', 'id': 'geo_place', 'style': 'width:100%'}),
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
+
+
+class SupplierReoprtForm(forms.Form):
+    from_date = forms.DateField(widget=forms.DateInput(attrs={
+        'type': 'Date',
+        'name': 'from_date',
+        'id': 'from_date',
+        'class': 'form-control',
+        'placeholder': 'التاريخ من...'}),
+        label = 'التاريخ من...'
+    )
+
+    to_date = forms.DateField(widget=forms.DateInput(attrs={
+        'type': 'Date',
+        'name': 'to_date',
+        'id': 'to_date',
+        'class': 'form-control',
+        'placeholder': 'التاريخ الي...'}),
+        label = 'التاريخ الي...'
+    )

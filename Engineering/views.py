@@ -1381,3 +1381,68 @@ def BonsReports(request):
         'date': datetime.now().date(),
     }
     return render(request, 'Engineering/bons_reports.html', context)
+
+
+def SupplierReport(request, pk):
+    # form to filter data from ... to....
+    filter_form = SupplierReoprtForm
+
+    if request.GET.get('submit'):
+        print('success')
+        # get supplier object
+        supplier = get_object_or_404(Supplier, id=pk)
+        # get payment for supplier
+
+        if request.GET.get('from_date') and request.GET.get('to_date'):
+            payment = SupplierPayment.objects.filter(created_date__range=[request.GET.get('from_date'), request.GET.get('to_date')]).order_by('-id')
+
+        if request.GET.get('from_date') and request.GET.get('to_date'):
+            bons = Bon.objects.filter(sheet__supplier=supplier, date__range=[request.GET.get('from_date'), request.GET.get('to_date')])
+
+        bons_count = bons.count()
+        total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+
+        payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        supplier_total_payment = bons.aggregate(sum=Sum('supplier_value')).get('sum')
+        if supplier_total_payment:
+            supplier_total_payment = supplier_total_payment
+        else:
+            supplier_total_payment = 0
+
+        if payment_sum:
+            total_supplier_account = supplier_total_payment - payment_sum
+        else:
+            total_supplier_account = supplier_total_payment
+        total_load_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+    else:
+        supplier = supplier = get_object_or_404(Supplier, id=pk)
+        payment = None
+        bons_count = 0
+        total_quantity = 0
+        payment_sum = 0
+        date_from = None
+        date_to = None
+        total_supplier_account = 0
+        supplier_total_payment = 0
+        total_load_value = 0
+    context = {
+        'form': filter_form,
+        'supplier': supplier,
+        'payment': payment,
+        'supplier_bon_count': bons_count,
+        'supplier_quantity': total_quantity,
+        'payment_sum': payment_sum,
+        'date_from': request.GET.get('from_date'),
+        'date_to': request.GET.get('to_date'),
+        'total_supplier_account': total_supplier_account,
+        'supplier_total_payment': supplier_total_payment,
+        'total_load_value': total_load_value
+
+
+    }
+    return render(request, 'Engineering/reports/supplier_report.html', context)

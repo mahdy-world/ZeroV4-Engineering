@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block title %}
+{% load  crispy_forms_tags %}
+<title>
+    تقرير مسحوبات  {{ sheet.title }}
+</title>
+{% endblock title %}
+
+{% block main %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12"> {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                            <i class="mdi mdi-check-all mr-2"></i>
+                            {{ message|safe }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+
+
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+
+                            <h3 class="mb-0 ">
+                                <span class="font-weight-bold font-italic">تقرير مسحوبات المورد:</span> {{ supplier.name | title }}
+                            </h3>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'Engineering:SheetList' %}">قائمة
+                                        المورد
+                                    </a></li>
+                                    <li class="breadcrumb-item active">
+                                        تقرير مسحوبات المورد {{ supplier.name }}
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                         <div class="card">
+                            <div class="card-body">
+
+                                <div class="tab-pane" id="processing" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                    <div class="table-responsive bg-light">
+                                                        <table class="table table-nowrap mb-0">
+                                                            <thead>
+                                                                <form method="get" action="#">
+
+                                                                <tr>
+                                                                    <th class="col-lg-4 col-xl-4 col-md-4">{{form.from_date|as_crispy_field}}</th>
+                                                                    <th class="col-lg-4 col-xl-4 col-md-4">{{form.to_date|as_crispy_field}}</th>
+                                                                    <th><button name="submit" id="submit" value="1" style="width: 100%" type="submit" class="btn btn-success"><span class="font-weight-bold font-italic" style="width: 100%">بحث</span></button></th>
+                                                                </tr>
+                                                                </form>
+                                                            </thead>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                         <div class="col-lg-12 col-md-12">
+                                                          <span style="display: flex; justify-content: left">
+                                                            <a class="btn btn-outline-info" href="#">طباعة <i class="fas fa-print"></i></a>
+                                                         </span>
+                                                          {% if date_from %}
+                                                             <span style="margin-left: 10px">
+                                                                 <span class="font-weight-bold font-italic"> التاريخ من: {{ date_from }}</span>
+                                                             </span>
+                                                         {% endif %}
+
+                                                         {% if date_to %}
+                                                         <span>
+                                                             <span class="font-weight-bold font-italic"> التاريخ الي: {{ date_to }}</span>
+                                                         </span>
+
+                                                        {% endif %}
+
+                                                             <div class="table table-bordered" style="margin-top: 10px">
+                                                                {% comment %}payment table {% endcomment %}
+                                                                <table id="tech-companies-1" class="table table-centered">
+
+                                                                    <thead>
+                                                                    <tr style="text-align: center">
+                                                                        <th colspan="6"><h3 class="font-weight-bold font-italic">الاجماليات</h3></th>
+                                                                    </tr>
+                                                                    <tr style="text-align: center">
+                                                                        <th >اجمالي عدد البونات</th>
+                                                                        <th >اجمالي الكميات</th>
+                                                                        <th >اجمالي حساب المورد</th>
+                                                                        <th >اجمالي مسحوبات المورد</th>
+                                                                        <th >باقي مستحق</th>
+                                                                        <th >اجمالي العهد</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    <tr style="text-align: center">
+                                                                        <td>{{ supplier_bon_count }}بون</td>
+                                                                        <td>{{ supplier_quantity }}</td>
+                                                                        <td>{{ supplier_total_payment}} جنية </td>
+                                                                        <td>{{ payment_sum}} جنية </td>
+                                                                        <td>{{ total_supplier_account }} جنية </td>
+                                                                        <td>{{ total_load_value }} جنية</td>
+
+                                                                    </tr>
+
+
+                                                                    </tbody>
+                                                                </table>
+
+                                                </div>
+
+                                                             </div>
+                                                         <div class="col-lg-12 col-md-12">
+                                                          {% if date_from %}
+                                                             <span style="margin-left: 10px">
+                                                                 <span class="font-weight-bold font-italic"> التاريخ من: {{ date_from }}</span>
+                                                             </span>
+                                                         {% endif %}
+
+                                                         {% if date_to %}
+                                                         <span>
+                                                             <span class="font-weight-bold font-italic"> التاريخ الي: {{ date_to }}</span>
+                                                         </span>
+
+
+                                                        {% endif %}
+
+                                                                 <div class="table-rep-plugin" style="margin-top: 10px">
+                                                                <div class="table" data-pattern="priority-columns">
+                                                                <div class="table-responsive table-bordered " >
+                                                                {% comment %}payment table {% endcomment %}
+                                                                <table id="tech-companies-1" class="table table-centered border_style">
+
+                                                                    <thead>
+                                                                    <tr style="text-align: center">
+                                                                        <th colspan="4"><h3 class="font-italic font-weight-bold">المسحوبات</h3></th>
+                                                                    </tr>
+                                                                    <tr class="bg-dark text-light">
+                                                                        <th>#</th>
+                                                                        <th>تاريخ العملية</th>
+                                                                        <th>القيمة النقدية</th>
+                                                                        <th>الوصف/السبب</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% if payment %}
+                                                                    {% for x in payment %}
+                                                                    <tr>
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td>{{ x.payment_date|date:'Y-m-d'}}</td>
+                                                                        <td>{{ x.cash_amount}} جنية </td>
+                                                                        <td>{{ x.desc }}</td>
+
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    {% else %}
+                                                                        <tr style="text-align: center">
+                                                                            <td colspan="4"><h5>لا توجد مسحوبات</h5></td>
+                                                                        </tr>
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                                </div>
+                                                            </div>
+
+                                                            </div>
+                                                             </div>
+
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                {% if is_paginated %}
+                {% include "components/paginator.html" %}
+                {% endif %}
+
+          </div>
+      </div>
+  </div>
+{% endblock %}
