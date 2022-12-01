@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/bons_reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/bons_reports.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/reports/supplier_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -220,6 +223,10 @@
       <workItem from="1669595613016" duration="1753000" />
       <workItem from="1669673291685" duration="290000" />
       <workItem from="1669677058036" duration="9000" />
+      <workItem from="1669742420179" duration="831000" />
+      <workItem from="1669748789493" duration="2531000" />
+      <workItem from="1669760619115" duration="7006000" />
+      <workItem from="1669820422776" duration="7765000" />
       <workItem from="1669742420179" duration="607000" />
       <workItem from="1669755047350" duration="936000" />
       <workItem from="1669816300620" duration="25946000" />
