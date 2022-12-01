@@ -2,27 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4bff9e1-b8cb-4a2e-b61e-00d1ad15ee51" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZeroV4-Engineering.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Core/templates/components/leftSidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_profit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/company_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_profit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/geo_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_bon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/More/supplier_sheet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/company_payment_div.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/Payment/supplier_payment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/months_profit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/bons_reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/bons_reports.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/templates/Engineering/sheet_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engineering/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engineering/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -219,7 +201,10 @@
       <workItem from="1669595613016" duration="1753000" />
       <workItem from="1669673291685" duration="290000" />
       <workItem from="1669677058036" duration="9000" />
-      <workItem from="1669742420179" duration="607000" />
+      <workItem from="1669742420179" duration="831000" />
+      <workItem from="1669748789493" duration="2531000" />
+      <workItem from="1669760619115" duration="7006000" />
+      <workItem from="1669820422776" duration="7765000" />
     </task>
     <servers />
   </component>
