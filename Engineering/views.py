@@ -1430,6 +1430,9 @@ def SupplierReport(request, pk):
         total_supplier_account = 0
         supplier_total_payment = 0
         total_load_value = 0
+
+
+
     context = {
         'form': filter_form,
         'supplier': supplier,
@@ -1445,4 +1448,55 @@ def SupplierReport(request, pk):
 
 
     }
+
+    if request.GET.get('print'):
+        payment = SupplierPayment.objects.filter(
+            created_date__range=[request.GET.get('date_from'), request.GET.get('date_to')]).order_by('-id')
+        bons = Bon.objects.filter(sheet__supplier=supplier,
+                              date__range=[request.GET.get('date_from'), request.GET.get('date_to')])
+
+        bons_count = bons.count()
+        total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+
+        payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
+        if payment_sum:
+            payment_sum = payment_sum
+        else:
+            payment_sum = 0
+
+        supplier_total_payment = bons.aggregate(sum=Sum('supplier_value')).get('sum')
+        if supplier_total_payment:
+            supplier_total_payment = supplier_total_payment
+        else:
+            supplier_total_payment = 0
+
+        if payment_sum:
+            total_supplier_account = supplier_total_payment - payment_sum
+        else:
+            total_supplier_account = supplier_total_payment
+        total_load_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+
+        system_info = SystemInformation.objects.all()
+        if system_info.count() > 0:
+            system_info = system_info.last()
+        else:
+            system_info = None
+
+        context = {
+            'date_from': request.GET.get('date_from'),
+            'date_to': request.GET.get('date_to'),
+            'total_supplier_account': total_supplier_account,
+            'supplier_total_payment': supplier_total_payment,
+            'total_load_value': total_load_value,
+            'supplier': supplier,
+            'payment': payment,
+            'supplier_bon_count': bons_count,
+            'supplier_quantity': total_quantity,
+            'payment_sum': payment_sum,
+            'system_info': system_info,
+            'report_date': date.today(),
+
+        }
+        return render(request, 'Engineering/reports/print_report.html', context)
+
     return render(request, 'Engineering/reports/supplier_report.html', context)

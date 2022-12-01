@@ -85,7 +85,11 @@
                                                         <div class="row">
                                                          <div class="col-lg-12 col-md-12">
                                                           <span style="display: flex; justify-content: left">
-                                                            <a class="btn btn-outline-info" href="#">طباعة <i class="fas fa-print"></i></a>
+                                                            <form method="get" target="_blank">
+                                                                <input hidden value="{{ date_from }}" name="date_from">
+                                                                <input hidden value="{{ date_to }}" name="date_to">
+                                                                <button name="print" value="2" id="print" type="submit">طباعة</button>
+                                                            </form>
                                                          </span>
                                                           {% if date_from %}
                                                              <span style="margin-left: 10px">
