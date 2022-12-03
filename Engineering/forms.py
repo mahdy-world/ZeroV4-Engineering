@@ -128,6 +128,10 @@ class SupplierPaymentForm(forms.ModelForm):
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(SupplierPaymentForm, self).__init__(*args, **kwargs)
+        self.fields['desc'].required = False
+
 
 # Company Pyament Create Form
 class CompanyPaymentForm(forms.ModelForm):
@@ -142,22 +146,48 @@ class CompanyPaymentForm(forms.ModelForm):
             'admin': forms.Select(attrs={'class': 'form-control', 'placeholder': 'المسئول...', 'id': 'admin'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CompanyPaymentForm, self).__init__(*args, **kwargs)
+        self.fields['geo_place'].required = False
+        self.fields['desc'].required = False
 
-class SupplierReoprtForm(forms.Form):
-    from_date = forms.DateField(widget=forms.DateInput(attrs={
+
+class ReportForm(forms.Form):
+    from_date1 = forms.DateField(widget=forms.DateInput(attrs={
         'type': 'Date',
-        'name': 'from_date',
-        'id': 'from_date',
-        'class': 'form-control',
-        'placeholder': 'التاريخ من...'}),
-        label = 'التاريخ من...'
+        'name': 'from_date1',
+        'id': 'from_date1',
+        'class': 'form-control'}),
+        label = 'البونات والعهد من'
     )
 
-    to_date = forms.DateField(widget=forms.DateInput(attrs={
+    to_date1 = forms.DateField(widget=forms.DateInput(attrs={
         'type': 'Date',
-        'name': 'to_date',
-        'id': 'to_date',
-        'class': 'form-control',
-        'placeholder': 'التاريخ الي...'}),
-        label = 'التاريخ الي...'
+        'name': 'to_date1',
+        'id': 'to_date1',
+        'class': 'form-control'}),
+        label = 'الي'
     )
+
+    from_date2 = forms.DateField(widget=forms.DateInput(attrs={
+        'type': 'Date',
+        'name': 'from_date2',
+        'id': 'from_date2',
+        'class': 'form-control'}),
+        label='المسحوبات من'
+    )
+
+    to_date2 = forms.DateField(widget=forms.DateInput(attrs={
+        'type': 'Date',
+        'name': 'to_date2',
+        'id': 'to_date2',
+        'class': 'form-control'}),
+        label='الي'
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.fields['from_date1'].required = False
+        self.fields['to_date1'].required = False
+        self.fields['from_date2'].required = False
+        self.fields['to_date2'].required = False

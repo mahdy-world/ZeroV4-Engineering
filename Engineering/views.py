@@ -1384,65 +1384,261 @@ def BonsReports(request):
 
 
 def SupplierReport(request, pk):
-    # form to filter data from ... to....
-    filter_form = SupplierReoprtForm
+    supplier = get_object_or_404(Supplier, id=pk)
+    filter_form = ReportForm
+    action = reverse_lazy('Engineering:SupplierReportShow', kwargs={'pk': supplier.id})
+    return render(request, 'Engineering/reports/search_report.html', {'supplier': supplier, 'form': filter_form, 'action': action})
 
-    if request.GET.get('submit'):
-        print('success')
-        # get supplier object
-        supplier = get_object_or_404(Supplier, id=pk)
-        # get payment for supplier
 
-        if request.GET.get('from_date') and request.GET.get('to_date'):
-            payment = SupplierPayment.objects.filter(created_date__range=[request.GET.get('from_date'), request.GET.get('to_date')]).order_by('-id')
+def SupplierReportShow(request, pk):
+    data = True
+    filter_form = ReportForm(request.POST)
+    supplier = get_object_or_404(Supplier, id=pk)
+    action = reverse_lazy('Engineering:SupplierReportShow', kwargs={'pk': supplier.id})
+    payment = SupplierPayment.objects.filter(supplier=supplier, cash_amount__gt=0)
+    if request.POST.get('from_date2'):
+        filter_form.fields['from_date2'].initial = request.POST.get('from_date2')
+        payment = payment.filter(payment_date__gte=request.POST.get('from_date2'))
+    if request.POST.get('to_date2'):
+        filter_form.fields['to_date2'].initial = request.POST.get('to_date2')
+        payment = payment.filter(payment_date__lte=request.POST.get('to_date2'))
 
-        if request.GET.get('from_date') and request.GET.get('to_date'):
-            bons = Bon.objects.filter(sheet__supplier=supplier, date__range=[request.GET.get('from_date'), request.GET.get('to_date')])
-
-        bons_count = bons.count()
-        total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
-
-        payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
-        if payment_sum:
-            payment_sum = payment_sum
-        else:
-            payment_sum = 0
-
-        supplier_total_payment = bons.aggregate(sum=Sum('supplier_value')).get('sum')
-        if supplier_total_payment:
-            supplier_total_payment = supplier_total_payment
-        else:
-            supplier_total_payment = 0
-
-        if payment_sum:
-            total_supplier_account = supplier_total_payment - payment_sum
-        else:
-            total_supplier_account = supplier_total_payment
-        total_load_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+    payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
+    if payment_sum:
+        payment_sum = payment_sum
     else:
-        supplier = supplier = get_object_or_404(Supplier, id=pk)
-        payment = None
-        bons_count = 0
-        total_quantity = 0
         payment_sum = 0
-        date_from = None
-        date_to = None
-        total_supplier_account = 0
-        supplier_total_payment = 0
+
+    bons = Bon.objects.filter(sheet__supplier=supplier)
+    if request.POST.get('from_date1'):
+        filter_form.fields['from_date1'].initial = request.POST.get('from_date1')
+        bons = bons.filter(date__gte=request.POST.get('from_date1'))
+    if request.POST.get('to_date1'):
+        filter_form.fields['to_date1'].initial = request.POST.get('to_date1')
+        bons = bons.filter(date__lte=request.POST.get('to_date1'))
+
+    bons_count = bons.count()
+    total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+
+    total_payment = bons.aggregate(sum=Sum('bon_total')).get('sum')
+    if total_payment:
+        total_payment = total_payment
+    else:
+        total_payment = 0
+
+    total_load_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+    if total_load_value:
+        total_load_value = total_load_value
+    else:
         total_load_value = 0
+
+    all_bons = Bon.objects.filter(sheet__supplier=supplier)
+    overall = all_bons.aggregate(sum=Sum('supplier_value')).get('sum')
+    if overall:
+        overall = overall
+    else:
+        overall = 0
+
+    total_account = overall - payment_sum
+
+    system_info = SystemInformation.objects.all()
+    if system_info.count() > 0:
+        system_info = system_info.last()
+    else:
+        system_info = None
+
     context = {
+        'action': action,
+        'data': data,
         'form': filter_form,
         'supplier': supplier,
         'payment': payment,
-        'supplier_bon_count': bons_count,
-        'supplier_quantity': total_quantity,
         'payment_sum': payment_sum,
-        'date_from': request.GET.get('from_date'),
-        'date_to': request.GET.get('to_date'),
-        'total_supplier_account': total_supplier_account,
-        'supplier_total_payment': supplier_total_payment,
-        'total_load_value': total_load_value
-
-
+        'bon_count': bons_count,
+        'quantity': total_quantity,
+        'date_from1': request.POST.get('from_date1'),
+        'date_to1': request.POST.get('to_date1'),
+        'date_from2': request.POST.get('from_date2'),
+        'date_to2': request.POST.get('to_date2'),
+        'total_account': total_account,
+        'total_payment': total_payment,
+        'total_load_value': total_load_value,
+        'system_info': system_info,
+        'report_date': date.today(),
     }
-    return render(request, 'Engineering/reports/supplier_report.html', context)
+    if request.POST.get('print'):
+        return render(request, 'Engineering/reports/print_report.html', context)
+    else:
+        return render(request, 'Engineering/reports/search_report.html', context)
+
+
+def CompanyReport(request, pk):
+    company = get_object_or_404(Company, id=pk)
+    filter_form = ReportForm
+    action = reverse_lazy('Engineering:CompanyReportShow', kwargs={'pk': company.id})
+    return render(request, 'Engineering/reports/search_report.html', {'company': company, 'form': filter_form, 'action': action})
+
+
+def CompanyReportShow(request, pk):
+    data = True
+    filter_form = ReportForm(request.POST)
+    company = get_object_or_404(Company, id=pk)
+    action = reverse_lazy('Engineering:CompanyReportShow', kwargs={'pk': company.id})
+    payment = CompanyPayment.objects.filter(company=company, cash_amount__gt=0)
+    if request.POST.get('from_date2'):
+        filter_form.fields['from_date2'].initial = request.POST.get('from_date2')
+        payment = payment.filter(payment_date__gte=request.POST.get('from_date2'))
+    if request.POST.get('to_date2'):
+        filter_form.fields['to_date2'].initial = request.POST.get('to_date2')
+        payment = payment.filter(payment_date__lte=request.POST.get('to_date2'))
+
+    payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
+    if payment_sum:
+        payment_sum = payment_sum
+    else:
+        payment_sum = 0
+
+    bons = Bon.objects.filter(company=company)
+    if request.POST.get('from_date1'):
+        filter_form.fields['from_date1'].initial = request.POST.get('from_date1')
+        bons = bons.filter(date__gte=request.POST.get('from_date1'))
+    if request.POST.get('to_date1'):
+        filter_form.fields['to_date1'].initial = request.POST.get('to_date1')
+        bons = bons.filter(date__lte=request.POST.get('to_date1'))
+
+    bons_count = bons.count()
+    total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+    total_quantity_discount = bons.aggregate(sum=Sum('bon_quantity_discount')).get('sum')
+    total_quantity_after_discount = bons.aggregate(sum=Sum('bon_quantity_after_discount')).get('sum')
+
+    total_payment = bons.aggregate(sum=Sum('bon_overall')).get('sum')
+    if total_payment:
+        total_payment = total_payment
+    else:
+        total_payment = 0
+
+    all_bons = Bon.objects.filter(company=company)
+    overall = all_bons.aggregate(sum=Sum('bon_overall')).get('sum')
+    if overall:
+        overall = overall
+    else:
+        overall = 0
+
+    total_account = overall - payment_sum
+
+    system_info = SystemInformation.objects.all()
+    if system_info.count() > 0:
+        system_info = system_info.last()
+    else:
+        system_info = None
+
+    context = {
+        'action': action,
+        'data': data,
+        'form': filter_form,
+        'company': company,
+        'payment': payment,
+        'payment_sum': payment_sum,
+        'bon_count': bons_count,
+        'quantity': total_quantity,
+        'quantity_discount': total_quantity_discount,
+        'quantity_after_discount': total_quantity_after_discount,
+        'date_from1': request.POST.get('from_date1'),
+        'date_to1': request.POST.get('to_date1'),
+        'date_from2': request.POST.get('from_date2'),
+        'date_to2': request.POST.get('to_date2'),
+        'total_account': total_account,
+        'total_payment': total_payment,
+        'system_info': system_info,
+        'report_date': date.today(),
+    }
+    if request.POST.get('print'):
+        return render(request, 'Engineering/reports/print_report.html', context)
+    else:
+        return render(request, 'Engineering/reports/search_report.html', context)
+
+
+def GeoReport(request, pk):
+    geo = get_object_or_404(GeoPlace, id=pk)
+    filter_form = ReportForm
+    action = reverse_lazy('Engineering:GeoReportShow', kwargs={'pk': geo.id})
+    return render(request, 'Engineering/reports/search_report.html', {'geo': geo, 'form': filter_form, 'action': action})
+
+
+def GeoReportShow(request, pk):
+    data = True
+    filter_form = ReportForm(request.POST)
+    geo = get_object_or_404(GeoPlace, id=pk)
+    action = reverse_lazy('Engineering:GeoReportShow', kwargs={'pk': geo.id})
+    payment = CompanyPayment.objects.filter(geo_place=geo, cash_amount__gt=0)
+    if request.POST.get('from_date2'):
+        filter_form.fields['from_date2'].initial = request.POST.get('from_date2')
+        payment = payment.filter(payment_date__gte=request.POST.get('from_date2'))
+    if request.POST.get('to_date2'):
+        filter_form.fields['to_date2'].initial = request.POST.get('to_date2')
+        payment = payment.filter(payment_date__lte=request.POST.get('to_date2'))
+
+    payment_sum = payment.aggregate(sum=Sum('cash_amount')).get('sum')
+    if payment_sum:
+        payment_sum = payment_sum
+    else:
+        payment_sum = 0
+
+    bons = Bon.objects.filter(geo_place=geo)
+    if request.POST.get('from_date1'):
+        filter_form.fields['from_date1'].initial = request.POST.get('from_date1')
+        bons = bons.filter(date__gte=request.POST.get('from_date1'))
+    if request.POST.get('to_date1'):
+        filter_form.fields['to_date1'].initial = request.POST.get('to_date1')
+        bons = bons.filter(date__lte=request.POST.get('to_date1'))
+
+    bons_count = bons.count()
+    total_quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+    total_quantity_discount = bons.aggregate(sum=Sum('bon_quantity_discount')).get('sum')
+    total_quantity_after_discount = bons.aggregate(sum=Sum('bon_quantity_after_discount')).get('sum')
+
+    total_payment = bons.aggregate(sum=Sum('bon_overall')).get('sum')
+    if total_payment:
+        total_payment = total_payment
+    else:
+        total_payment = 0
+
+    all_bons = Bon.objects.filter(geo_place=geo)
+    overall = all_bons.aggregate(sum=Sum('bon_overall')).get('sum')
+    if overall:
+        overall = overall
+    else:
+        overall = 0
+
+    total_account = overall - payment_sum
+
+    system_info = SystemInformation.objects.all()
+    if system_info.count() > 0:
+        system_info = system_info.last()
+    else:
+        system_info = None
+
+    context = {
+        'action': action,
+        'data': data,
+        'form': filter_form,
+        'geo': geo,
+        'payment': payment,
+        'payment_sum': payment_sum,
+        'bon_count': bons_count,
+        'quantity': total_quantity,
+        'quantity_discount': total_quantity_discount,
+        'quantity_after_discount': total_quantity_after_discount,
+        'date_from1': request.POST.get('from_date1'),
+        'date_to1': request.POST.get('to_date1'),
+        'date_from2': request.POST.get('from_date2'),
+        'date_to2': request.POST.get('to_date2'),
+        'total_account': total_account,
+        'total_payment': total_payment,
+        'system_info': system_info,
+        'report_date': date.today(),
+    }
+    if request.POST.get('print'):
+        return render(request, 'Engineering/reports/print_report.html', context)
+    else:
+        return render(request, 'Engineering/reports/search_report.html', context)

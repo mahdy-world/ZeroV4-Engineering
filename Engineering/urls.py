@@ -81,5 +81,12 @@ urlpatterns = [
 
     # Supplier Reoprt
     path('supplier_report/<int:pk>', SupplierReport, name="SupplierReport"),
+    path('supplier_report_show/<int:pk>', SupplierReportShow, name="SupplierReportShow"),
+    # Company Reoprt
+    path('company_report/<int:pk>', CompanyReport, name="CompanyReport"),
+    path('company_report_show/<int:pk>', CompanyReportShow, name="CompanyReportShow"),
+    # Geo Reoprt
+    path('geo_report/<int:pk>', GeoReport, name="GeoReport"),
+    path('geo_report_show/<int:pk>', GeoReportShow, name="GeoReportShow"),
 
 ]

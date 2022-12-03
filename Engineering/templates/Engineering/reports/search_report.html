@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block title %}
+{% load  crispy_forms_tags %}
+<title>
+    {% if supplier %}
+    تقرير إجماليات  {{ supplier.name }}
+    {% elif company %}
+    تقرير إجماليات  {{ company.name }}
+    {% elif geo %}
+    تقرير إجماليات  {{ geo.name }}
+    {% endif %}
+</title>
+{% endblock title %}
+
+{% block main %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12"> {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                            <i class="mdi mdi-check-all mr-2"></i>
+                            {{ message|safe }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+
+
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+
+                            <h3 class="mb-0 ">
+                                <span class="font-weight-bold">
+                                    {% if supplier %}
+                                    تقرير إجماليات المورد:</span> {{ supplier.name | title }}
+                                    {% elif company %}
+                                    تقرير إجماليات الشركة:</span> {{ company.name | title }}
+                                    {% elif geo %}
+                                    تقرير إجماليات الموقع:</span> {{ geo.name | title }}
+                                    {% endif %}
+                            </h3>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">الرئيسية</a></li>
+                                    <li class="breadcrumb-item">
+                                        {% if supplier %}
+                                            {% if supplier.deleted == 0 %}
+                                            <a href="{% url 'Engineering:SupplierList' %}">قائمة
+                                            الموردين
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'Engineering:SupplierTrachList' %}">قائمة
+                                            الموردين المحذوفة
+                                            </a>
+                                            {% endif %}
+                                        {% elif company %}
+                                            {% if company.deleted == 0 %}
+                                            <a href="{% url 'Engineering:CompanyList' %}">قائمة
+                                            الشركات
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'Engineering:CompanyTrachList' %}">قائمة
+                                            الشركات المحذوفة
+                                            </a>
+                                            {% endif %}
+                                        {% elif geo %}
+                                            {% if geo.deleted == 0 %}
+                                            <a href="{% url 'Engineering:GeoPlaceList' %}">قائمة
+                                            المواقع
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'Engineering:GeoPlaceTrachList' %}">قائمة
+                                            المواقع المحذوفة
+                                            </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        {% if supplier %}
+                                        تقرير إجماليات  {{ supplier.name }}
+                                        {% elif company %}
+                                        تقرير إجماليات  {{ company.name }}
+                                        {% elif geo %}
+                                        تقرير إجماليات  {{ geo.name }}
+                                        {% endif %}
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                         <div class="card">
+                            <div class="card-body">
+                                <div class="tab-pane" id="processing" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="table-responsive bg-light">
+                                                    <table class="table table-nowrap mb-0">
+                                                        <thead>
+                                                            <form method="post" action="{{ action }}" id="repo_form">
+                                                            {% csrf_token %}
+                                                            <tr>
+                                                                <th class="col-lg-3 col-xl-3 col-md-3">{{form.from_date1|as_crispy_field}}</th>
+                                                                <th class="col-lg-3 col-xl-3 col-md-3">{{form.to_date1|as_crispy_field}}</th>
+                                                                <th class="col-lg-3 col-xl-3 col-md-3">{{form.from_date2|as_crispy_field}}</th>
+                                                                <th class="col-lg-3 col-xl-3 col-md-3">{{form.to_date2|as_crispy_field}}</th>
+                                                                <th class="col-lg-1 col-xl-1 col-md-1"><button name="search" value="1" onclick="document.getElementById('repo_form').target='_self'" class="btn btn-outline-success form-control" type="submit">بحث</button></th>
+                                                                <th class="col-lg-1 col-xl-1 col-md-1"><button name="print" value="2" onclick="document.getElementById('repo_form').target='_blank'" class="btn btn-outline-info form-control" type="submit">طباعة</button></th>
+                                                            </tr>
+                                                            </form>
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                                {% if data %}
+                                                <br>
+                                                <div class="row">
+                                                     <div class="col-lg-12 col-md-12">
+                                                         <div class="table-rep-plugin" style="margin-top: 10px">
+                                                            <div class="table" data-pattern="priority-columns">
+                                                                <div class="table-responsive table-bordered">
+                                                                    {% comment %}payment table {% endcomment %}
+                                                                    <table id="tech-companies-1" class="table table-centered border_style">
+
+                                                                        <thead>
+                                                                        <tr style="text-align: center">
+                                                                            <th colspan="6"><h3 class="font-weight-bold">البونات والعهد
+                                                                            من
+                                                                            {% if date_from1 %}
+                                                                            {{ date_from1 }}
+                                                                            {% else %}
+                                                                            بداية العمل
+                                                                            {% endif %}
+                                                                            الي
+                                                                            {% if date_to1 %}
+                                                                            {{ date_to1 }}
+                                                                            {% else %}
+                                                                            الآن
+                                                                            {% endif %}
+                                                                            </h3></th>
+                                                                        </tr>
+                                                                        <tr class="bg-dark text-light" style="text-align: center">
+                                                                            <th >اجمالي عدد البونات</th>
+                                                                            <th >اجمالي الكميات</th>
+                                                                            {% if company or geo %}
+                                                                            <th >اجمالي الخصم</th>
+                                                                            <th >الكميات بعد الخصم</th>
+                                                                            {% endif %}
+                                                                            <th >اجمالي الحساب</th>
+                                                                            {% if supplier %}
+                                                                            <th >اجمالي العهد</th>
+                                                                            <th >الصافي</th>
+                                                                            {% endif %}
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% if bon_count > 0 %}
+                                                                            <tr style="text-align: center">
+                                                                                <td>{{ bon_count }}</td>
+                                                                                <td>{{ quantity }}</td>
+                                                                                {% if company or geo %}
+                                                                                <td>{{ quantity_discount }}</td>
+                                                                                <td>{{ quantity_after_discount }}</td>
+                                                                                {% endif %}
+                                                                                <td>{{ total_payment }}</td>
+                                                                                {% if supplier %}
+                                                                                <td>{{ total_load_value }}</td>
+                                                                                <td>{{ total_payment|sub:total_load_value }}</td>
+                                                                                {% endif %}
+                                                                            </tr>
+                                                                        {% else %}
+                                                                            <tr style="text-align: center">
+                                                                                <td colspan="5"><h5>لا توجد بونات</h5></td>
+                                                                            </tr>
+                                                                        {% endif %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                <div class="row">
+                                                     <div class="col-lg-12 col-md-12">
+                                                         <div class="table-rep-plugin" style="margin-top: 10px">
+                                                            <div class="table" data-pattern="priority-columns">
+                                                                <div class="table-responsive table-bordered">
+                                                                    {% comment %}payment table {% endcomment %}
+                                                                    <table id="tech-companies-1" class="table table-centered border_style">
+                                                                        <thead>
+                                                                        <tr style="text-align: center">
+                                                                            <th colspan="4"><h3 class="font-weight-bold">المسحوبات
+                                                                            من
+                                                                            {% if date_from2 %}
+                                                                            {{ date_from2 }}
+                                                                            {% else %}
+                                                                            بداية العمل
+                                                                            {% endif %}
+                                                                            الي
+                                                                            {% if date_to2 %}
+                                                                            {{ date_to2 }}
+                                                                            {% else %}
+                                                                            الآن
+                                                                            {% endif %}
+                                                                            </h3></th>
+                                                                        </tr>
+                                                                        <tr class="bg-dark text-light" style="text-align: center">
+                                                                            <th>#</th>
+                                                                            <th>تاريخ العملية</th>
+                                                                            <th>القيمة النقدية</th>
+                                                                            <th>الوصف/السبب</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% if payment_sum > 0 %}
+                                                                        {% for x in payment %}
+                                                                        <tr style="text-align: center">
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <td>{{ x.payment_date|date:'Y-m-d'}}</td>
+                                                                            <td>{{ x.cash_amount}}</td>
+                                                                            <td>{{ x.desc }}</td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                        <tr style="text-align: center">
+                                                                            <th colspan="2" style="font-size: larger">إجمالي المسحوبات</th>
+                                                                            <th colspan="2" style="font-size: larger">{{ payment_sum }}</th>
+                                                                        </tr>
+                                                                        <tr style="text-align: center">
+                                                                            <th colspan="2" style="font-size: larger">إجمالي الباقي</th>
+                                                                            <th colspan="2" style="font-size: larger">{{ total_account }}</th>
+                                                                        </tr>
+                                                                        {% else %}
+                                                                            <tr style="text-align: center">
+                                                                                <td colspan="4"><h5>لا توجد مسحوبات</h5></td>
+                                                                            </tr>
+                                                                        {% endif %}
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if is_paginated %}
+                {% include "components/paginator.html" %}
+                {% endif %}
+
+          </div>
+      </div>
+  </div>
+{% endblock %}

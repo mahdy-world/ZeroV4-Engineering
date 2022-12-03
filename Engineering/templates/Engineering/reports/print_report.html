@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block title %}
+{% load  crispy_forms_tags %}
+<title>
+    {% if supplier %}
+    تقرير إجماليات  {{ supplier.name }}
+    {% elif company %}
+    تقرير إجماليات  {{ company.name }}
+    {% elif geo %}
+    تقرير إجماليات  {{ geo.name }}
+    {% endif %}
+</title>
+{% endblock title %}
+
+{% block main %}
+    <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                         <div class="card">
+                            <div class="card-body">
+                                <div class="tab-pane" id="processing" role="tabpanel">
+                                    <div class="row">
+                                        <div class="card-body">
+                                            <div class="row">
+                                              <div class="col-lg-12 col-md-12" style="display:flex;justify-content: center">
+                                                    <h3 >
+                                                    {% if system_info.name or system_info.type %}
+                                                    {{ system_info.name }} {{ system_info.type }}
+                                                    {% endif %}
+                                                </h3>
+                                              </div>
+                                            </div>
+
+                                        <!-- system info div -->
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6" style="display: flex; justify-content: right" >
+                                                    <div style="text-align: right; margin-top: 100px">
+                                                         {% if report_date %}
+                                                            <p><span class="font-weight-bold">تاريخ التقرير:</span> {{ report_date|date:'Y-m-d' }}</p>
+                                                         {% endif %}
+
+                                                        {% if supplier %}
+                                                            <p><span class="font-weight-bold">تقرير اجماليات المورد:</span> {{ supplier.name }}</p>
+                                                        {% elif company %}
+                                                            <p><span class="font-weight-bold">تقرير اجماليات الشركة:</span> {{ company.name }}</p>
+                                                        {% elif geo %}
+                                                            <p><span class="font-weight-bold">تقرير اجماليات الموقع:</span> {{ geo.name }}</p>
+                                                         {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6" style="display: flex; justify-content: left" >
+                                                    <div style="text-align: center">
+                                                        {% if system_info %}
+                                                            <img src="{% if system_info.logo %}{{ system_info.logo.url }}{% else %}/static/assets/images/home.png{% endif %}" width="250px" >
+                                                        {% endif %}
+
+                                                         {% if system_info.manage %}
+                                                            <p style="margin-top: -5px">إدارة:{{ system_info.manage }}</p>
+                                                         {% endif %}
+
+                                                        {% if system_info.phone or system_info.phone2 %}
+                                                            <p style="margin-top: -15px">الهاتف:{{ system_info.phone }} - {{ system_info.phone2 }}</p>
+                                                        {% endif %}
+
+                                                        {% if system_info.address %}
+                                                            <p style="margin-top: -20px">العنوان:{{ system_info.address }}</p>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                             <div class="col-lg-12 col-md-12">
+                                                 <div class="table-rep-plugin" style="margin-top: 10px">
+                                                    <div class="table" data-pattern="priority-columns">
+                                                        <div class="table-responsive table-bordered">
+                                                            {% comment %}payment table {% endcomment %}
+                                                            <table id="tech-companies-1" class="table table-centered border_style">
+
+                                                                <thead>
+                                                                <tr style="text-align: center">
+                                                                    <th colspan="6"><h3 class="font-weight-bold">البونات والعهد
+                                                                    من
+                                                                    {% if date_from1 %}
+                                                                    {{ date_from1 }}
+                                                                    {% else %}
+                                                                    بداية العمل
+                                                                    {% endif %}
+                                                                    الي
+                                                                    {% if date_to1 %}
+                                                                    {{ date_to1 }}
+                                                                    {% else %}
+                                                                    الآن
+                                                                    {% endif %}
+                                                                    </h3></th>
+                                                                </tr>
+                                                                <tr class="bg-dark text-light" style="text-align: center">
+                                                                    <th >اجمالي عدد البونات</th>
+                                                                    <th >اجمالي الكميات</th>
+                                                                    {% if company or geo %}
+                                                                    <th >اجمالي الخصم</th>
+                                                                    <th >الكميات بعد الخصم</th>
+                                                                    {% endif %}
+                                                                    <th >اجمالي الحساب</th>
+                                                                    {% if supplier %}
+                                                                    <th >اجمالي العهد</th>
+                                                                    <th >الصافي</th>
+                                                                    {% endif %}
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {% if bon_count > 0 %}
+                                                                    <tr style="text-align: center">
+                                                                        <td>{{ bon_count }}</td>
+                                                                        <td>{{ quantity }}</td>
+                                                                        {% if company or geo %}
+                                                                        <td>{{ quantity_discount }}</td>
+                                                                        <td>{{ quantity_after_discount }}</td>
+                                                                        {% endif %}
+                                                                        <td>{{ total_payment }}</td>
+                                                                        {% if supplier %}
+                                                                        <td>{{ total_load_value }}</td>
+                                                                        <td>{{ total_payment|sub:total_load_value }}</td>
+                                                                        {% endif %}
+                                                                    </tr>
+                                                                {% else %}
+                                                                    <tr style="text-align: center">
+                                                                        <td colspan="5"><h5>لا توجد بونات</h5></td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                            <div class="row">
+                                                 <div class="col-lg-12 col-md-12">
+                                                     <div class="table-rep-plugin" style="margin-top: 10px">
+                                                        <div class="table" data-pattern="priority-columns">
+                                                            <div class="table-responsive table-bordered">
+                                                                {% comment %}payment table {% endcomment %}
+                                                                <table id="tech-companies-1" class="table table-centered border_style">
+                                                                    <thead>
+                                                                    <tr style="text-align: center">
+                                                                        <th colspan="4"><h3 class="font-weight-bold">المسحوبات
+                                                                        من
+                                                                        {% if date_from2 %}
+                                                                        {{ date_from2 }}
+                                                                        {% else %}
+                                                                        بداية العمل
+                                                                        {% endif %}
+                                                                        الي
+                                                                        {% if date_to2 %}
+                                                                        {{ date_to2 }}
+                                                                        {% else %}
+                                                                        الآن
+                                                                        {% endif %}
+                                                                        </h3></th>
+                                                                    </tr>
+                                                                    <tr class="bg-dark text-light" style="text-align: center">
+                                                                        <th>#</th>
+                                                                        <th>تاريخ العملية</th>
+                                                                        <th>القيمة النقدية</th>
+                                                                        <th>الوصف/السبب</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% if payment_sum > 0 %}
+                                                                    {% for x in payment %}
+                                                                    <tr style="text-align: center">
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td>{{ x.payment_date|date:'Y-m-d'}}</td>
+                                                                        <td>{{ x.cash_amount}}</td>
+                                                                        <td>{{ x.desc }}</td>
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    <tr style="text-align: center">
+                                                                        <th colspan="2" style="font-size: larger">إجمالي المسحوبات</th>
+                                                                        <th colspan="2" style="font-size: larger">{{ payment_sum }}</th>
+                                                                    </tr>
+                                                                    <tr style="text-align: center">
+                                                                        <th colspan="2" style="font-size: larger">إجمالي الباقي</th>
+                                                                        <th colspan="2" style="font-size: larger">{{ total_account }}</th>
+                                                                    </tr>
+                                                                    {% else %}
+                                                                        <tr style="text-align: center">
+                                                                            <td colspan="4"><h5>لا توجد مسحوبات</h5></td>
+                                                                        </tr>
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          </div>
+      </div>
+      <h4 style="position: absolute; bottom:0; left: 0">نظام زيرو وان لإدارة المقاولات</h4>
+
+  </div>
+    <script type="text/javascript">
+     window.onafterprint = window.close;
+     window.print();
+    </script>
+
+{% endblock %}

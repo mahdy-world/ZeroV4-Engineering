@@ -181,7 +181,11 @@
                                                    <span class="badge badge-secondary"><i class='bx bx-dollar-circle' ></i> تاريخ الأسعار</span>
                                               </a>
                                            </div>
-
+                                            <div class="mr-3">
+                                               <a href="{% url 'Engineering:GeoReport' x.id %}" data-placement="top" title="" data-original-title="Message">
+                                                   <span class="badge badge-dark"><i class='bx bxs-printer'></i>تقرير إجماليات</span>
+                                              </a>
+                                            </div>
                                         </div>
                                         <div class="contact-links d-flex justify-content-center font-size-20">
                                             {% if request.user.is_superuser %}
