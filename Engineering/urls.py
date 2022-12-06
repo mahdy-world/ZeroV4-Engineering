@@ -57,6 +57,7 @@ urlpatterns = [
     path('sheet_detail/<int:pk>/', SheetDetail, name="SheetDetail"),
     path('AddSheetBon/<int:pk>/', AddSheetBon, name="AddSheetBon"),
     path('DelSheetBon/<int:pk>/', DelSheetBon, name="DelSheetBon"),
+    path('sheet_bon_update/<int:pk>', SheetBonUpdate.as_view(), name="SheetBonUpdate"),
     path('get_company_geos/', get_company_geos, name="get_company_geos"),
 
     ####################################################################

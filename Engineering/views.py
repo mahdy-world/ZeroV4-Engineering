@@ -703,9 +703,9 @@ def SheetDetail(request, pk):
 
     form = BonForm()
     form.fields['geo_place'].queryset = GeoPlace.objects.filter(id=-1)
-    form.fields['company'].queryset = Company.objects.filter(deleted=False)
+    form.fields['company'].queryset = Company.objects.filter(deleted=0, active=True)
     if last_bon:
-        form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=last_bon.company, deleted=False)
+        form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=last_bon.company, deleted=0, active=True)
         form.fields['car_number'].initial = last_bon.car_number
         form.fields['car_owner'].initial = last_bon.car_owner
         form.fields['kassara'].initial = last_bon.kassara
@@ -806,10 +806,76 @@ def DelSheetBon(request, pk):
     return redirect('Engineering:SheetDetail', pk=sheet.id)
 
 
+class SheetBonUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/auth/login/'
+    model = Bon
+    form_class = BonFormUpdate
+    template_name = 'forms/bon_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'تعديل بون: ' + str(self.object)
+        context['message'] = 'update'
+        context['action_url'] = reverse_lazy('Engineering:SheetBonUpdate', kwargs={'pk': self.object.id})
+        return context
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=self.form_class)
+        form.fields['geo_place'].queryset = GeoPlace.objects.filter(company=self.object.company, deleted=0, active=True)
+        return form
+
+    def get_success_url(self):
+        return reverse_lazy('Engineering:SheetDetail', kwargs={'pk': self.object.sheet.id})
+
+    def form_valid(self, form):
+        sheet = self.object.sheet
+        bon_number = form.cleaned_data.get("bon_number")
+        if bon_number in Bon.objects.filter(sheet=self.object.sheet).exclude(id=self.object.id).values_list('bon_number', flat=True):
+            messages.error(self.request, "خطأ! رقم بون مكرر! تم إدخال سجل بنفس رقم البون مسبقا في هذا الشيت", extra_tags="danger")
+        else:
+            obj = form.save(commit=False)
+            obj.sheet = sheet
+            bon_quantity_after_discount = obj.bon_quantity - obj.bon_quantity_discount
+            obj.bon_quantity_after_discount = bon_quantity_after_discount
+            bon_total = obj.bon_price * obj.bon_quantity
+            obj.bon_total = bon_total
+            obj.geo_price = obj.geo_price
+            obj.material_price = obj.material_price
+            material_total = obj.material_price * obj.bon_quantity
+            obj.material_total = material_total
+            bon_overall = obj.geo_price * bon_quantity_after_discount
+            obj.bon_overall = bon_overall
+            supplier_value = bon_total - obj.load_value
+            obj.supplier_value = supplier_value
+            profit = bon_overall - (bon_total + material_total)
+            obj.profit = profit
+            diff_profit = obj.material_price * obj.bon_quantity_diff
+            obj.diff_profit = diff_profit
+            obj.total_profit = profit + diff_profit
+            obj.admin = self.request.user
+            obj.save()
+            bons = Bon.objects.filter(sheet=sheet)
+            sheet.bons = bons.count()
+            sheet.quantity = bons.aggregate(sum=Sum('bon_quantity')).get('sum')
+            sheet.quantity_discount = bons.aggregate(sum=Sum('bon_quantity_discount')).get('sum')
+            sheet.quantity_after_discount = bons.aggregate(sum=Sum('bon_quantity_after_discount')).get('sum')
+            sheet.quantity_diff = bons.aggregate(sum=Sum('bon_quantity_diff')).get('sum')
+            sheet.total = bons.aggregate(sum=Sum('bon_total')).get('sum')
+            sheet.overall = bons.aggregate(sum=Sum('bon_overall')).get('sum')
+            sheet.loads_value = bons.aggregate(sum=Sum('load_value')).get('sum')
+            sheet.supplier_value = bons.aggregate(sum=Sum('supplier_value')).get('sum')
+            sheet.profit = bons.aggregate(sum=Sum('total_profit')).get('sum')
+            sheet.save(update_fields=['bons', 'quantity', 'quantity_discount', 'quantity_after_discount', 'quantity_diff',
+                               'total', 'overall', 'loads_value', 'supplier_value', 'profit'])
+            messages.success(self.request, "تم تعديل البون " + str(self.object) + " بنجاح ", extra_tags="success")
+
+        return redirect(self.get_success_url())
+
+
 def get_company_geos(request):
     if request.is_ajax():
         if request.GET.get('company_id'):
-            geos = list(GeoPlace.objects.filter(company__id=int(request.GET.get('company_id')), deleted=False).values())
+            geos = list(GeoPlace.objects.filter(company__id=int(request.GET.get('company_id')), deleted=False, active=True).values())
         else:
             geos = None
         data = {

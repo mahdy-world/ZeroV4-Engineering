@@ -185,7 +185,6 @@ table.dataTable thead .sorting_desc_disabled {
                                                                 </tr>
                                                                 </form>
                                                             </thead>
-
                                                         </table>
                                                     </div>
                                                     {% endif %}
@@ -259,6 +258,7 @@ table.dataTable thead .sorting_desc_disabled {
                                                                         <th>اسم الكسارة</th>
                                                                         <th>مستخدم النظام</th>
                                                                         {% if not sheet.deleted %}
+                                                                        <th>تعديل</th>
                                                                         <th>حذف</th>
                                                                         {% endif %}
                                                                     </tr>
@@ -312,6 +312,9 @@ table.dataTable thead .sorting_desc_disabled {
                                                                         </td>
                                                                         {% if not sheet.deleted %}
                                                                         <td>
+                                                                            <a href="{% url 'Engineering:SheetBonUpdate' x.id %}" class="text-info" data-toggle="modal" data-target="#sub_modal" title="" data-original-title="Update"><i class="mdi mdi-comment-edit font-size-18"></i></a>
+                                                                        </td>
+                                                                        <td>
                                                                             <a href="#" class="text-danger" data-toggle="modal" data-target="#DelModal" title="" data-original-title="Delete"><i class="mdi mdi-close font-size-18"
                                                                             onclick="document.getElementById('del_clck').href='{% url 'Engineering:DelSheetBon' x.id %}'"
                                                                             ></i></a>
@@ -341,6 +344,7 @@ table.dataTable thead .sorting_desc_disabled {
                                                                         <th></th>
                                                                         <th></th>
                                                                         {% if not sheet.deleted %}
+                                                                        <th></th>
                                                                         <th></th>
                                                                         {% endif %}
                                                                     </tr>
@@ -499,7 +503,7 @@ $(document).ready(function () {
             },
 
             "columnDefs": [ {
-            "targets": 14,
+            "targets": [14, 15],
             "orderable": false
             } ],
             order: [[0, 'desc']],
@@ -575,10 +579,10 @@ $(document).ready(function () {
                     },
                     title:
                         '<br>' +
-                        '<h3 style="text-align: center"> ' +
+                        '<h1 style="text-align: center"> ' +
                             ' {{ system_info.name }} ' +
                             '{{ system_info.type }}' +
-                        ' </h3>' +
+                        ' </h1>' +
                         '<br>' +
                         '<h3> ' +
                             'تاريخ الشيت: ' +

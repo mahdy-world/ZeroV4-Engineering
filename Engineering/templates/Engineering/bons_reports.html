@@ -538,10 +538,10 @@ $(document).ready(function () {
                     },
                     title:
                         '<br>' +
-                        '<h3 style="text-align: center"> ' +
+                        '<h1 style="text-align: center"> ' +
                             ' {{ system_info.name }} ' +
                             '{{ system_info.type }}' +
-                        ' </h3>' +
+                        ' </h1>' +
                         '<br>' +
                         '<h3> ' +
                             'تاريخ التقرير: ' +
@@ -569,11 +569,14 @@ $(document).ready(function () {
                     },
                     messageBottom: function () {
                         {% if system_info.logo %}
-                            var img = '<img src="{{system_info.logo.url}}" style="position:absolute; top:100px; left:0; width:150px; height:150px">';
+                            var img = '<img src="{{system_info.logo.url}}" style="position:absolute; top:30px; left:0; width:250px; height:200px">';
                         {% else %}
-                            var img = '<img src="/static/assets/images/new.png" style="position:absolute; top:100px; left:0; width:150px; height:150px">';
+                            var img = '<img src="/static/assets/images/new.png" style="position:absolute; top:30px; left:0; width:250px; height:200px">';
                         {% endif %}
-                        return img
+                        var manage = '<p style="position:absolute; top:230px; left:0">إدارة: {{ system_info.manage }}</p>';
+                        var phones = '<p style="position:absolute; top:260px; left:0">هاتف: {{ system_info.phone }} - {{ system_info.phone2 }}</p>';
+                        var address = '<p style="position:absolute; top:290px; left:0">العنوان: {{ system_info.address }}</p>';
+                        return img + '<br>' + manage + '<br>' + phones + '<br>' + address
                     },
                     messageTop: function () {
                         if ( $("#SupFltr").val() == ' ' ) {
@@ -622,10 +625,10 @@ $(document).ready(function () {
                     },
                     title:
                         '<br>' +
-                        '<h3 style="text-align: center"> ' +
+                        '<h1 style="text-align: center"> ' +
                             ' {{ system_info.name }} ' +
                             '{{ system_info.type }}' +
-                        ' </h3>' +
+                        ' </h1>' +
                         '<br>' +
                         '<h3> ' +
                             'تاريخ التقرير: ' +

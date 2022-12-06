@@ -88,8 +88,8 @@ class SheetFormDelete(forms.ModelForm):
 class BonForm(forms.ModelForm):
     class Meta:
         model = Bon
-        fields = ['date', 'bon_number', 'car_number', 'car_owner', 'kassara', 'company', 'geo_place',
-                  'bon_quantity', 'bon_quantity_discount', 'bon_quantity_diff', 'bon_price', 'load_value',
+        fields = ['date', 'company', 'geo_place', 'bon_number', 'car_number', 'car_owner',
+                  'bon_quantity', 'bon_quantity_discount', 'bon_price', 'load_value', 'kassara', 'bon_quantity_diff',
                   ]
         widgets = {
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
@@ -108,6 +108,37 @@ class BonForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BonForm, self).__init__(*args, **kwargs)
+        self.fields['car_number'].required = False
+        self.fields['car_owner'].required = False
+        self.fields['kassara'].required = False
+        self.fields['bon_quantity_discount'].required = False
+        self.fields['bon_quantity_diff'].required = False
+        self.fields['load_value'].required = False
+
+
+class BonFormUpdate(forms.ModelForm):
+    class Meta:
+        model = Bon
+        fields = ['date', 'company', 'geo_place', 'bon_number', 'car_number', 'car_owner',
+                  'bon_quantity', 'bon_quantity_discount', 'bon_price', 'load_value', 'kassara', 'bon_quantity_diff',
+                  ]
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'bon_number': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'car_number': forms.TextInput(attrs={'class': 'form-control', }),
+            'car_owner': forms.TextInput(attrs={'class': 'form-control',}),
+            'kassara': forms.TextInput(attrs={'class': 'form-control',}),
+            'company': forms.Select(attrs={'class': 'form-control', 'id':'company_bon2', 'style': 'width:100%'}),
+            'geo_place': forms.Select(attrs={'class': 'form-control', 'id':'geo_place_bon2', 'style': 'width:100%'}),
+            'bon_quantity': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
+            'bon_quantity_discount': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
+            'bon_quantity_diff': forms.NumberInput(attrs={'class': 'form-control', 'min':0 }),
+            'bon_price': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'load_value': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(BonFormUpdate, self).__init__(*args, **kwargs)
         self.fields['car_number'].required = False
         self.fields['car_owner'].required = False
         self.fields['kassara'].required = False

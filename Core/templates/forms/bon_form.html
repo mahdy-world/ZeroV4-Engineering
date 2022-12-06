@@ -1,0 +1,126 @@
+<style>
+    .expand_modal {
+        max-width: 100%;
+        margin: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        display: flex;
+        position: fixed;
+        z-index: 100000;
+    }
+</style>
+{% block main %}
+{% load  crispy_forms_tags %}
+    <form method="post" action="{{ action_url }}">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <b class="font-weight-bold text-center"> {{ title }}</b>
+                            <span class="card-tools" style="float: left">
+                                <button type="button" class="btn btn-tool" data-card-widget="maximize"
+                                onclick="
+                                if (document.getElementById('expand_modal').value === '0'){
+                                    document.getElementById('expand_modal').value = 1;
+                                    document.getElementById('action_modal2').className = 'modal-dialog expand_modal';
+                                    document.getElementById('sub_modal2').className = 'modal-dialog modal-lg expand_modal';
+                                }
+                                else {
+                                    document.getElementById('expand_modal').value = 0;
+                                    document.getElementById('action_modal2').className = 'modal-dialog';
+                                    document.getElementById('sub_modal2').className = 'modal-dialog modal-lg';
+                                }
+
+                                "
+                                >
+                                    <input type="number" value="0" id="expand_modal" hidden>
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-dismiss="modal">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive bg-light">
+                            <table class="table table-nowrap mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.date|as_crispy_field}}</th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.company|as_crispy_field}}</th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.geo_place|as_crispy_field}}</th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.bon_number|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.car_number|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.car_owner|as_crispy_field}} </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.bon_quantity|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.bon_quantity_discount|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.bon_price|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.load_value|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.kassara|as_crispy_field}} </th>
+                                        <th class="col-lg-2 col-xl-2 col-md-2">{{form.bon_quantity_diff|as_crispy_field}} </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-info font-weight-bold text-center">
+                            <i class="fa fa-save"></i>
+                            تعديل
+                        </button>
+                        <button style="margin-right: 10px" type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times"></i>
+                            الغاء
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+        $('#geo_place_bon2').select2();
+        $('#company_bon2').select2();
+    });
+</script>
+
+<script>
+    $( '#company_bon2' ).change( function() {
+        $('#geo_place_bon2').attr('disabled', 'disabled');
+        var company_id = this.value;
+        $.ajax({
+            url: "{% url 'Engineering:get_company_geos' %}",
+            data: {
+                'company_id': company_id,
+            },
+            success: function (data) {
+                $('#geo_place_bon2').removeAttr('disabled');
+                $( '#geo_place_bon2' ).empty();
+                for([key, val] of Object.entries(data.geos)) {
+                  $( '#geo_place_bon2' ).append("<option value="+val.id+">"+val.name+"</option>");
+                }
+            },
+            error: function (error) {
+                $('#geo_place_bon2').removeAttr('disabled');
+                $( '#geo_place_bon2' ).empty();
+                $( '#geo_place_bon2' ).append("<option disabled>اختر شركة أولا</option>");
+            }
+        });
+    });
+</script>
+
+{% endblock %}
